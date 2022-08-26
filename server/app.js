@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Property = require('./models/property');
+const cors = require('cors');
 
 mongoose.connect('mongodb://localhost:27017/real-estate');
 
@@ -13,12 +14,16 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors({ 
+    origin: 'http://localhost:3000',
+ }));
 
 app.get('/', (req, res) => {
     res.send('hello world')
 })
 
 app.get('/properties', async (req, res) => {
+    //res.set('Access-Control-Allow-Origin', '*');
     const properties = await Property.find({});
     res.status(200).json(properties)
 })
@@ -34,7 +39,7 @@ app.post('/properties', async (req, res) => {
     res.redirect(`/properties/${property._id}`);
 })
 
-app.put('/properties/:id', async (req, res) => {
+app.patch('/properties/:id', async (req, res) => {
     const { id } = req.params;
     const updatedProperty = await Property.findByIdAndUpdate(id, { $set: req.body }, {new: true});
     res.status(200).json(updatedProperty);
