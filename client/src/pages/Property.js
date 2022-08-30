@@ -2,28 +2,30 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Delete from './Delete';
+import NotFound from '../NotFound';
 
 function Property() {
   const params = useParams();
-
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-    let response = await axios.get(`http://localhost:8080/properties/${params.id}`);
-    setData(response.data);
-    //console.log(data);
-    }
+    await axios.get(`http://localhost:8080/properties/${params.id}`)
+      .then(res => {if (res.status !== 200){throw Error('could not fetch the data for that resource')} else { setData(res.data); }})
+      .catch(err => {setError(err.message); setData(null)});
+    } 
     fetchData();
   }, [params.id]);
 
   return (
     <div>
       <Link to={'/properties'}>All Properties</Link>
-      <p>title {data.title}</p>
-      <p>location {data.location}</p>
-      <button><Link to={`/properties/${params.id}/edit`}>edit</Link></button>
-      <Delete/>
+      { error && <NotFound/> }
+      { data && <p>title {data.title}</p> }
+      { data && <p>location {data.location}</p> }
+      { data && <button><Link to={`/properties/${params.id}/edit`}>edit</Link></button> }
+      { data && <Delete/> }
     </div>
   );
 }

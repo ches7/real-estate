@@ -10,6 +10,7 @@ import Create from "./pages/Create";
 import './App.css';
 import Home from './pages/Home';
 import List from "./pages/List";
+import NotFound from "./NotFound";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/properties/:id" element={<Property/>}/>
           <Route path="/properties/:id/edit" element={<Edit/>}/>
           <Route path="/properties/create" element={<Create/>}/>
+          <Route path="*" element={<NotFound />}/>
         </Routes>
     </Router>
   );
