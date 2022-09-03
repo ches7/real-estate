@@ -20,7 +20,6 @@ function Property() {
 
   return (
     <div>
-      <Link to={'/properties'}>All Properties</Link>
       { error && <NotFound/> }
       { data && <p>title {data.title}</p> }
       { data && <p>location {data.location}</p> }

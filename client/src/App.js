@@ -11,10 +11,13 @@ import './App.css';
 import Home from './pages/Home';
 import List from "./pages/List";
 import NotFound from "./NotFound";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
+    <>
     <Router>
+    <Navbar/>
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/properties" element={<List/>}/>
@@ -24,6 +27,7 @@ function App() {
           <Route path="*" element={<NotFound />}/>
         </Routes>
     </Router>
+    </>
   );
 }
 

@@ -33,7 +33,6 @@ function Edit() {
 
     return (
         <div className="create">
-            <Link to={'/properties'}>All Properties</Link>
             <Link to={`/properties/${params.id}`}>This Property</Link>
 
             <h2>Edit Property</h2>

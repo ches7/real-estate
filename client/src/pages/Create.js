@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Create = () => {
     const navigate = useNavigate();
@@ -27,7 +27,6 @@ const Create = () => {
 
   return (
     <div className="create">
-        <Link to={'/properties'}>All properties</Link>
       <h2>Add a New Property</h2>
       <form onSubmit={handleSubmit}>
         <label>Property title:</label>
