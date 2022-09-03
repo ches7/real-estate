@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
 const PropertySchema = new mongoose.Schema({
     title: String,
@@ -7,4 +7,4 @@ const PropertySchema = new mongoose.Schema({
     location: String,
 });
 
-module.exports = mongoose.model('Property', PropertySchema);
+export default mongoose.model('Property', PropertySchema);

@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from "joi";
 
-module.exports.propertySchema = Joi.object({
+const propertySchema = Joi.object({
     campground: Joi.object({
         title: Joi.string().required(),
         //price: Joi.number().required().min(0),
@@ -9,3 +9,5 @@ module.exports.propertySchema = Joi.object({
         description: Joi.string().required()
     }).required()
 });
+
+export default propertySchema;

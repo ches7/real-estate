@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const { cities } = require('./cities');
+import mongoose from "mongoose";
+import { cities } from "./cities.js";
 
-const Property = require('../models/property');
+import Property from "../models/property.js";
 
 mongoose.connect('mongodb://localhost:27017/real-estate');
 
