@@ -5,6 +5,7 @@ import catchAsync from "../utils/catchAsync.js";
 const router = express.Router();
 
 router.post("/register", catchAsync(auth.register))
-router.post("/login", catchAsync(auth.login))
+router.post("/signin", catchAsync(auth.signin))
+router.get("/signout", catchAsync(auth.signout))
 
 export default router

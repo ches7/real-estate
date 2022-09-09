@@ -18,7 +18,7 @@ export const verifyToken = (req, res, next) => {
 
 export const verifyUser = (req, res, next) => {
   verifyToken(req, res, next, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+    if (req.user.id === req.params.id || req.user.isAgent) {
       next();
     } else {
       return next(new ExpressError(403, "You are not authorized!"));

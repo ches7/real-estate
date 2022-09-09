@@ -1,6 +1,22 @@
 import { Link } from "react-router-dom"
+import axios from "axios";
 
 export default function Navbar() {
+
+    const handleSignOut = (e) => {
+        e.preventDefault();
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/signout',
+        })
+         .then(res => {
+            console.log(res);
+        //     id = res.data._id;
+        //     navigate(`/properties/${id}`);
+         })
+    
+      };
+
   return (
 <nav className="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
     <div className="container-fluid">
@@ -16,6 +32,9 @@ export default function Navbar() {
             </div>
             <div className="navbar-nav ms-auto">
                 <Link to="/signin" className="nav-link">Sign in</Link>
+            </div>
+            <div>
+                <button className="border-0 bg-dark nav-link text-white" onClick={handleSignOut}>Sign out</button>
             </div>
         </div>
     </div>

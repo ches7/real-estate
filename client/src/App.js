@@ -17,6 +17,9 @@ import ToRent from "./pages/ToRent";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 
+import axios from "axios";
+axios.defaults.withCredentials = true;
+
 function App() {
   return (
     <>

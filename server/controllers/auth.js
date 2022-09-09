@@ -16,8 +16,8 @@ const register = async (req, res, next) => {
     res.status(200).send("User has been created.");
 };
 
-const login = async (req, res, next) => {
-    const user = await User.findOne({ username: req.body.username });
+const signin = async (req, res, next) => {
+    const user = await User.findOne({ email: req.body.email });
     if (!user) return next(new ExpressError(404, "User not found!"));
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -36,9 +36,21 @@ const login = async (req, res, next) => {
     res
       .cookie("access_token", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
       })
       .status(200)
-      .json({ details: { ...otherDetails }, isAgent });
+      .json({ details: { ...otherDetails }, isAgent })
+      .send();
 };
 
-export default { register, login };
+const signout = async (req, res, next) => {
+  res.cookie("access_token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0)
+  }).status(200).send();
+};
+
+export default { register, signin, signout };
