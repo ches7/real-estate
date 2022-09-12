@@ -3,8 +3,8 @@ const Filters = () => {
         <div className="search-container d-flex justify-content-center p-2 m-2">
                 <form action="" className="d-inline-flex justify-content-center border rounded border-dark p-2">
                     <div className="px-3">
-                    <label htmlFor="search-area">Search area</label><br></br>
-                    <input type="text" id="search-area" placeholder="e.g. Oxford" name="search-area"></input>
+                    <label htmlFor="location">Search area</label><br></br>
+                    <input type="text" id="location" placeholder="e.g. Oxford" name="location"></input>
                     </div>
 
                     <div className="px-3">
@@ -59,8 +59,8 @@ const Filters = () => {
                     </div>
 
                     <div className="px-3">
-                    <label htmlFor="property-type">Property type</label><br></br>
-                    <select name="property-type" id="property-type" className="bg-light border-0">
+                    <label htmlFor="type">Property type</label><br></br>
+                    <select name="type" id="type" className="bg-light border-0">
                     <option value="all">Show all</option>
                     <option value="detached">Detached</option>
                     <option value="terraced">Terraced</option>

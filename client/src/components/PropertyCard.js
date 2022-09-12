@@ -54,16 +54,18 @@ const PropertyCard = (props) => {
 
         <div className="d-flex">
         <FontAwesomeIcon icon={faBed} className="m-2"/>
-        <p className="mt-1 me-2">3</p>
+        <p className="mt-1 me-2">{props.beds}</p>
         <FontAwesomeIcon icon={faBath} className="m-2"/>
-        <p className="mt-1 me-2">2</p>
+        <p className="mt-1 me-2">{props.baths}</p>
         <FontAwesomeIcon icon={faCouch} className="m-2"/>
-        <p className="mt-1 me-2">1</p>
+        <p className="mt-1 me-2">{props.receptions}</p>
         </div>
 
                 
                 <h4>{props.title}</h4>
                 <p>{props.location}</p>
+                <p>{props.type}</p>
+                <p>{props.description}</p>
             </div>
             </div>
             </Link>

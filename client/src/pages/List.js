@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import Filters from "../components/Filters";
 import PropertyCard from "../components/PropertyCard";
+import useFetch from "../hooks/useFetch";
 
     function List(){
-        const [data, setData] = useState([]);
-        const [error, setError] = useState(null);
+        const loc = useLocation();
+        const [location, setLocation] = useState(new URLSearchParams(loc.search).get('location'));
 
-        useEffect(() => {
-            const fetchData = async () => {
-            await axios.get('http://localhost:8080/properties')
-              .then(res => {if (res.status !== 200){throw Error('could not fetch the data for that resource')} else { setData(res.data); }})
-              .catch(err => {setError(err.message); setData(null)});
-            } 
-            fetchData();
-          }, []);
+        // useEffect(() => {
+        //     const fetchData = async () => {
+        //     await axios.get(`http://localhost:8080/properties?location=${location}`)
+        //       .then(res => {if (res.status !== 200){throw Error('could not fetch the data for that resource')} else { setData(res.data); }})
+        //       .catch(err => {setError(err.message); setData(null)});
+        //     } 
+        //     fetchData();
+        //   }, []);
+
+        const { data, loading, error } = useFetch(
+            `http://localhost:8080/properties?location=${location}`
+          );
 
         return (
             <div>
@@ -26,7 +31,8 @@ import PropertyCard from "../components/PropertyCard";
                 {/* <button><Link to={`/properties/create`}>Create new property</Link></button> */}
                  <div>
                     {data.map((p, i) => (
-                        <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id} />
+                        <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id} 
+                        beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type}/>
                         // <li key={i}><Link to={`/properties/${p._id}`}>{p.location}</Link></li>
                     ))}
                 </div> 

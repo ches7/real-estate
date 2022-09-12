@@ -1,7 +1,13 @@
 import Property from "../models/Property.js";
 
 const getProperties = async (req, res, next) => {
-    const properties = await Property.find({});
+    const location = req.query.location;
+    // if (req.query.location !== null) {
+    //     location = `location: ${req.query.location}`;
+    // }
+    const properties = await Property.find({
+        location: location
+    });
     res.status(200).json(properties);
 };
 
