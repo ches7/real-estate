@@ -1,28 +1,40 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import axios from "axios";
+import { UserContext } from "../utils/UserContext";
 
 const SignIn = () => {
 
+    const { user, setUser } = useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        localStorage.setItem("user", JSON.stringify(user));
+    }, [user])
+
+    //prevent stale closure
+    const ref = useRef({}).current;
+    ref.user = user;
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        let id = '';
-        const user = { email, password };
-        axios({
-            data: user,
+        const userEmailPassword = { email, password };
+        await axios({
+            data: userEmailPassword,
             method: 'post',
             url: 'http://localhost:8080/signin',
         })
          .then(res => {
-            console.log(res);
-        //     id = res.data._id;
-        //     navigate(`/properties/${id}`);
+            setUser(res.data.details._id);
+            setTimeout(printUser, 1000);
          })
     
       }
+
+    const printUser = () => {
+       console.log(ref.user)
+    }
 
     return (
         <div>

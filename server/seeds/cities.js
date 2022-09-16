@@ -1,4 +1,4 @@
-module.exports.cities = [
+const cities = [
     "Abberton",
     "Abbots Langley",
     "Aberaeron",
@@ -3041,3 +3041,5 @@ module.exports.cities = [
     "Ystradgynlais",
     "Zeals"
   ];
+
+  export default cities;

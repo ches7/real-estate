@@ -1,14 +1,24 @@
 import Property from "../models/Property.js";
 
+function maybeCreateMongoQuery(prop,queryProp,value){
+    return value === '' ? null : {[prop]: {[queryProp]: value}};
+  }
+
 const getProperties = async (req, res, next) => {
-    const location = req.query.location;
-    // if (req.query.location !== null) {
-    //     location = `location: ${req.query.location}`;
-    // }
-    const properties = await Property.find({
-        location: location
-    });
-    res.status(200).json(properties);
+    // const location = new RegExp(req.query.location, "i");
+    let location = new String(req.query.location)
+    location = location.charAt(0).toUpperCase() + location.slice(1);
+    // location
+    console.log(req.query)
+
+    const properties = await Property.find({ $and: [
+        maybeCreateMongoQuery('_id', '$exists', true),
+        maybeCreateMongoQuery('location', '$eq', location),
+
+        ].filter(q => q !== null)
+      });
+
+        res.status(200).json(properties);
 };
 
 const getProperty = async (req, res, next) => {
