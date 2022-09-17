@@ -41,7 +41,7 @@ export default function ReactNavbar() {
               title={user._id}
               menuVariant="dark"
             >
-              <NavDropdown.Item href="#action/3.1">Account</NavDropdown.Item>
+              <NavDropdown.Item href="/account">Account</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item onClick={handleSubmit}>
                 Sign out

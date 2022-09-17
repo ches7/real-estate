@@ -16,6 +16,7 @@ import ForSale from "./pages/ForSale";
 import ToRent from "./pages/ToRent";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
+import Account from "./pages/Account";
 
 import axios from "axios";
 axios.defaults.withCredentials = true;
@@ -32,6 +33,7 @@ function App() {
           <Route path="/to-rent" element={<ToRent/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/register" element={<Register/>}/>
+          <Route path="/account" element={<Account/>}/>
           <Route path="/properties" element={<List/>}/>
           <Route path="/properties/:id" element={<Property/>}/>
           <Route path="/properties/:id/edit" element={<Edit/>}/>
