@@ -1,58 +1,59 @@
-import { Link } from "react-router-dom"
 import axios from "axios";
-import { UserContext } from "../utils/UserContext";
-import { useContext, useEffect } from "react";
+import { AuthContext } from "../utils/AuthContext";
+import { useContext } from "react";
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
-export default function Navbar() {
 
-    const { user, setUser } = useContext(UserContext);
+export default function ReactNavbar() {
 
-    // useEffect(() => {
-    //     localStorage.setItem("user", JSON.stringify(user));
-    // }, [user])
+    const { user, loading, error, dispatch } = useContext(AuthContext);
 
-    const handleSignOut = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios({
-            method: 'get',
-            url: 'http://localhost:8080/signout',
-        })
-         .then(res => {
-            console.log(res);
-           testing();
-            
-        //     id = res.data._id;
-        //     navigate(`/properties/${id}`);
-         })
-    
-      };
+        dispatch({ type: "SIGNIN_START" });
+        try {
+            await axios.get("http://localhost:8080/signout");
+            dispatch({ type: "SIGNOUT" });
+        } catch (err) {
+            dispatch({ type: "SIGNIN_FAILURE", payload: err.response.data });
+        }
+    };
 
-    const testing = () => {
-        setUser(null)
-    }
 
   return (
-<nav className="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
-    <div className="container-fluid">
-        <Link to="/" className="navbar-brand">Real Estate Company</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu"
-            aria-controls="navmenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navmenu">
-            <div className="navbar-nav">
-                <Link to="/properties" className="nav-link">For sale</Link>
-                <Link to="/properties" className="nav-link">To rent</Link>
-            </div>
-            {user ? (<div className="navbar-nav ms-auto">
-                {/* <button className="border-0 bg-dark nav-link text-white">{user._id}</button> */}
-                <button className="border-0 bg-dark nav-link text-white" onClick={handleSignOut}>Sign out</button>
-            </div>) : (<div className="navbar-nav ms-auto">
-                <Link to="/signin" className="nav-link">Sign in</Link>
-            </div>)}
-        </div>
-    </div>
-</nav>
-
-  )
-}
+    <Navbar variant="dark" bg="dark" expand="lg">
+      <Container fluid>
+        <Navbar.Brand href="/">Real Estate Company</Navbar.Brand>
+        <Navbar.Toggle aria-controls="navbar-dark-example" />
+        <Navbar.Collapse id="navbar-dark-example">
+        <Nav>
+        <Nav.Link href="/properties">For Sale</Nav.Link>
+        <Nav.Link href="/properties">To Rent</Nav.Link>
+        </Nav>
+          { user !== null ? (
+          <Nav className="ms-auto">
+            <NavDropdown
+              align={{ lg: 'end' }}
+              id="nav-dropdown-dark-example"
+              title={user._id}
+              menuVariant="dark"
+            >
+              <NavDropdown.Item href="#action/3.1">Account</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleSubmit}>
+                Sign out
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav> ) : (
+            <Nav className="ms-auto">
+                    <Nav.Link href="/signin">Sign in</Nav.Link>
+            </Nav>
+          ) }
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};

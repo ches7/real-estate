@@ -1,40 +1,36 @@
-import { Link } from "react-router-dom";
-import { useState, useContext, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useContext } from "react";
 import axios from "axios";
-import { UserContext } from "../utils/UserContext";
+import { AuthContext } from "../utils/AuthContext";
 
 const SignIn = () => {
 
-    const { user, setUser } = useContext(UserContext);
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [credentials, setCredentials] = useState({
+        email: undefined,
+        password: undefined,
+    });
 
-    useEffect(() => {
-        localStorage.setItem("user", JSON.stringify(user));
-    }, [user])
+    const { loading, error, dispatch } = useContext(AuthContext);
 
-    //prevent stale closure
-    const ref = useRef({}).current;
-    ref.user = user;
+    const navigate = useNavigate();
+
+    const handleChange = (e) => {
+        setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
+      };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userEmailPassword = { email, password };
-        await axios({
-            data: userEmailPassword,
-            method: 'post',
-            url: 'http://localhost:8080/signin',
-        })
-         .then(res => {
-            setUser(res.data.details._id);
-            setTimeout(printUser, 1000);
-         })
-    
-      }
-
-    const printUser = () => {
-       console.log(ref.user)
-    }
+        dispatch({ type: "SIGNIN_START" });
+        try {
+            const res = await axios.post("http://localhost:8080/signin", credentials);
+            console.log(res.data.details);
+            dispatch({ type: "SIGNIN_SUCCESS", payload: res.data.details });
+            navigate("/");
+        } catch (err) {
+            console.log(err.response.data);
+            dispatch({ type: "SIGNIN_FAILURE", payload: err.response.data });
+        }
+    };
 
     return (
         <div>
@@ -42,23 +38,24 @@ const SignIn = () => {
             <h2>No account? <Link to="/register">Register</Link></h2>
             <div className="search-container">
             <form onSubmit={handleSubmit}>
-                    <label htmlFor="email-address">Email address</label>
+                    <label htmlFor="email">Email address</label>
                     <input 
                     type="email" 
-                    name="email-address" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    id="email" 
+                    onChange={handleChange}
                     ></input>
 
                     <label htmlFor="password">Password</label>
                     <input 
                     type="text" 
                     name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    id="password"
+                    onChange={handleChange}
                     ></input>
                     <button type="submit">Sign in</button>
                 </form>
+                    { error && <span>{error.message}</span>}
             </div>
         </div>
     );
