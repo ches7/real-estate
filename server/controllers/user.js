@@ -24,4 +24,20 @@ const getUsers = async (req,res,next)=>{
     res.status(200).json(users);
 }
 
-export default { updateUser, deleteUser, getUser, getUsers }
+const saveProperty = async (req, res, next) => {
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: req.body.id },
+        { $addToSet: { savedProperties: req.body.property } }
+    );
+    res.status(200).json(updatedUser);
+}
+
+const unSaveProperty = async (req, res, next) => {
+    const updatedUser = await User.findOneAndUpdate(
+        { _id: req.body.id },
+        { $pull: { savedProperties: req.body.property } }
+    );
+    res.status(200).json(updatedUser);
+} 
+
+export default { updateUser, deleteUser, getUser, getUsers, saveProperty, unSaveProperty }

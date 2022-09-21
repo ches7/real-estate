@@ -3,19 +3,28 @@ import { Link } from "react-router-dom";
 import Carousel from 'react-bootstrap/Carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
+import SaveProperty from "./SaveProperty";
 
 
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
+    e.preventDefault()
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     setIndex(selectedIndex);
   };
 
+  const handleClick = () => {
+    window.location.href = `http://localhost:3000/properties/${props.id}`;
+  }
+
+
     return (
         <div className="d-flex justify-content-center">
-        <div className="border rounded w-50 m-4">
-        <Link to={`/properties/${props.id}`} className="text-decoration-none text-black">
+        <div className="border rounded w-50 m-4"  onClick={handleClick} style={{cursor: "pointer"}}>
+        {/* <Link to={`/properties/${props.id}`} className="text-decoration-none text-black"> */}
         <div className="d-flex">
         
     <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
@@ -49,7 +58,6 @@ const PropertyCard = (props) => {
     </Carousel>
 
         <div key={props.i} className="m-3">
-
         <h2>£{props.price}</h2>
 
         <div className="d-flex">
@@ -66,9 +74,10 @@ const PropertyCard = (props) => {
                 <p>{props.location}</p>
                 <p>{props.type}</p>
                 <p>{props.description}</p>
+                <SaveProperty id={props.id}/>
             </div>
             </div>
-            </Link>
+            {/* </Link> */}
         </div>
         </div>
     )

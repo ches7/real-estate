@@ -1,0 +1,72 @@
+import axios from "axios";
+import { AuthContext } from "../utils/AuthContext";
+import { useContext, useState } from "react";
+
+
+const SaveProperty = (props) => {
+
+    const { user, loading, error, dispatch } = useContext(AuthContext);
+
+    const checkStorage = JSON.parse(localStorage.getItem("user"));
+
+    const [saved, setSaved] = useState(() => {for (let i = 0; i < checkStorage.savedProperties.length; i++){
+        if (checkStorage.savedProperties[i] === props.id) {
+            return true;
+        }};})
+
+
+    const handleSave = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+        try {
+            const res = await axios.post("http://localhost:8080/users/saveproperty", {
+            "id":`${user._id}`,
+            "property":`${props.id}`
+            });
+            // console.log(res);
+            // console.log(props.id);
+
+            //update localstorage with user data
+            const res2 = await axios.get(`http://localhost:8080/users/${user._id}`)
+            dispatch({ type: "REFRESH", payload: res2.data });
+
+            setSaved(true);
+
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+    const handleUnsave = async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+        try {
+            const res = await axios.post("http://localhost:8080/users/unsaveproperty", {
+            "id":`${user._id}`,
+            "property":`${props.id}`
+            });
+            // console.log(res);
+            // console.log(props.id);
+
+            //update localstorage with user data
+            const res2 = await axios.get(`http://localhost:8080/users/${user._id}`)
+            dispatch({ type: "REFRESH", payload: res2.data });
+
+            setSaved(false);
+
+        } catch (err) {
+            console.log(err)
+        }
+    };
+
+  return (
+    <div>
+        {saved ? <button onClick={handleUnsave} className="btn btn-dark">unsave</button> :  <button onClick={handleSave} className="btn btn-dark">save</button>
+}
+    </div>
+  );
+};
+
+export default SaveProperty;

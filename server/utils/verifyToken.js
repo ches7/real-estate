@@ -26,6 +26,16 @@ export const verifyUser = (req, res, next) => {
   });
 };
 
+export const verifyUserBody = (req, res, next) => {
+  verifyToken(req, res, next, () => {
+    if (req.user.id === req.body.id) {
+      next();
+    } else {
+      return next(new ExpressError(403, "You are not authorized!"));
+    }
+  });
+};
+
 export const verifyAgent = (req, res, next) => {
   verifyToken(req, res, next, () => {
     if (req.user.isAgent) {

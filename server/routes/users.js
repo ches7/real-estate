@@ -1,7 +1,7 @@
 import express from "express";
 import user from "../controllers/user.js";
 import catchAsync from "../utils/catchAsync.js";
-import { verifyAgent, verifyToken, verifyUser } from "../utils/verifyToken.js";
+import { verifyAgent, verifyToken, verifyUser, verifyUserBody } from "../utils/verifyToken.js";
 
 const router = express.Router();
 
@@ -16,5 +16,11 @@ router.get("/:id", verifyUser, catchAsync(user.getUser));
 
 //GET ALL
 router.get("/", verifyAgent, catchAsync(user.getUsers));
+
+//SAVE PROPERTY
+router.post("/saveproperty", verifyUserBody, catchAsync(user.saveProperty));
+
+//SAVE PROPERTY
+router.post("/unsaveproperty", verifyUserBody, catchAsync(user.unSaveProperty));
 
 export default router;

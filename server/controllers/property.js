@@ -9,14 +9,14 @@ const getProperties = async (req, res, next) => {
     let location = new String(req.query.location)
     location = location.charAt(0).toUpperCase() + location.slice(1);
     // location
-    console.log(req.query)
+    //console.log(req.query)
 
     const properties = await Property.find({ $and: [
         maybeCreateMongoQuery('_id', '$exists', true),
         maybeCreateMongoQuery('location', '$eq', location),
 
         ].filter(q => q !== null)
-      });
+      }).limit(20);
 
         res.status(200).json(properties);
 };

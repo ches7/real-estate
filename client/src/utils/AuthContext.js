@@ -22,6 +22,12 @@ const AuthReducer = (state, action) => {
         loading: false,
         error: null,
       };
+    case "REFRESH":
+      return {
+        user: action.payload,
+        loading: false,
+        error: null,
+      };
     case "SIGNIN_FAILURE":
       return {
         user: null,

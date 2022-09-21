@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import Delete from './Delete';
 import NotFound from '../NotFound';
 import Carousel from 'react-bootstrap/Carousel';
+import SaveProperty from '../components/SaveProperty';
 
 
 function Property() {
@@ -82,7 +83,8 @@ function Property() {
                   <img src='https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png' alt='agent logo' width="130" height="70"></img>
                 </div>
               </div>
-              <button className='bg-light border border-dark rounded'>Save</button>
+              <SaveProperty id={params.id}/>
+
             </div>
           </div>
         </div>
