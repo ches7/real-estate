@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
-const Register = () => {
+const RegisterAsAgent = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -11,7 +11,7 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         let id = '';
-        const user = { username, email, password };
+        const user = { username, email, password, isAgent:true, agent:"true" };
         axios({
             data: user,
             method: 'post',
@@ -49,9 +49,9 @@ const Register = () => {
                     <button type="submit">Register</button>
                 </form>
             </div>
-            <h4><Link to="/register-as-agent">Register as agent</Link></h4>
+            <h4><Link to="/register">Register as user</Link></h4>
         </div>
     );
 };
 
-export default Register;
+export default RegisterAsAgent;

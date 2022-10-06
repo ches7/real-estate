@@ -3,10 +3,18 @@ import { useLocation } from 'react-router-dom'
 import Filters from "../components/Filters";
 import PropertyCard from "../components/PropertyCard";
 import useFetch from "../hooks/useFetch";
+import Pagination from "../components/Pagination";
 
 function List() {
     const loc = useLocation();
     const [location, setLocation] = useState(new URLSearchParams(loc.search).get('location'));
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage, setPostsPerPage] = useState(10);
+
+    const [pageNumberLimit, setPageNumberLimit] = useState(5);
+    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+    const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
 
     // useEffect(() => {
     //     const fetchData = async () => {
@@ -21,7 +29,26 @@ function List() {
         `http://localhost:8080/properties?location=${location}`
     );
 
-    //console.log(data)
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
+
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const handleNext = () => {
+        setCurrentPage(currentPage + 1);
+        if(currentPage + 1 > maxPageNumberLimit){
+            setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+            setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+        }
+    };
+    const handlePrev = () => {
+        setCurrentPage(currentPage - 1);
+        if((currentPage - 1) % minPageNumberLimit == 0){
+            setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+            setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+        }
+    };
+
 
     return (
         <div>
@@ -31,12 +58,16 @@ function List() {
             </div>
             {/* <button><Link to={`/properties/create`}>Create new property</Link></button> */}
             <div>
-                {data.map((p, i) => (
+                {currentPosts.map((p, i) => (
                     <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
                         beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} />
                     // <li key={i}><Link to={`/properties/${p._id}`}>{p.location}</Link></li>
                 ))}
             </div>
+            <Pagination postsPerPage={postsPerPage} totalPosts={data.length} 
+            paginate={paginate} pageNumberLimit={pageNumberLimit} currentPage={currentPage}
+            maxPageNumberLimit={maxPageNumberLimit} minPageNumberLimit={minPageNumberLimit}
+            handleNext={handleNext} handlePrev={handlePrev}/>
         </div>
     );
 };

@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema(
     username: {
       type: String,
       // required: true,
-      unique: true,
+      //unique: true,
     },
     email: {
       type: String,
@@ -30,9 +30,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    //agent is string due to localstorage in browser requiring string
+    agent: {
+      type: String,
+      default: "false",
+    },
     isAgent: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     savedProperties: {
       type: Array,

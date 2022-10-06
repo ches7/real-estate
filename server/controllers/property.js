@@ -16,7 +16,7 @@ const getProperties = async (req, res, next) => {
         maybeCreateMongoQuery('location', '$eq', location),
 
         ].filter(q => q !== null)
-      }).limit(20);
+      })//.limit(20);
 
         res.status(200).json(properties);
 };

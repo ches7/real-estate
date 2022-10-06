@@ -8,7 +8,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-mongoose.connect('mongodb://localhost:27017/real-estate');
+mongoose.connect('mongodb://127.0.0.1:27017/real-estate');
 
 mongoose.connection.on("error", console.error.bind(console, "connection error:"));
 mongoose.connection.once("open", () => {

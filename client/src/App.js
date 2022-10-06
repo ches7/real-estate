@@ -19,6 +19,7 @@ import Register from "./pages/Register";
 import Account from "./pages/Account";
 
 import axios from "axios";
+import RegisterAsAgent from "./pages/RegisterAsAgent";
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
           <Route path="/to-rent" element={<ToRent/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/register" element={<Register/>}/>
+          <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>
           <Route path="/account" element={<Account/>}/>
           <Route path="/properties" element={<List/>}/>
           <Route path="/properties/:id" element={<Property/>}/>
