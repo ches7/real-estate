@@ -1,10 +1,30 @@
-const Filters = () => {
+import { useContext, useState } from "react";
+import { SearchContext } from "../utils/SearchContext";
+import { useNavigate } from "react-router-dom";
+
+export default function Filters() {
+    const navigate = useNavigate();
+    const { dispatch } = useContext(SearchContext);
+    const [location, setLocation] = useState('');
+
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        dispatch({ type:"NEW_SEARCH", payload: { location } });
+        navigate("/properties", { state: { location }})
+    };
+
     return (
         <div className="search-container d-flex justify-content-center p-2 m-2">
-                <form action="" className="d-inline-flex justify-content-center border rounded border-dark p-2">
+                <form onSubmit={handleSearch} className="d-inline-flex justify-content-center border rounded border-dark p-2">
                     <div className="px-3">
                     <label htmlFor="location">Search area</label><br></br>
-                    <input type="text" id="location" placeholder="e.g. Oxford" name="location"></input>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        placeholder="e.g. Oxford" 
+                        name="location"
+                        onChange={(e) => setLocation(e.target.value)}
+                        ></input>
                     </div>
 
                     <div className="px-3">
@@ -79,5 +99,3 @@ const Filters = () => {
             </div>
     );
 };
-
-export default Filters;

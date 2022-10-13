@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useLocation } from 'react-router-dom'
 import Filters from "../components/Filters";
 import PropertyCard from "../components/PropertyCard";
 import useFetch from "../hooks/useFetch";
 import Pagination from "../components/Pagination";
+import { SearchContext } from "../utils/SearchContext";
 
 function List() {
-    const loc = useLocation();
-    const [location, setLocation] = useState(new URLSearchParams(loc.search).get('location'));
+    //const loc = useLocation();
+    //const [location, setLocation] = useState(loc.state.location);
+    const { location } = useContext(SearchContext);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
@@ -43,7 +45,7 @@ function List() {
     };
     const handlePrev = () => {
         setCurrentPage(currentPage - 1);
-        if((currentPage - 1) % minPageNumberLimit == 0){
+        if((currentPage - 1) % minPageNumberLimit === 0){
             setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
             setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
         }

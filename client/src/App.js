@@ -20,9 +20,24 @@ import Account from "./pages/Account";
 
 import axios from "axios";
 import RegisterAsAgent from "./pages/RegisterAsAgent";
+import { useState, useContext, useEffect } from "react";
+import { AuthContext } from "./utils/AuthContext"
+
 axios.defaults.withCredentials = true;
 
 function App() {
+
+  const { loading, error, dispatch } = useContext(AuthContext);
+
+  // useEffect(() => {
+  //   dispatch({ type: "SIGNOUT" });
+  // }, [window.onbeforeunload]);
+
+
+  //deleting user from localstorage when changing page
+  // window.onbeforeunload = function(){
+  //   dispatch({ type: "SIGNOUT" });
+  // };
 
   return (
     <>

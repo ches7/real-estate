@@ -8,17 +8,22 @@ const SaveProperty = (props) => {
     const { user, loading, error, dispatch } = useContext(AuthContext);
 
     const checkStorage = JSON.parse(localStorage.getItem("user"));
+    //check storage null when not signed in ?
 
-    const [saved, setSaved] = useState(() => {for (let i = 0; i < checkStorage.savedProperties.length; i++){
+
+    const [saved, setSaved] = useState(() => {
+        if (checkStorage === null){return false} else {
+        for (let i = 0; i < checkStorage.savedProperties.length; i++){
         if (checkStorage.savedProperties[i] === props.id) {
             return true;
-        }};})
+        }};}})
 
 
     const handleSave = async (e) => {
         e.preventDefault();
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
+        if (checkStorage === null){return}else{
         try {
             const res = await axios.post("http://localhost:8080/users/saveproperty", {
             "id":`${user._id}`,
@@ -36,6 +41,7 @@ const SaveProperty = (props) => {
         } catch (err) {
             console.log(err)
         }
+    }
     };
 
     const handleUnsave = async (e) => {
