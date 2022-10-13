@@ -15,7 +15,7 @@ export default function ReactNavbar() {
         e.preventDefault();
         dispatch({ type: "SIGNIN_START" });
         try {
-            await axios.get("http://localhost:8080/signout");
+            await axios.get("/signout");
             dispatch({ type: "SIGNOUT" });
         } catch (err) {
             dispatch({ type: "SIGNIN_FAILURE", payload: err.response.data });

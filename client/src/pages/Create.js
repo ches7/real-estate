@@ -16,7 +16,7 @@ const Create = () => {
     axios({
         data: property,
         method: 'post',
-        url: 'http://localhost:8080/properties',
+        url: '/properties',
     })
     .then(res => {
         id = res.data._id;

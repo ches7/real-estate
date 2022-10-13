@@ -28,7 +28,7 @@ function List() {
     //   }, []);
 
     const { data, loading, error } = useFetch(
-        `http://localhost:8080/properties?location=${location}`
+        `/properties?location=${location}`
     );
 
     const indexOfLastPost = currentPage * postsPerPage;

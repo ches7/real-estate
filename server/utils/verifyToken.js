@@ -36,9 +36,10 @@ export const verifyUserBody = (req, res, next) => {
   });
 };
 
+//non agent able to view all users TODO
 export const verifyAgent = (req, res, next) => {
   verifyToken(req, res, next, () => {
-    if (req.user.isAgent) {
+    if (req.user.isAgent === true) {
       next();
     } else {
       return next(new ExpressError(403, "You are not authorized!"));

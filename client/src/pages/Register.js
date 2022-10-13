@@ -15,7 +15,7 @@ const Register = () => {
         axios({
             data: user,
             method: 'post',
-            url: 'http://localhost:8080/register',
+            url: '/register',
         })
          .then(res => {
             console.log(res);

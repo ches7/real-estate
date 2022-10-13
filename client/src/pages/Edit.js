@@ -12,7 +12,7 @@ function Edit() {
 
     useEffect(() => {
         const fetchData = async () => {
-            let response = await axios.get(`http://localhost:8080/properties/${params.id}`);
+            let response = await axios.get(`/properties/${params.id}`);
             setTitle(response.data.title);
             setLocation(response.data.location);
             setDescription(response.data.description);
@@ -26,7 +26,7 @@ function Edit() {
         axios({
             data: property,
             method: 'patch',
-            url: `http://localhost:8080/properties/${params.id}`,
+            url: `/properties/${params.id}`,
         }).then(navigate(`/properties/${params.id}`));
 
     }

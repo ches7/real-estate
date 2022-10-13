@@ -22,7 +22,7 @@ const SignIn = () => {
         e.preventDefault();
         dispatch({ type: "SIGNIN_START" });
         try {
-            const res = await axios.post("http://localhost:8080/signin", credentials);
+            const res = await axios.post("/signin", credentials);
             console.log(res.data.details);
             dispatch({ type: "SIGNIN_SUCCESS", payload: res.data.details });
             navigate("/");

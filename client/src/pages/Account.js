@@ -16,7 +16,7 @@ function Account() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`http://localhost:8080/users/${user._id}`)
+      await axios.get(`/users/${user._id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setUserData(res.data); } })
         .catch(err => { setUserError(err.message); setUserData(null) });
     }
@@ -28,7 +28,7 @@ function Account() {
     if (userData.savedProperties) {
       for (let i = 0; i < userData.savedProperties.length; i++) {
         const fetchPropertyData = async () => {
-          await axios.get(`http://localhost:8080/properties/${userData.savedProperties[i]}`)
+          await axios.get(`/properties/${userData.savedProperties[i]}`)
             .then(res => {
               if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
               else { setProperties(oldArray => [...oldArray, res.data]) }

@@ -20,7 +20,7 @@ function Property() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`http://localhost:8080/properties/${params.id}`)
+      await axios.get(`/properties/${params.id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); } })
         .catch(err => { setError(err.message); setData(null) });
     }

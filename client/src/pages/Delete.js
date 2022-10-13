@@ -10,7 +10,7 @@ function Delete() {
         e.preventDefault();
         axios({
             method: 'delete',
-            url: `http://localhost:8080/properties/${params.id}`,
+            url: `/properties/${params.id}`,
         }).then(navigate('/properties'));
 
     }

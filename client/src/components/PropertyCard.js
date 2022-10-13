@@ -16,6 +16,7 @@ const PropertyCard = (props) => {
     setIndex(selectedIndex);
   };
 
+  //TODO 
   const handleClick = () => {
     window.location.href = `http://localhost:3000/properties/${props.id}`;
   }
