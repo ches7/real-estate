@@ -8,7 +8,8 @@ const PropertySchema = new mongoose.Schema({
     beds: Number,
     baths: Number,
     receptions: Number,
-    type: String
+    type: String,
+    saleOrRent: String
 });
 
 export default mongoose.model('Property', PropertySchema);

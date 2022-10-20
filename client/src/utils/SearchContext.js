@@ -5,6 +5,7 @@ const INITIAL_STATE = {
     price:undefined,
     beds:undefined,
     type:undefined,
+    saleOrRent: "for-sale"
 };
 
 export const SearchContext = createContext(INITIAL_STATE);
@@ -29,6 +30,7 @@ export const SearchContextProvider = ({children}) => {
                 price: state.price, 
                 beds: state.beds, 
                 type: state.type, 
+                saleOrRent: state.saleOrRent,
                 dispatch,
                 }}>
             {children}

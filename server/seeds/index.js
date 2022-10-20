@@ -10,7 +10,9 @@ mongoose.connection.once("open", () => {
     console.log("Database connected");
 });
 
-const types = ["detached", "terraced", "bungalow", "park home", "semi-detached", "flat", "farm/land"]
+const types = ["detached", "terraced", "bungalow", "park home", "semi-detached", "flat", "farm/land"];
+
+const saleOrRentOptions = ["for-sale", "to-rent"];
 
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
@@ -25,7 +27,8 @@ const seed = async () => {
             beds: Math.floor((Math.random() * 10) + 1),
             baths: Math.floor((Math.random() * 5) + 1),
             receptions: Math.floor((Math.random() * 3) + 1),
-            type: `${sample(types)}`
+            type: `${sample(types)}`,
+            saleOrRent: `${sample(saleOrRentOptions)}`
         })
         await home.save();
     }

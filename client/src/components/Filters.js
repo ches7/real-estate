@@ -4,13 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 export default function Filters() {
     const navigate = useNavigate();
-    const { dispatch } = useContext(SearchContext);
+    const { dispatch, saleOrRent } = useContext(SearchContext);
+    //const loc = useContext(SearchContext)
     const [location, setLocation] = useState('');
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        dispatch({ type:"NEW_SEARCH", payload: { location } });
-        navigate("/properties", { state: { location }})
+        dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent } });
+        navigate("/properties", { state: { location, saleOrRent }})
     };
 
     return (
@@ -23,6 +24,7 @@ export default function Filters() {
                         id="location" 
                         placeholder="e.g. Oxford" 
                         name="location"
+                        value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         ></input>
                     </div>

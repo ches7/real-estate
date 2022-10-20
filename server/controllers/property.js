@@ -1,24 +1,25 @@
 import Property from "../models/Property.js";
 
-function maybeCreateMongoQuery(prop,queryProp,value){
-    return value === '' ? null : {[prop]: {[queryProp]: value}};
-  }
-
 const getProperties = async (req, res, next) => {
-    // const location = new RegExp(req.query.location, "i");
-    let location = new String(req.query.location)
+    let queryArray = [{['_id']: {['$exists']: true}}]
+    
+    let location = new String(req.query.location);
+    if (location != 'undefined' && location != ''){
     location = location.charAt(0).toUpperCase() + location.slice(1);
-    // location
-    //console.log(req.query)
+    let locationQuery = {['location']: {['$eq']: location}}
+    queryArray.push(locationQuery);
+    }
 
-    const properties = await Property.find({ $and: [
-        maybeCreateMongoQuery('_id', '$exists', true),
-        maybeCreateMongoQuery('location', '$eq', location),
+    let saleOrRent = new String(req.query.saleOrRent);
+    if (saleOrRent != 'undefined' && saleOrRent != ''){
+        let saleOrRentQuery = {['saleOrRent']: {['$eq']: saleOrRent}}
+        queryArray.push(saleOrRentQuery);
+        }
 
-        ].filter(q => q !== null)
+    const properties = await Property.find({ $and: queryArray
       })//.limit(20);
-
-        res.status(200).json(properties);
+    console.log(queryArray)
+    res.status(200).json(properties);
 };
 
 const getProperty = async (req, res, next) => {

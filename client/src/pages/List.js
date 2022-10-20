@@ -9,7 +9,7 @@ import { SearchContext } from "../utils/SearchContext";
 function List() {
     //const loc = useLocation();
     //const [location, setLocation] = useState(loc.state.location);
-    const { location } = useContext(SearchContext);
+    const { location, saleOrRent } = useContext(SearchContext);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
@@ -28,7 +28,7 @@ function List() {
     //   }, []);
 
     const { data, loading, error } = useFetch(
-        `/properties?location=${location}`
+        `/properties?location=${location}&saleOrRent=${saleOrRent}`
     );
 
     const indexOfLastPost = currentPage * postsPerPage;
@@ -51,12 +51,21 @@ function List() {
         }
     };
 
+    let renderedSaleOrRent = '';
+    if (saleOrRent === "for-sale"){
+        renderedSaleOrRent = "for sale"
+    } else {
+        renderedSaleOrRent = "to rent"
+    };
+
+    let banner;
+    if (renderedSaleOrRent && location){banner = <h1>Property {renderedSaleOrRent} in {location}</h1>}
 
     return (
         <div>
             <Filters />
             <div className="d-flex justify-content-center">
-                <h1>Property for sale in xyz</h1>
+                {banner}
             </div>
             {/* <button><Link to={`/properties/create`}>Create new property</Link></button> */}
             <div>
