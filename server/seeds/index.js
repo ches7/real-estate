@@ -10,7 +10,7 @@ mongoose.connection.once("open", () => {
     console.log("Database connected");
 });
 
-const types = ["detached", "terraced", "bungalow", "park home", "semi-detached", "flat", "farm/land"];
+const types = ["detached", "terraced", "bungalow", "park-home", "semi-detached", "flat", "farm-land"];
 
 const saleOrRentOptions = ["for-sale", "to-rent"];
 

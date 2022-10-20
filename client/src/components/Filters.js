@@ -7,11 +7,27 @@ export default function Filters() {
     const { dispatch, saleOrRent } = useContext(SearchContext);
     //const loc = useContext(SearchContext)
     const [location, setLocation] = useState('');
+    const [beds, setBeds] = useState('')
+    const [price, setPrice] = useState('')
+    const [type, setType] = useState('')
+
+
+    const handleBeds = (e) => {
+        setBeds(e.target.value);
+    };
+
+    const handlePrice = (e) => {
+        setPrice(e.target.value);
+    };
+
+    const handleType = (e) => {
+        setType(e.target.value);
+    };
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent } });
-        navigate("/properties", { state: { location, saleOrRent }})
+        dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent, beds, price, type } });
+        navigate("/properties", { state: { location, saleOrRent, beds, price, type }})
     };
 
     return (
@@ -48,9 +64,8 @@ export default function Filters() {
 
                     <div className="px-3">
                     <label htmlFor="bedrooms">Bedrooms</label><br></br>
-                    <select name="bedrooms" id="bedrooms" className="bg-light border-0">
-                    <option value="any">Any beds</option>
-                    <option value="studio">Studio+</option>
+                    <select name="bedrooms" id="bedrooms" className="bg-light border-0" onChange={handleBeds}>
+                    <option value="">Any beds</option>
                     <option value="1">1+</option>
                     <option value="2">2+</option>
                     <option value="3">3+</option>
@@ -66,24 +81,24 @@ export default function Filters() {
 
                     <div className="px-3">
                     <label htmlFor="max-price">Max price</label><br></br>
-                    <select name="max-price" id="max-price" className="bg-light border-0">
-                    <option value="no">No max</option>
+                    <select name="max-price" id="max-price" className="bg-light border-0" onChange={handlePrice}>
+                    <option value="">No max</option>
                     <option value="10000">£10,000</option>
-                    <option value="10000">£50,000</option>
-                    <option value="10000">£100,000</option>
-                    <option value="10000">£250,000</option>
-                    <option value="10000">£500,000</option>
-                    <option value="10000">£750,000</option>
-                    <option value="10000">£1,000,000</option>
-                    <option value="10000">£5,000,000</option>
-                    <option value="10000">£10,000,000</option>
+                    <option value="50000">£50,000</option>
+                    <option value="100000">£100,000</option>
+                    <option value="250000">£250,000</option>
+                    <option value="500000">£500,000</option>
+                    <option value="750000">£750,000</option>
+                    <option value="1000000">£1,000,000</option>
+                    <option value="5000000">£5,000,000</option>
+                    <option value="10000000">£10,000,000</option>
                     </select>
                     </div>
 
                     <div className="px-3">
                     <label htmlFor="type">Property type</label><br></br>
-                    <select name="type" id="type" className="bg-light border-0">
-                    <option value="all">Show all</option>
+                    <select name="type" id="type" className="bg-light border-0" onChange={handleType}>
+                    <option value="">Show all</option>
                     <option value="detached">Detached</option>
                     <option value="terraced">Terraced</option>
                     <option value="bungalow">Bungalow</option>

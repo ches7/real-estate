@@ -16,6 +16,24 @@ const getProperties = async (req, res, next) => {
         queryArray.push(saleOrRentQuery);
         }
 
+    let beds = new Number(req.query.beds);
+    if (beds != 'undefined' && beds != ''){
+        let bedsQuery = {['beds']: {['$gte']: beds}}
+        queryArray.push(bedsQuery);
+        }
+
+        let price = new Number(req.query.price);
+        if (price != 'undefined' && price != ''){
+            let priceQuery = {['price']: {['$lte']: price}}
+            queryArray.push(priceQuery);
+            }
+
+            let type = new String(req.query.type);
+            if (type != 'undefined' && type != ''){
+                let typeQuery = {['type']: {['$eq']: type}}
+                queryArray.push(typeQuery);
+                }
+
     const properties = await Property.find({ $and: queryArray
       })//.limit(20);
     console.log(queryArray)

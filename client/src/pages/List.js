@@ -9,7 +9,7 @@ import { SearchContext } from "../utils/SearchContext";
 function List() {
     //const loc = useLocation();
     //const [location, setLocation] = useState(loc.state.location);
-    const { location, saleOrRent } = useContext(SearchContext);
+    const { location, saleOrRent, beds, price, type } = useContext(SearchContext);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
@@ -28,7 +28,7 @@ function List() {
     //   }, []);
 
     const { data, loading, error } = useFetch(
-        `/properties?location=${location}&saleOrRent=${saleOrRent}`
+        `/properties?location=${location}&saleOrRent=${saleOrRent}&beds=${beds}&price=${price}&type=${type}`
     );
 
     const indexOfLastPost = currentPage * postsPerPage;
