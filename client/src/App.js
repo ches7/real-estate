@@ -51,7 +51,8 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>
           <Route path="/account" element={<Account/>}/>
-          <Route path="/properties" element={<List/>}/>
+          <Route path="/for-sale/properties" element={<List/>}/>
+          <Route path="/to-rent/properties" element={<List/>}/>
           <Route path="/properties/:id" element={<Property/>}/>
           <Route path="/properties/:id/edit" element={<Edit/>}/>
           <Route path="/properties/create" element={<Create/>}/>

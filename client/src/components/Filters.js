@@ -27,7 +27,11 @@ export default function Filters() {
     const handleSearch = async (e) => {
         e.preventDefault();
         dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent, beds, price, type } });
-        navigate("/properties", { state: { location, saleOrRent, beds, price, type }})
+        if (saleOrRent === 'for-sale') {
+            navigate("/for-sale/properties", { state: { location, saleOrRent, beds, price, type }})
+        } else {
+            navigate("/to-rent/properties", { state: { location, saleOrRent, beds, price, type }})
+        }
     };
 
     return (

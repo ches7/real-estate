@@ -30,8 +30,8 @@ export default function ReactNavbar() {
         <Navbar.Toggle aria-controls="navbar-dark-example" />
         <Navbar.Collapse id="navbar-dark-example">
         <Nav>
-        <Nav.Link href="/properties">For Sale</Nav.Link>
-        <Nav.Link href="/properties">To Rent</Nav.Link>
+        <Nav.Link href="/for-sale">For Sale</Nav.Link>
+        <Nav.Link href="/to-rent">To Rent</Nav.Link>
         </Nav>
           { user !== null ? (
           <Nav className="ms-auto">

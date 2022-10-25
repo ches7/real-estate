@@ -13,7 +13,11 @@ export default function Home() {
     const handleSearch = async (e) => {
         e.preventDefault();
         dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent } });
-        navigate("/properties", { state: { location, saleOrRent }})
+        if (saleOrRent === 'for-sale'){
+            navigate("/for-sale/properties", { state: { location, saleOrRent }})
+        } else {
+            navigate("/to-rent/properties", { state: { location, saleOrRent }})
+        }
     };
 
     const handleRadioChange = (e) => {
