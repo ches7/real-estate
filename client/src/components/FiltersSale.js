@@ -1,12 +1,9 @@
-import { useContext, useState } from "react";
-import { SearchContext } from "../utils/SearchContext";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Filters() {
+export default function FiltersSale(props) {
     const navigate = useNavigate();
-    const { dispatch, saleOrRent } = useContext(SearchContext);
-    //const loc = useContext(SearchContext)
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState(props.location);
     const [beds, setBeds] = useState('')
     const [price, setPrice] = useState('')
     const [type, setType] = useState('')
@@ -24,16 +21,11 @@ export default function Filters() {
         setType(e.target.value);
     };
 
-    const handleSearch = async (e) => {
-        e.preventDefault();
-        dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent, beds, price, type } });
-        if (saleOrRent === 'for-sale') {
-            navigate("/for-sale/properties", { state: { location, saleOrRent, beds, price, type }})
-        } else {
-            navigate("/to-rent/properties", { state: { location, saleOrRent, beds, price, type }})
-        }
-    };
-
+     const handleSearch = async (e) => {
+         e.preventDefault();
+             navigate(`/for-sale/properties?location=${location}&price=${price}&type=${type}&beds=${beds}`);
+         }
+    
     return (
         <div className="search-container d-flex justify-content-center p-2 m-2">
                 <form onSubmit={handleSearch} className="d-inline-flex justify-content-center border rounded border-dark p-2">

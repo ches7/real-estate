@@ -9,7 +9,8 @@ import Create from "./pages/Create";
 
 import './App.css';
 import Home from './pages/Home';
-import List from "./pages/List";
+import ListRent from "./pages/ListRent";
+import ListSale from "./pages/ListSale";
 import NotFound from "./NotFound";
 import Navbar from "./components/Navbar";
 import ForSale from "./pages/ForSale";
@@ -28,6 +29,11 @@ axios.defaults.withCredentials = true;
 function App() {
 
   const { loading, error, dispatch } = useContext(AuthContext);
+
+  const refreshPage = ()=>{
+    window.location.reload();  }
+
+  
 
   // useEffect(() => {
   //   dispatch({ type: "SIGNOUT" });
@@ -51,8 +57,8 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>
           <Route path="/account" element={<Account/>}/>
-          <Route path="/for-sale/properties" element={<List/>}/>
-          <Route path="/to-rent/properties" element={<List/>}/>
+          <Route path="/for-sale/properties" element={<ListSale/>}/>
+          <Route path="/to-rent/properties" element={<ListRent/>}/>
           <Route path="/properties/:id" element={<Property/>}/>
           <Route path="/properties/:id/edit" element={<Edit/>}/>
           <Route path="/properties/create" element={<Create/>}/>

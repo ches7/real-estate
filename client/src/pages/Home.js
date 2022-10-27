@@ -10,13 +10,22 @@ export default function Home() {
     const [location, setLocation] = useState('');
     const [saleOrRent, setSaleOrRent] = useState('for-sale');
 
+    // const handleSearch = async (e) => {
+    //     e.preventDefault();
+    //     dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent } });
+    //     if (saleOrRent === 'for-sale'){
+    //         navigate("/for-sale/properties", { state: { location, saleOrRent }})
+    //     } else {
+    //         navigate("/to-rent/properties", { state: { location, saleOrRent }})
+    //     }
+    // };
+
     const handleSearch = async (e) => {
         e.preventDefault();
-        dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent } });
         if (saleOrRent === 'for-sale'){
-            navigate("/for-sale/properties", { state: { location, saleOrRent }})
+            navigate(`/for-sale/properties?location=${location}`)
         } else {
-            navigate("/to-rent/properties", { state: { location, saleOrRent }})
+            navigate(`/to-rent/properties?location=${location}`)
         }
     };
 
