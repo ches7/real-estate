@@ -13,8 +13,8 @@ import ListRent from "./pages/ListRent";
 import ListSale from "./pages/ListSale";
 import NotFound from "./NotFound";
 import Navbar from "./components/Navbar";
-import ForSale from "./pages/ForSale";
-import ToRent from "./pages/ToRent";
+import SearchForSale from "./pages/SearchForSale";
+import SearchToRent from "./pages/SearchToRent";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
@@ -51,8 +51,8 @@ function App() {
     <Navbar/>
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/for-sale" element={<ForSale/>}/>
-          <Route path="/to-rent" element={<ToRent/>}/>
+          <Route path="/for-sale" element={<SearchForSale/>}/>
+          <Route path="/to-rent" element={<SearchToRent/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/register" element={<Register/>}/>
           <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>

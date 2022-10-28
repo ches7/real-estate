@@ -25,6 +25,7 @@ const getProperties = async (req, res, next) => {
         queryArray.push(bedsQuery);
     }
 
+    //try if not NUmber?
     if (req.query.price != 'undefined' && req.query.price != undefined && req.query.price != ''
     && req.query.price != 'null' && req.query.price != null) {
         let price = new Number(req.query.price);
@@ -35,8 +36,13 @@ const getProperties = async (req, res, next) => {
     if (req.query.type != 'undefined' && req.query.type != undefined && req.query.type != ''
     && req.query.type != 'null' && req.query.type != null) {
         let type = new String(req.query.type);
-        let typeQuery = { ['type']: { ['$eq']: type } }
-        queryArray.push(typeQuery);
+        if (req.query.type === 'houses'){
+            let typeQuery = { ['type']: { ['$in']: ['terraced', 'bungalow', 'detached', 'semi-detached'] } }
+            queryArray.push(typeQuery);
+        } else {
+            let typeQuery = { ['type']: { ['$eq']: type } }
+            queryArray.push(typeQuery);
+        };
     }
 
     const properties = await Property.find({
