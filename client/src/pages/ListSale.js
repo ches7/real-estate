@@ -64,7 +64,7 @@ function ListSale() {
             <div>
                 {currentPosts.map((p, i) => (
                     <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
-                        beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} />
+                        beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} />
                 ))}
             </div>
             <Pagination postsPerPage={postsPerPage} totalPosts={data.length}

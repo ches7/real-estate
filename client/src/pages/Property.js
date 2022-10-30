@@ -17,11 +17,12 @@ function Property() {
   const params = useParams();
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
+  const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(`/properties/${params.id}`)
-        .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); } })
+        .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); setPhotos(res.data.photos)} })
         .catch(err => { setError(err.message); setData(null) });
     }
     fetchData();
@@ -36,33 +37,12 @@ function Property() {
           <div className='m-3'>
             {/* <img src="https://images.unsplash.com/photo-1621983209359-456e234c892a" alt="House" width="824" height="550"></img> */}
             <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  width={824}
-                  height={550}
-                  src="https://lid.zoocdn.com/645/430/6700c3436801f274518d92769ff3498f2cbac155.jpg"
-                  alt="First slide"
-                />
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  width={824}
-                  height={550}
-                  src="https://lid.zoocdn.com/u/1024/768/893f9a2de48fa750d06b928a6eb267f3263054ec.jpg"
-                  alt="Second slide"
-                />
-              </Carousel.Item>
-              <Carousel.Item>
-                <img
-                  className="d-block"
-                  width={824}
-                  height={550}
-                  src="https://lid.zoocdn.com/u/1024/768/3b5c2f5c999ecfe7a50deb08b231e316bacefb0b.jpg:p"
-                  alt="Third slide"
-                />
-              </Carousel.Item>
+            {photos.map((p, i) => (
+                    <Carousel.Item key={i}>
+                    <img
+                    className="d-block" width={525} src={p}
+                    /></Carousel.Item>
+                ))}
             </Carousel>
 
 

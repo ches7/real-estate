@@ -8,6 +8,7 @@ import SaveProperty from "./SaveProperty";
 
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
+    const [photos, setPhotos] = useState(props.photos);
 
   const handleSelect = (selectedIndex, e) => {
     e.preventDefault()
@@ -29,33 +30,12 @@ const PropertyCard = (props) => {
         <div className="d-flex">
         
     <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
-      <Carousel.Item>
-        <img
-        className="d-block"
-        width={525}
-        height={350}
-          src="https://lid.zoocdn.com/645/430/6700c3436801f274518d92769ff3498f2cbac155.jpg"
-          alt="First slide"
-        />
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-        className="d-block"
-        width={525}
-        height={350}
-          src="https://lid.zoocdn.com/u/1024/768/893f9a2de48fa750d06b928a6eb267f3263054ec.jpg"
-          alt="Second slide"
-        />
-      </Carousel.Item>
-      <Carousel.Item>
-        <img
-        className="d-block"
-        width={525}
-        height={350}
-          src="https://lid.zoocdn.com/u/1024/768/3b5c2f5c999ecfe7a50deb08b231e316bacefb0b.jpg:p"
-          alt="Third slide"
-        />
-      </Carousel.Item>
+       {photos.map((p, i) => (
+                    <Carousel.Item key={i}>
+                    <img
+                    className="d-block" width={525} src={p}
+                    /></Carousel.Item>
+                ))}
     </Carousel>
 
         <div key={props.i} className="m-3">

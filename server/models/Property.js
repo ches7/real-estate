@@ -9,6 +9,7 @@ const PropertySchema = new mongoose.Schema({
     baths: Number,
     receptions: Number,
     type: String,
+    photos: [String],
     saleOrRent: String
 });
 
