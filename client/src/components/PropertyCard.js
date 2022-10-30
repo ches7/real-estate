@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Carousel from 'react-bootstrap/Carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
 import SaveProperty from "./SaveProperty";
 
-
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
-    const [photos, setPhotos] = useState(props.photos);
 
   const handleSelect = (selectedIndex, e) => {
     e.preventDefault()
@@ -30,7 +28,7 @@ const PropertyCard = (props) => {
         <div className="d-flex">
         
     <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
-       {photos.map((p, i) => (
+       {props.photos.map((p, i) => (
                     <Carousel.Item key={i}>
                     <img
                     className="d-block" width={525} src={p}

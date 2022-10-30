@@ -45,7 +45,6 @@ function Property() {
                 ))}
             </Carousel>
 
-
             <div id='details'>
               <h1>£{data.price}</h1>
               <p>title {data.title}</p>
