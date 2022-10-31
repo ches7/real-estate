@@ -10,7 +10,8 @@ const PropertySchema = new mongoose.Schema({
     receptions: Number,
     type: String,
     photos: [String],
-    saleOrRent: String
+    saleOrRent: String,
+    agent: String
 });
 
 export default mongoose.model('Property', PropertySchema);

@@ -41,6 +41,10 @@ function Account() {
     }
   }, [userData])
 
+  if (userData.agent = "true"){
+    console.log('success');
+  }
+
   if (userError) {
     return (<NotFound />)
   } else

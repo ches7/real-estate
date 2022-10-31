@@ -5,7 +5,6 @@ import {
 } from "react-router-dom";
 import Property from "./pages/Property";
 import Edit from "./pages/Edit";
-import Create from "./pages/Create";
 
 import './App.css';
 import Home from './pages/Home';
@@ -23,6 +22,7 @@ import axios from "axios";
 import RegisterAsAgent from "./pages/RegisterAsAgent";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "./utils/AuthContext"
+import AddProperty from "./pages/AddProperty";
 
 axios.defaults.withCredentials = true;
 
@@ -61,7 +61,7 @@ function App() {
           <Route path="/to-rent/properties" element={<ListRent/>}/>
           <Route path="/properties/:id" element={<Property/>}/>
           <Route path="/properties/:id/edit" element={<Edit/>}/>
-          <Route path="/properties/create" element={<Create/>}/>
+          <Route path="/add-property" element={<AddProperty/>}/>
           <Route path="*" element={<NotFound />}/>
         </Routes>
     </Router>
