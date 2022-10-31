@@ -1,9 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../utils/AuthContext";
+import { useContext } from "react";
 
 export default function AddProperty() {
     const navigate = useNavigate();
+
+    const { user } = useContext(AuthContext);
 
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
@@ -15,6 +19,7 @@ export default function AddProperty() {
   const [type, setType] = useState('detached');
   const [photos, setPhotos] = useState('');
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
+  const [agent, setAgent] = useState(`${user._id}`);
 
   const handleType = (e) => {
     setType(e.target.value);
@@ -27,7 +32,7 @@ export default function AddProperty() {
   const handleSubmit = (e) => {
     e.preventDefault();
     let id = '';
-    const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent };
+    const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent, agent };
     axios({
         data: property,
         method: 'post',
