@@ -79,23 +79,35 @@ function typesAndPhotos(){
         y = landPhotos;
     };
     return [x, y];
-}
+};
+
+function saleRentPrice(){
+    let a = sample(saleOrRentOptions);
+    let b = 0;
+    if (a === "for-sale"){
+        b = Math.floor((Math.random() * 1000000) + 1)
+    } else if (a === "to-rent"){
+        b = Math.floor((Math.random() * 2500) + 1)
+    }
+    return [a, b];
+};
 
 const seed = async () => {
     await Property.deleteMany({});
     for (let i = 0; i < 1000; i++) {
-        const [x, y] = typesAndPhotos()
+        const [x, y] = typesAndPhotos();
+        const [a, b] = saleRentPrice();
         const home = new Property({
             location: `${sample(cities)}`,
             title: 'Property',
-            price: Math.floor((Math.random() * 1000000) + 1),
+            saleOrRent: a,
+            price: b,
             description: 'this is the default description',
             beds: Math.floor((Math.random() * 10) + 1),
             baths: Math.floor((Math.random() * 5) + 1),
             receptions: Math.floor((Math.random() * 3) + 1),
             type: x,
             photos: y,
-            saleOrRent: `${sample(saleOrRentOptions)}`
         })
         await home.save();
     }
