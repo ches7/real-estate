@@ -4,8 +4,11 @@ import NotFound from '../NotFound';
 import { AuthContext } from '../utils/AuthContext';
 import { useContext } from 'react';
 import PropertyCard from '../components/PropertyCard';
+import { useNavigate } from "react-router-dom";
+
 
 function Account() {
+  const navigate = useNavigate();
 
   const [userData, setUserData] = useState([]);
   const [userError, setUserError] = useState(null);
@@ -41,7 +44,11 @@ function Account() {
     }
   }, [userData])
 
-  if (userData.agent = "true"){
+  const handleAddButton = () => {
+    navigate('/add-property')
+  }
+
+  if (userData.agent === "true"){
     console.log('success');
   }
 
@@ -50,6 +57,7 @@ function Account() {
   } else
     return (
       <div>
+        {userData.agent === "true" ? <button onClick={handleAddButton}>Add property</button> : null}
         <h1>Saved properties</h1>
 
         <div>
