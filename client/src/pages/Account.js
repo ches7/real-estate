@@ -34,7 +34,8 @@ function Account() {
           await axios.get(`/properties/${userData.savedProperties[i]}`)
             .then(res => {
               if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
-              else { setProperties(oldArray => [...oldArray, res.data]) }
+              //else { setProperties(oldArray => [...oldArray, res.data]) }
+              else { setProperties(res.data) }
             })
             .catch(err => { /*console.log(err)*/ });
         }

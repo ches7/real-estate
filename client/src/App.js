@@ -23,6 +23,7 @@ import RegisterAsAgent from "./pages/RegisterAsAgent";
 import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "./utils/AuthContext"
 import AddProperty from "./pages/AddProperty";
+import AgentPage from "./pages/AgentPage";
 
 axios.defaults.withCredentials = true;
 
@@ -57,6 +58,7 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>
           <Route path="/account" element={<Account/>}/>
+          <Route path="/agents/:id" element={<AgentPage/>}/>
           <Route path="/for-sale/properties" element={<ListSale/>}/>
           <Route path="/to-rent/properties" element={<ListRent/>}/>
           <Route path="/properties/:id" element={<Property/>}/>

@@ -10,6 +10,7 @@ const RegisterAsAgent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [agentPhoto, setAgentPhoto] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,12 +35,20 @@ const RegisterAsAgent = () => {
             <h2>Already registered? <Link to="/signin">Sign in</Link></h2>
             <div className="search-container">
                 <form onSubmit={handleSubmit}>
+                <label htmlFor="name">Agent Name</label>
+                    <input 
+                    type="text" 
+                    name="name" 
+                    value={username}
+                    onChange={(e) => {setUsername(e.target.value);}}
+                    ></input>
+
                     <label htmlFor="email-address">Email address</label>
                     <input 
                     type="email" 
                     name="email-address" 
                     value={email}
-                    onChange={(e) => {setEmail(e.target.value); setUsername(e.target.value);}}
+                    onChange={(e) => {setEmail(e.target.value);}}
                     ></input>
 
                     <label htmlFor="password">Password</label>

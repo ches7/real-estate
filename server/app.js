@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import ExpressError from "./utils/ExpressError.js";
 import propertiesRoute from "./routes/properties.js";
 import usersRoute from "./routes/users.js";
+import agentsRoute from "./routes/agents.js"
 import authRoute from "./routes/auth.js"
 import cors from "cors";
 import dotenv from "dotenv";
@@ -29,6 +30,7 @@ app.use(cors({
 app.use("/", propertiesRoute);
 app.use("/users", usersRoute)
 app.use("/", authRoute);
+app.use("/agents", agentsRoute)
 
 app.get('/', (req, res) => {
     res.send('hello world')

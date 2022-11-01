@@ -3,6 +3,13 @@ import Property from "../models/Property.js";
 const getProperties = async (req, res, next) => {
     let queryArray = [{ ['_id']: { ['$exists']: true } }]
 
+    if (req.query.agent != 'undefined' && req.query.agent != undefined && req.query.agent != ''
+    && req.query.agent != 'null' && req.query.agent != null) {
+        let agent = new String(req.query.agent);
+        let agentQuery = { ['agent']: { ['$eq']: agent } }
+        queryArray.push(agentQuery);
+    }
+
     if (req.query.location != 'undefined' && req.query.location != undefined && req.query.location != '' 
         && req.query.location != 'null' && req.query.location != null) {
         let location = new String(req.query.location);

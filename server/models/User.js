@@ -41,6 +41,9 @@ const UserSchema = new mongoose.Schema(
     },
     savedProperties: {
       type: Array,
+    },
+    agentPhoto: {
+      type: String,
     }
   },
   { timestamps: true }
