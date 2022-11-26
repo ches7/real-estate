@@ -11,7 +11,18 @@ const PropertySchema = new mongoose.Schema({
     type: String,
     photos: [String],
     saleOrRent: String,
-    agent: String
+    agent: String,
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
 });
 
 export default mongoose.model('Property', PropertySchema);

@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import cities from "./cities.js";
+import gblatlng from "./gblatlng.js";
 
 import Property from "../models/Property.js";
 
@@ -92,13 +93,27 @@ function saleRentPrice(){
     return [a, b];
 };
 
+function citiesgeo(){
+    const { city, lat, lng } = sample(gblatlng);
+    let c = city;
+    let d = lat;
+    let e = lng;
+    return [c, d, e];
+}
+
 const seed = async () => {
     await Property.deleteMany({});
     for (let i = 0; i < 1000; i++) {
         const [x, y] = typesAndPhotos();
         const [a, b] = saleRentPrice();
+        const [c, d, e] = citiesgeo();
         const home = new Property({
-            location: `${sample(cities)}`,
+            //location: `${sample(cities)}`,
+            location: c,
+            geometry: {
+                type: "Point",
+                coordinates: [e, d]
+            },
             title: 'Property',
             saleOrRent: a,
             price: b,
