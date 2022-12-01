@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import Delete from './Delete';
 import NotFound from '../NotFound';
 import Carousel from 'react-bootstrap/Carousel';
 import SaveProperty from '../components/SaveProperty';
+//import './Property.css';
+import '../index.css';
+import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
+mapboxgl.accessToken = `${process.env.REACT_APP_MAPBOX_TOKEN}`;
 
 function Property() {
   const [index, setIndex] = useState(0);
@@ -19,6 +23,12 @@ function Property() {
   const [error, setError] = useState(null);
   const [photos, setPhotos] = useState([]);
 
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const [lng, setLng] = useState(-70.9);
+  const [lat, setLat] = useState(42.35);
+  const [zoom, setZoom] = useState(9);
+
   useEffect(() => {
     const fetchData = async () => {
       await axios.get(`/properties/${params.id}`)
@@ -27,6 +37,16 @@ function Property() {
     }
     fetchData();
   }, [params.id]);
+
+  useEffect(() => {
+    if (map.current) return; // initialize map only once
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [lng, lat],
+      zoom: zoom
+    });
+  });
 
   if (error) {
     return (<NotFound />)
@@ -70,8 +90,8 @@ function Property() {
         {/* <button><Link to={`/properties/${params.id}/edit`}>edit</Link></button>
       <Delete/> */}
         <div>
-          map
-        </div>
+<div ref={mapContainer} className="map-container" />
+</div>
       </div>
     );
 }

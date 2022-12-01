@@ -5,8 +5,11 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 //import "./components/Navbar.css";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { AuthContextProvider } from './utils/AuthContext';
 import { SearchContextProvider } from './utils/SearchContext';
+//import dotenv from 'dotenv';
+//dotenv.config()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
