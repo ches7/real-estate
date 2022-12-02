@@ -25,9 +25,9 @@ function Property() {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-70.9);
-  const [lat, setLat] = useState(42.35);
-  const [zoom, setZoom] = useState(9);
+  const [lng, setLng] = useState(undefined);
+  const [lat, setLat] = useState(undefined);
+  const [zoom, setZoom] = useState(12);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,6 +39,15 @@ function Property() {
   }, [params.id]);
 
   useEffect(() => {
+    if (data.geometry === undefined) return;
+    if (lng === data.geometry.coordinates[0]) return;
+    setLng(data.geometry.coordinates[0]);
+    setLat(data.geometry.coordinates[1]);
+  }, [data])
+
+  useEffect(() => {
+    if (lng === undefined) return;
+    if (lat === undefined) return;
     if (map.current) return; // initialize map only once
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
@@ -46,7 +55,8 @@ function Property() {
       center: [lng, lat],
       zoom: zoom
     });
-  });
+  }, [lng]);
+
 
   if (error) {
     return (<NotFound />)
