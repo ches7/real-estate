@@ -13,7 +13,10 @@ code {
 }
 
 .map-container {
+  position: absolute;
   height: 400px;
+  width: 50%;
+  margin: auto;
 }
 
 .sidebar {
