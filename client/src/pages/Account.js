@@ -12,12 +12,14 @@ function Account() {
 
   const [userData, setUserData] = useState([]);
   const [userError, setUserError] = useState(null);
-  const [properties, setProperties] = useState([])
+  const [properties, setProperties] = useState([]);
+  const [propertyError, setPropertyError] = useState(null)
+
+  //prevent duplicate properties being rendered
+  const propertySet = new Set();
 
   const { user, dispatch } = useContext(AuthContext);
 
-  //for making multiple requests and setting response to state
-  const propertiesArray = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,39 +31,27 @@ function Account() {
 
   }, [user]);
 
-  useEffect(() => {
-    if (userData.savedProperties) {
-      setProperties([]);
-      for (let i = 0; i < userData.savedProperties.length; i++) {
-        const fetchPropertyData = async () => {
-          await axios.get(`/properties/${userData.savedProperties[i]}`)
-            .then(res => {
-              if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
-              //else if (properties[i]._id !== res.data._id) { setProperties(oldArray => [...oldArray, res.data]); console.log(properties) }
-              else if (true) { setProperties(oldArray => [...oldArray, res.data]); /*console.log(properties[i]) returns undefined --> loop running faster than setting state */ }
-              
-              else { console.log('intredasting') }
-              //else { setProperties([res.data]) }
-             // else {
-                
-                // for (let j = 0; i < propertiesArray.length; j++){
-                //   if (propertiesArray[j]._id !== res.data._id){
-                //     propertiesArray.push(res.data);
-                //   }
-                // }
-              
-               // propertiesArray.push(res.data)
 
-              //}
-            })
-            .catch(err => { /*console.log(err)*/ });
-        }
-        fetchPropertyData();
+
+  useEffect(() => {
+    if (!userData.savedProperties) return;
+    for (let i = 0; i < userData.savedProperties.length; i++) {
+      const fetchPropertyData = () => {
+        axios.get(`/properties/${userData.savedProperties[i]}`)
+          .then(res => {
+            if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
+
+            else {
+              propertySet.add(res.data);
+              setProperties([...propertySet])
+            }
+          })
+
+          .catch(err => { setPropertyError(err.message); });
       }
-      
+      fetchPropertyData();
     }
   }, [userData])
-
 
 
   const handleAddButton = () => {
@@ -72,15 +62,8 @@ function Account() {
     navigate('/account/update')
   }
 
-  // if (userData.agent === "true"){
-  //   console.log('success');
-  // }
 
-  const uniqueProperties = new Set(properties);
-  const uniqueProperties2 = Array.from(uniqueProperties);
-  console.log(uniqueProperties2)
-
-  if (userError) {
+  if (userError || !userData || propertyError) {
     return (<NotFound />)
   } else
     return (
@@ -91,11 +74,11 @@ function Account() {
 
         <div>
           {
-          
-          uniqueProperties2.map((p, i) => (
-            <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
-              beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos}/>
-          ))}
+
+            properties.map((p, i) => (
+              <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
+                beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} />
+            ))}
         </div>
       </div>
 
