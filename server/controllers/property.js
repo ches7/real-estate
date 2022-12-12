@@ -1,7 +1,21 @@
 import Property from "../models/Property.js";
+import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
+import dotenv from "dotenv";
+dotenv.config()
+const mapBoxToken = `${process.env.MAPBOX_TOKEN}`;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 const getProperties = async (req, res, next) => {
     let queryArray = [{ ['_id']: { ['$exists']: true } }]
+
+    if (req.query.location != 'undefined' && req.query.location != undefined && req.query.location != '' 
+    && req.query.location != 'null' && req.query.location != null){
+    const geoData = await geocoder.forwardGeocode({
+        query: `${req.query.location}, UK`,
+        limit: 1
+    }).send()
+    console.log(geoData.body.features[0].geometry.coordinates);
+    }
 
     if (req.query.agent != 'undefined' && req.query.agent != undefined && req.query.agent != ''
     && req.query.agent != 'null' && req.query.agent != null) {
