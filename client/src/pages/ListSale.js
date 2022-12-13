@@ -16,7 +16,7 @@ function ListSale() {
 
     useEffect(() => {
         const fetchData = async () => {
-            await axios.get(`http://localhost:8080/properties?location=${searchParams.get('location')}&saleOrRent=for-sale&beds=${searchParams.get('beds')}&price=${searchParams.get('price')}&type=${searchParams.get('type')}`)
+            await axios.get(`http://localhost:8080/properties?location=${searchParams.get('location')}&saleOrRent=for-sale&beds=${searchParams.get('beds')}&price=${searchParams.get('price')}&type=${searchParams.get('type')}&radius=${searchParams.get('radius')}`)
                 .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); } })
                 .catch(err => { setError(err.message); setData(null) });
         }

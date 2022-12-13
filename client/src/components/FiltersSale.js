@@ -7,6 +7,7 @@ export default function FiltersSale(props) {
     const [beds, setBeds] = useState('')
     const [price, setPrice] = useState('')
     const [type, setType] = useState('')
+    const [radius, setRadius] = useState('');
 
 
     const handleBeds = (e) => {
@@ -21,9 +22,13 @@ export default function FiltersSale(props) {
         setType(e.target.value);
     };
 
+    const handleRadius = (e) => {
+        setRadius(e.target.value);
+    };
+
      const handleSearch = async (e) => {
          e.preventDefault();
-             navigate(`/for-sale/properties?location=${location}&price=${price}&type=${type}&beds=${beds}`);
+             navigate(`/for-sale/properties?location=${location}&price=${price}&type=${type}&beds=${beds}&radius=${radius}`);
          }
     
     return (
@@ -43,7 +48,7 @@ export default function FiltersSale(props) {
 
                     <div className="px-3">
                     <label htmlFor="radius">Search radius</label><br></br>
-                    <select name="radius" id="radius" className="bg-light border-0">
+                    <select name="radius" id="radius" className="bg-light border-0" onChange={handleRadius}>
                     <option value="only">This area only</option>
                     <option value="0.25">+0.25 miles</option>
                     <option value="0.5">+0.5 miles</option>

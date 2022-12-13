@@ -5,16 +5,33 @@ dotenv.config()
 const mapBoxToken = `${process.env.MAPBOX_TOKEN}`;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
+const milesToRadians = function(miles){
+    const earthRadiusInMiles = 3960;
+    console.log(miles / earthRadiusInMiles);
+    return miles / earthRadiusInMiles;
+};
+
 const getProperties = async (req, res, next) => {
     let queryArray = [{ ['_id']: { ['$exists']: true } }]
 
     if (req.query.location != 'undefined' && req.query.location != undefined && req.query.location != '' 
     && req.query.location != 'null' && req.query.location != null){
-    const geoData = await geocoder.forwardGeocode({
-        query: `${req.query.location}, UK`,
-        limit: 1
-    }).send()
-    console.log(geoData.body.features[0].geometry.coordinates);
+        if (req.query.radius != 'undefined' && req.query.radius != undefined && req.query.radius != '' 
+        && req.query.radius != 'null' && req.query.radius != null && !isNaN(req.query.radius) && req.query.radius != 0) {
+            const geoData = await geocoder.forwardGeocode({
+                query: `${req.query.location}, UK`,
+                limit: 1
+            }).send()
+            console.log(geoData.body.features[0].geometry.coordinates);
+            let radius = new Number(milesToRadians(req.query.radius));
+            let radiusQuery = {['geometry']: { ['$geoWithin']: { ['$centerSphere']: [geoData.body.features[0].geometry.coordinates, radius]} }};
+            queryArray.push(radiusQuery);
+        } else {
+            let location = new String(req.query.location);
+            location = location.charAt(0).toUpperCase() + location.slice(1);
+            let locationQuery = { ['location']: { ['$eq']: location } }
+            queryArray.push(locationQuery);
+        }
     }
 
     if (req.query.agent != 'undefined' && req.query.agent != undefined && req.query.agent != ''
@@ -22,14 +39,6 @@ const getProperties = async (req, res, next) => {
         let agent = new String(req.query.agent);
         let agentQuery = { ['agent']: { ['$eq']: agent } }
         queryArray.push(agentQuery);
-    }
-
-    if (req.query.location != 'undefined' && req.query.location != undefined && req.query.location != '' 
-        && req.query.location != 'null' && req.query.location != null) {
-        let location = new String(req.query.location);
-        location = location.charAt(0).toUpperCase() + location.slice(1);
-        let locationQuery = { ['location']: { ['$eq']: location } }
-        queryArray.push(locationQuery);
     }
 
     if (req.query.saleOrRent != 'undefined' && req.query.saleOrRent != undefined && req.query.saleOrRent != ''
