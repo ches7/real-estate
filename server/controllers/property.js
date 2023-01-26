@@ -3,14 +3,15 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 import dotenv from "dotenv";
 import multer from "multer";
 import sharp from "sharp";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3"
-import crypto from 'crypto'
-const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
-dotenv.config()
+import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import crypto from 'crypto';
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+dotenv.config();
 const mapBoxToken = `${process.env.MAPBOX_TOKEN}`;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
-const storage = multer.memoryStorage()
-const upload = multer({ storage: storage })
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const bucketName = process.env.BUCKET_NAME
 const bucketRegion = process.env.BUCKET_REGION
@@ -98,15 +99,39 @@ const getProperties = async (req, res, next) => {
     const properties = await Property.find({
         $and: queryArray
     })//.limit(20);
+
+    for(let i = 0; i < properties.length; i++){
+        if(properties[i].awsPhotoName.length !== 0){
+            console.log(properties[i].awsPhotoName)
+            const getObjectParams = {
+                Bucket: bucketName,
+                Key: properties[i].awsPhotoName[0],
+            }
+            const command = new GetObjectCommand(getObjectParams);
+            properties[i].photos = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
+        }
+    }
+
+    //if imageName 
     console.log(queryArray)
     res.status(200).json(properties);
 };
 
 const getProperty = async (req, res, next) => {
-    const property = await Property.findById(req.params.id);
+    // get photo from aws here
+    let property = await Property.findById(req.params.id);
     if (property == null) {
         next()
+    } else if (property.awsPhotoName.length === 0) {
+        console.log(property.awsPhotoName)
+        res.status(200).json(property)
     } else {
+        const getObjectParams = {
+            Bucket: bucketName,
+            Key: property.awsPhotoName[0],
+        }
+        const command = new GetObjectCommand(getObjectParams);
+        property.photos = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
         res.status(200).json(property)
     }
 };
@@ -129,6 +154,8 @@ const createProperty = async (req, res, next) => {
 
     await s3Client.send(new PutObjectCommand(uploadParams));
 
+    //perhaps try to enable anyone to view s3
+
     const property = new Property({
         title: req.body.title,
         price: req.body.price,
@@ -138,15 +165,15 @@ const createProperty = async (req, res, next) => {
         baths: req.body.baths,
         receptions: req.body.receptions,
         type: req.body.type,
-        photos: [fileName],
+        photos: [],    //make imageName also, overwrite photos if imageName exists
+        awsPhotoName: [fileName],
         saleOrRent: req.body.saleOrRent,
         agent: req.body.agent,
         //geometry ----------------------------------------------------------------------------- TODO
     });
     await property.save();
 
-    //res.send({})
-    await res.redirect(`/properties/${property._id}`);
+    await res.status(200).json(property)  //effectively redirecting to GET route?
 };
 
 const updateProperty = async (req, res, next) => {

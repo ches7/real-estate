@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@aws-sdk/client-s3": "^3.257.0",
+    "@aws-sdk/s3-request-presigner": "^3.258.0",
     "@mapbox/mapbox-sdk": "^0.14.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",

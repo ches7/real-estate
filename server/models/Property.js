@@ -10,6 +10,7 @@ const PropertySchema = new mongoose.Schema({
     receptions: Number,
     type: String,
     photos: [String],
+    awsPhotoName: [],
     saleOrRent: String,
     agent: String,
     geometry: {

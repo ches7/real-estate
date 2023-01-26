@@ -23,7 +23,6 @@ export default function AddProperty() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let id = '';
     const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent, agent };
     axios({
       data: property,
@@ -32,11 +31,9 @@ export default function AddProperty() {
       headers: {'Content-Type': 'multipart/form-data'}
     })
       .then(res => {
-        id = res.data._id;
-        navigate(`/properties/${id}`);
+        navigate(`/properties/${res.data._id}`);
       })
       .catch(err => { console.log(err) })
-
   }
 
   return (
