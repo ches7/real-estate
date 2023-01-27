@@ -6,6 +6,7 @@ import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
 import SaveProperty from "./SaveProperty";
 import { AuthContext } from '../utils/AuthContext';
 import { useContext } from 'react';
+import DeleteButton from "./DeleteButton";
 
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
@@ -18,14 +19,13 @@ const PropertyCard = (props) => {
     e.nativeEvent.stopImmediatePropagation();
     setIndex(selectedIndex);
   };
-
-  //TODO 
+ 
   const handleClick = () => {
     window.location.href = `http://localhost:3000/properties/${props.id}`;
   }
 
   let deleteButton;
-  if (user._id === props.agent) { deleteButton = <button>delete</button> }
+  if (user._id === props.agent) { deleteButton = <DeleteButton id={props.id}/> }
 
     return (
         <div className="d-flex justify-content-center">

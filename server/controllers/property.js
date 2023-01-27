@@ -3,7 +3,7 @@ import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 import dotenv from "dotenv";
 import multer from "multer";
 import sharp from "sharp";
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from 'crypto';
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
@@ -102,7 +102,6 @@ const getProperties = async (req, res, next) => {
 
     for(let i = 0; i < properties.length; i++){
         if(properties[i].awsPhotoName.length !== 0){
-            console.log(properties[i].awsPhotoName)
             const getObjectParams = {
                 Bucket: bucketName,
                 Key: properties[i].awsPhotoName[0],
@@ -112,18 +111,16 @@ const getProperties = async (req, res, next) => {
         }
     }
 
-    //if imageName 
     console.log(queryArray)
     res.status(200).json(properties);
 };
 
 const getProperty = async (req, res, next) => {
-    // get photo from aws here
     let property = await Property.findById(req.params.id);
+    console.log(property);
     if (property == null) {
         next()
     } else if (property.awsPhotoName.length === 0) {
-        console.log(property.awsPhotoName)
         res.status(200).json(property)
     } else {
         const getObjectParams = {
@@ -140,9 +137,6 @@ const createProperty = async (req, res, next) => {
     const photos = req.file;
 
     //const fileBuffer = await sharp(photos.buffer).toBuffer();
-    console.log(req.body)
-    console.log(req.file)
-
 
     const fileName = generateFileName()
     const uploadParams = {
@@ -154,8 +148,6 @@ const createProperty = async (req, res, next) => {
 
     await s3Client.send(new PutObjectCommand(uploadParams));
 
-    //perhaps try to enable anyone to view s3
-
     const property = new Property({
         title: req.body.title,
         price: req.body.price,
@@ -165,7 +157,7 @@ const createProperty = async (req, res, next) => {
         baths: req.body.baths,
         receptions: req.body.receptions,
         type: req.body.type,
-        photos: [],    //make imageName also, overwrite photos if imageName exists
+        photos: [],
         awsPhotoName: [fileName],
         saleOrRent: req.body.saleOrRent,
         agent: req.body.agent,
@@ -173,7 +165,7 @@ const createProperty = async (req, res, next) => {
     });
     await property.save();
 
-    await res.status(200).json(property)  //effectively redirecting to GET route?
+    await res.status(200).json(property)
 };
 
 const updateProperty = async (req, res, next) => {
@@ -183,8 +175,21 @@ const updateProperty = async (req, res, next) => {
 };
 
 const deleteProperty = async (req, res, next) => {
-    const { id } = req.params;
-    const deletedProperty = await Property.findByIdAndDelete(id);
+    // const { id } = req.params;
+    // console.log(id)
+    const property = await Property.findById(req.params.id);
+    console.log(property)
+    if (!property) {
+        res.status(404).send("property not found");
+        console.log("property not found")
+        return;
+    }
+    const params = {
+        Bucket: bucketName,
+        Key: property.awsPhotoName[0],
+    }
+    await s3Client.send(new DeleteObjectCommand(params))
+    await Property.findByIdAndDelete(req.params.id);
     res.status(200).json(deletedProperty);
 };
 

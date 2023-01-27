@@ -19,7 +19,6 @@ function Account() {
 
   //prevent duplicate properties being rendered
   const propertySet = new Set();
-  const myPropertySet = new Set();
 
   const { user, dispatch } = useContext(AuthContext);
 
@@ -55,18 +54,14 @@ function Account() {
 
   useEffect(() => {
     if (!userData.agent) return;
-      const fetchMyPropertyData = () => {
-        // axios.get(`/properties?agent=${user._id}}`)
-        axios.get(`/properties/63d2ac0506ff66afada961ad`)
+      const fetchMyPropertyData = async () => {
+        await axios.get(`/properties?agent=${user._id}`)
           .then(res => {
             if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
-
             else {
-              myPropertySet.add(res.data);
-              setMyProperties([...myPropertySet])
+              setMyProperties(res.data)
             }
           })
-
           .catch(err => { setMyPropertyError(err.message); });
       }
       fetchMyPropertyData();
