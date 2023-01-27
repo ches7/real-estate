@@ -14,12 +14,14 @@ function Account() {
   const [userError, setUserError] = useState(null);
   const [properties, setProperties] = useState([]);
   const [propertyError, setPropertyError] = useState(null)
+  const [myProperties, setMyProperties] = useState([]);
+  const [myPropertyError, setMyPropertyError] = useState(null)
 
   //prevent duplicate properties being rendered
   const propertySet = new Set();
+  const myPropertySet = new Set();
 
   const { user, dispatch } = useContext(AuthContext);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +32,6 @@ function Account() {
     fetchData();
 
   }, [user]);
-
-
 
   useEffect(() => {
     if (!userData.savedProperties) return;
@@ -53,6 +53,25 @@ function Account() {
     }
   }, [userData])
 
+  useEffect(() => {
+    if (!userData.agent) return;
+      const fetchMyPropertyData = () => {
+        // axios.get(`/properties?agent=${user._id}}`)
+        axios.get(`/properties/63d2ac0506ff66afada961ad`)
+          .then(res => {
+            if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
+
+            else {
+              myPropertySet.add(res.data);
+              setMyProperties([...myPropertySet])
+            }
+          })
+
+          .catch(err => { setMyPropertyError(err.message); });
+      }
+      fetchMyPropertyData();
+  }, [userData])
+
 
   const handleAddButton = () => {
     navigate('/add-property')
@@ -70,11 +89,20 @@ function Account() {
       <div>
         {userData.agent === "true" ? <button onClick={handleAddButton}>Add property</button> : null}
         <button onClick={handleUpdateButton}>Update user details</button>
+
+        <h1>My Properties</h1>
+        <div>
+          {
+            myProperties.map((p, i) => (
+              <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
+                beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} agent={p.agent}/>
+            ))}
+        </div>
+
         <h1>Saved properties</h1>
 
         <div>
           {
-
             properties.map((p, i) => (
               <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
                 beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} />

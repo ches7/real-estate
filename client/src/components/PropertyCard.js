@@ -4,9 +4,13 @@ import Carousel from 'react-bootstrap/Carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
 import SaveProperty from "./SaveProperty";
+import { AuthContext } from '../utils/AuthContext';
+import { useContext } from 'react';
 
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
+
+    const { user, dispatch } = useContext(AuthContext);
 
   const handleSelect = (selectedIndex, e) => {
     e.preventDefault()
@@ -20,6 +24,8 @@ const PropertyCard = (props) => {
     window.location.href = `http://localhost:3000/properties/${props.id}`;
   }
 
+  let deleteButton;
+  if (user._id === props.agent) { deleteButton = <button>delete</button> }
 
     return (
         <div className="d-flex justify-content-center">
@@ -37,7 +43,10 @@ const PropertyCard = (props) => {
     </Carousel>
 
         <div key={props.i} className="m-3">
+        <div className="d-flex">
         <h2>£{props.price}</h2>
+        {deleteButton}
+        </div>
 
         <div className="d-flex">
         <FontAwesomeIcon icon={faBed} className="m-2"/>
