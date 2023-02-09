@@ -137,6 +137,7 @@ const createProperty = async (req, res, next) => {
     const photos = req.file;
 
     //const fileBuffer = await sharp(photos.buffer).toBuffer();
+    console.log('frfefre')
 
     const fileName = generateFileName()
     const uploadParams = {
@@ -147,6 +148,7 @@ const createProperty = async (req, res, next) => {
     }
 
     await s3Client.send(new PutObjectCommand(uploadParams));
+    //console.log('here')
 
     const property = new Property({
         title: req.body.title,
@@ -170,8 +172,28 @@ const createProperty = async (req, res, next) => {
 
 const updateProperty = async (req, res, next) => {
     const { id } = req.params;
-    const updatedProperty = await Property.findByIdAndUpdate(id, { $set: req.body }, { new: true });
-    res.status(200).json(updatedProperty);
+    console.log(id)
+    console.log(req.body)
+    console.log(req.body.title)
+    const updatedProperty = await Property.updateOne({_id: id}, { $set: { 
+        title: req.body.title,
+        price: req.body.price,
+        description: req.body.description,
+        location: req.body.location, //TODO capitalise input char 0 in order to find when searching for location 
+        beds: req.body.beds,
+        baths: req.body.baths,
+        receptions: req.body.receptions,
+        type: req.body.type,
+        //photos: [], //TODO
+        //awsPhotoName: [fileName],
+        saleOrRent: req.body.saleOrRent,
+        //agent: req.body.agent,
+        //geometry ----------------------------------------------------------------------------- TODO 
+    }});
+
+    console.log(updatedProperty);
+    await updatedProperty.save();
+    await res.status(200).json(updatedProperty);
 };
 
 const deleteProperty = async (req, res, next) => {

@@ -4,7 +4,7 @@ import {
   Route,
 } from "react-router-dom";
 import Property from "./pages/Property";
-import Edit from "./pages/Edit";
+import UpdateProperty from "./pages/UpdateProperty";
 
 import './App.css';
 import Home from './pages/Home';
@@ -62,7 +62,7 @@ function App() {
           <Route path="/for-sale/properties" element={<ListSale/>}/>
           <Route path="/to-rent/properties" element={<ListRent/>}/>
           <Route path="/properties/:id" element={<Property/>}/>
-          <Route path="/properties/:id/edit" element={<Edit/>}/>
+          <Route path="/properties/:id/update" element={<UpdateProperty/>}/>
           <Route path="/add-property" element={<AddProperty/>}/>
           <Route path="*" element={<NotFound />}/>
         </Routes>

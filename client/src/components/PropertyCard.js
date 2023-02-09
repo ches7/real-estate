@@ -7,6 +7,7 @@ import SaveProperty from "./SaveProperty";
 import { AuthContext } from '../utils/AuthContext';
 import { useContext } from 'react';
 import DeleteButton from "./DeleteButton";
+import UpdateButton from "./UpdateButton";
 
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
@@ -27,6 +28,9 @@ const PropertyCard = (props) => {
   let deleteButton;
   if (user._id === props.agent) { deleteButton = <DeleteButton id={props.id}/> }
 
+  let updateButton;
+  if (user._id === props.agent) { updateButton = <UpdateButton id={props.id}/> }
+
     return (
         <div className="d-flex justify-content-center">
         <div className="border rounded w-50 m-4"  onClick={handleClick} style={{cursor: "pointer"}}>
@@ -46,6 +50,7 @@ const PropertyCard = (props) => {
         <div className="d-flex">
         <h2>£{props.price}</h2>
         {deleteButton}
+        {updateButton}
         </div>
 
         <div className="d-flex">
