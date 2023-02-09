@@ -7,7 +7,7 @@ const SaveProperty = (props) => {
 
     const { user, loading, error, dispatch } = useContext(AuthContext);
 
-    const checkStorage = JSON.parse(localStorage.getItem("user"));
+    const checkStorage = JSON.parse(sessionStorage.getItem("user"));
     //check storage null when not signed in ?
 
 
@@ -32,7 +32,7 @@ const SaveProperty = (props) => {
             // console.log(res);
             // console.log(props.id);
 
-            //update localstorage with user data
+            //update sessionstorage with user data
             const res2 = await axios.get(`/users/${user._id}`)
             dispatch({ type: "REFRESH", payload: res2.data });
 
@@ -56,7 +56,7 @@ const SaveProperty = (props) => {
             // console.log(res);
             // console.log(props.id);
 
-            //update localstorage with user data
+            //update sessionstorage with user data
             const res2 = await axios.get(`/users/${user._id}`)
             dispatch({ type: "REFRESH", payload: res2.data });
 
