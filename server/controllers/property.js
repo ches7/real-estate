@@ -139,6 +139,10 @@ const createProperty = async (req, res, next) => {
     //const fileBuffer = await sharp(photos.buffer).toBuffer();
     console.log('frfefre')
 
+    //capitalise input char 0 in order to find when searching for location
+    let propertyLocation = new String(req.body.location);
+    propertyLocation = propertyLocation.charAt(0).toUpperCase() + propertyLocation.slice(1);
+
     const fileName = generateFileName()
     const uploadParams = {
         Bucket: bucketName,
@@ -154,7 +158,7 @@ const createProperty = async (req, res, next) => {
         title: req.body.title,
         price: req.body.price,
         description: req.body.description,
-        location: req.body.location, //TODO capitalise input char 0 in order to find when searching for location 
+        location: propertyLocation,  
         beds: req.body.beds,
         baths: req.body.baths,
         receptions: req.body.receptions,
@@ -175,11 +179,16 @@ const updateProperty = async (req, res, next) => {
     console.log(id)
     console.log(req.body)
     console.log(req.body.title)
+
+    //capitalise input char 0 in order to find when searching for location
+    let propertyLocation = new String(req.body.location);
+    propertyLocation = propertyLocation.charAt(0).toUpperCase() + propertyLocation.slice(1);
+
     const updatedProperty = await Property.updateOne({_id: id}, { $set: { 
         title: req.body.title,
         price: req.body.price,
         description: req.body.description,
-        location: req.body.location, //TODO capitalise input char 0 in order to find when searching for location 
+        location: propertyLocation,  
         beds: req.body.beds,
         baths: req.body.baths,
         receptions: req.body.receptions,

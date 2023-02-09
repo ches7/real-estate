@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
-import Delete from './Delete';
 import NotFound from '../NotFound';
 import Carousel from 'react-bootstrap/Carousel';
 import SaveProperty from '../components/SaveProperty';
