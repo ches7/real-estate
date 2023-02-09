@@ -6,7 +6,7 @@ import { AuthContext } from "../utils/AuthContext";
 export default function AddProperty() {
   const navigate = useNavigate();
   const params = useParams();
-  
+
 
   const { user } = useContext(AuthContext);
 
@@ -24,39 +24,35 @@ export default function AddProperty() {
 
   useEffect(() => {
     const fetchData = async () => {
-        let response = await axios.get(`/properties/${params.id}`);
-        setTitle(response.data.title);
-        setLocation(response.data.location);
-        setDescription(response.data.description);
-        setPrice(response.data.price);
-        setBeds(response.data.beds);
-        setBaths(response.data.baths);
-        setReceptions(response.data.receptions);
-        setType(response.data.type);
-        setPhotos(response.data.photos);
-        setSaleOrRent(response.data.saleOrRent);
+      let response = await axios.get(`/properties/${params.id}`);
+      setTitle(response.data.title);
+      setLocation(response.data.location);
+      setDescription(response.data.description);
+      setPrice(response.data.price);
+      setBeds(response.data.beds);
+      setBaths(response.data.baths);
+      setReceptions(response.data.receptions);
+      setType(response.data.type);
+      setPhotos(response.data.photos);
+      setSaleOrRent(response.data.saleOrRent);
     }
     fetchData();
-}, [params.id]);
+  }, [params.id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     //const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent, agent };
     const property = { title, location, description, price, beds, baths, receptions, type, saleOrRent };
-    console.log(property);
     axios({
       data: property,
       method: 'patch',
       url: `http://localhost:8080/properties/${params.id}`,
       //headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
-      headers: {'Content-Type': 'application/json'}
+      headers: { 'Content-Type': 'application/json' }
     })
-      .then(//res => {
-        //console.log(res.data)
-        //navigate(`/properties/${res.data._id}`);
-        navigate(`/properties/${params.id}`)
-      //}
-      )
+      .then(res => {
+        navigate(`/properties/${res.data._id}`)
+      })
       .catch(err => { console.log(err) })
   }
 

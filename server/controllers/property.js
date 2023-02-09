@@ -134,14 +134,20 @@ const getProperty = async (req, res, next) => {
 };
 
 const createProperty = async (req, res, next) => {
+    
     const photos = req.file;
-
     //const fileBuffer = await sharp(photos.buffer).toBuffer();
-    console.log('frfefre')
 
     //capitalise input char 0 in order to find when searching for location
     let propertyLocation = new String(req.body.location);
     propertyLocation = propertyLocation.charAt(0).toUpperCase() + propertyLocation.slice(1);
+
+    const geoQuery = propertyLocation + ", UK";
+    const mbxResponse = await geocoder.forwardGeocode({
+        query: geoQuery,
+        limit: 1
+    }).send()
+    const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
 
     const fileName = generateFileName()
     const uploadParams = {
@@ -152,7 +158,6 @@ const createProperty = async (req, res, next) => {
     }
 
     await s3Client.send(new PutObjectCommand(uploadParams));
-    //console.log('here')
 
     const property = new Property({
         title: req.body.title,
@@ -167,7 +172,10 @@ const createProperty = async (req, res, next) => {
         awsPhotoName: [fileName],
         saleOrRent: req.body.saleOrRent,
         agent: req.body.agent,
-        //geometry ----------------------------------------------------------------------------- TODO
+        geometry: {
+            type: "Point",
+            coordinates: mbxCoordinates,
+        },
     });
     await property.save();
 
@@ -176,13 +184,18 @@ const createProperty = async (req, res, next) => {
 
 const updateProperty = async (req, res, next) => {
     const { id } = req.params;
-    console.log(id)
-    console.log(req.body)
-    console.log(req.body.title)
-
+ 
     //capitalise input char 0 in order to find when searching for location
     let propertyLocation = new String(req.body.location);
     propertyLocation = propertyLocation.charAt(0).toUpperCase() + propertyLocation.slice(1);
+
+    const geoQuery = propertyLocation + ", UK";
+    const mbxResponse = await geocoder.forwardGeocode({
+        query: geoQuery,
+        limit: 1
+    }).send()
+    const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
+
 
     const updatedProperty = await Property.updateOne({_id: id}, { $set: { 
         title: req.body.title,
@@ -196,13 +209,14 @@ const updateProperty = async (req, res, next) => {
         //photos: [], //TODO
         //awsPhotoName: [fileName],
         saleOrRent: req.body.saleOrRent,
-        //agent: req.body.agent,
-        //geometry ----------------------------------------------------------------------------- TODO 
+        geometry: {
+            type: "Point",
+            coordinates: mbxCoordinates,
+        },
     }});
 
-    console.log(updatedProperty);
-    await updatedProperty.save();
-    await res.status(200).json(updatedProperty);
+    const property = await Property.findById(req.params.id);
+    await res.status(200).json(property);
 };
 
 const deleteProperty = async (req, res, next) => {
