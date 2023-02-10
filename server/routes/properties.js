@@ -10,7 +10,7 @@ const router = express.Router();
 
 //CREATE
 //router.post("/properties", validateProperty, catchAsync(property.createProperty));
-router.post("/properties", verifyAgent, upload.single('photos'), catchAsync(property.createProperty));
+router.post("/properties", verifyAgent, upload.any(), catchAsync(property.createProperty));
 
 //UPDATE
 // router.patch("/properties/:id", validateProperty, catchAsync(property.updateProperty));

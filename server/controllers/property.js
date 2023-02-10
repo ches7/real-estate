@@ -28,7 +28,6 @@ const s3Client = new S3Client({
 
 const milesToRadians = function (miles) {
     const earthRadiusInMiles = 3960;
-    console.log(miles / earthRadiusInMiles);
     return miles / earthRadiusInMiles;
 };
 
@@ -102,33 +101,54 @@ const getProperties = async (req, res, next) => {
 
     for(let i = 0; i < properties.length; i++){
         if(properties[i].awsPhotoName.length !== 0){
+
+            const photosArray = []
+            for(let j = 0; j < properties[i].awsPhotoName.length; j++){
+
             const getObjectParams = {
                 Bucket: bucketName,
-                Key: properties[i].awsPhotoName[0],
+                Key: properties[i].awsPhotoName[j],
             }
             const command = new GetObjectCommand(getObjectParams);
-            properties[i].photos = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
+            let photo = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+            photosArray.push(photo);
+        }
+            properties[i].photos = photosArray
+
+            // const getObjectParams = {
+            //     Bucket: bucketName,
+            //     Key: properties[i].awsPhotoName[0],
+            // }
+            // const command = new GetObjectCommand(getObjectParams);
+            // properties[i].photos = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
+
         }
     }
 
-    console.log(queryArray)
+    //console.log(queryArray)
     res.status(200).json(properties);
 };
 
 const getProperty = async (req, res, next) => {
     let property = await Property.findById(req.params.id);
-    console.log(property);
+    //console.log(property);
     if (property == null) {
         next()
     } else if (property.awsPhotoName.length === 0) {
         res.status(200).json(property)
     } else {
-        const getObjectParams = {
-            Bucket: bucketName,
-            Key: property.awsPhotoName[0],
+
+        const photosArray = []
+        for(let i = 0; i < property.awsPhotoName.length; i++){
+            const getObjectParams = {
+                Bucket: bucketName,
+                Key: property.awsPhotoName[i],
+            }
+            const command = new GetObjectCommand(getObjectParams);
+            let photo = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+            photosArray.push(photo);
         }
-        const command = new GetObjectCommand(getObjectParams);
-        property.photos = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
+        property.photos = photosArray
         res.status(200).json(property)
     }
 };
@@ -149,15 +169,22 @@ const createProperty = async (req, res, next) => {
     }).send()
     const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
 
-    const fileName = generateFileName()
-    const uploadParams = {
-        Bucket: bucketName,
-        Body: req.file.buffer,
-        Key: fileName,
-        ContentType: req.file.mimetype
+    async function awsUpload(){
+        const awsFileNames = [];
+        for(let i = 0; i < req.files.length; i++){
+            let fileName = generateFileName();
+            awsFileNames.push(fileName);
+            const uploadParams = {
+                Bucket: bucketName,
+                Body: req.files[i].buffer,
+                Key: fileName,
+                ContentType: req.files[i].mimetype
+            }
+            await s3Client.send(new PutObjectCommand(uploadParams));
+        }
+        return awsFileNames;
     }
-
-    await s3Client.send(new PutObjectCommand(uploadParams));
+    const upload = await awsUpload();
 
     const property = new Property({
         title: req.body.title,
@@ -169,7 +196,7 @@ const createProperty = async (req, res, next) => {
         receptions: req.body.receptions,
         type: req.body.type,
         photos: [],
-        awsPhotoName: [fileName],
+        awsPhotoName: upload,
         saleOrRent: req.body.saleOrRent,
         agent: req.body.agent,
         geometry: {
@@ -177,8 +204,8 @@ const createProperty = async (req, res, next) => {
             coordinates: mbxCoordinates,
         },
     });
-    await property.save();
 
+    await property.save();
     await res.status(200).json(property)
 };
 
@@ -220,22 +247,21 @@ const updateProperty = async (req, res, next) => {
 };
 
 const deleteProperty = async (req, res, next) => {
-    // const { id } = req.params;
-    // console.log(id)
     const property = await Property.findById(req.params.id);
-    console.log(property)
     if (!property) {
         res.status(404).send("property not found");
         console.log("property not found")
         return;
     }
+    if(property.awsPhotoName.length !== 0){
     const params = {
         Bucket: bucketName,
         Key: property.awsPhotoName[0],
     }
     await s3Client.send(new DeleteObjectCommand(params))
+    }
     await Property.findByIdAndDelete(req.params.id);
-    res.status(200).json(deletedProperty);
+    res.status(200).json(property);
 };
 
 export default { getProperties, getProperty, createProperty, updateProperty, deleteProperty };

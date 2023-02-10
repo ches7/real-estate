@@ -17,13 +17,14 @@ export default function AddProperty() {
   const [baths, setBaths] = useState('');
   const [receptions, setReceptions] = useState('');
   const [type, setType] = useState('detached');
-  const [photos, setPhotos] = useState('');
+  const [photos, setPhotos] = useState([]);
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
   const [agent, setAgent] = useState(`${user._id}`);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent, agent };
+    console.log(property)
     axios({
       data: property,
       method: 'post',
@@ -34,6 +35,15 @@ export default function AddProperty() {
         navigate(`/properties/${res.data._id}`);
       })
       .catch(err => { console.log(err) })
+  }
+
+  const handlePhotos = (e) => {
+    let photosArray = [];
+    for(let i = 0; i < e.target.files.length; i++){
+      photosArray.push(e.target.files[i])
+    }
+    setPhotos(photosArray)
+    console.log(photosArray)
   }
 
   return (
@@ -100,9 +110,12 @@ export default function AddProperty() {
         <input
           type="file"
           required
+          multiple
+          name="photos"
           //value={photos}
           accept="image/*"
-          onChange={(e) => setPhotos(e.target.files[0])}
+          // onChange={(e) => setPhotos(e.target.files[0])}
+          onChange={handlePhotos}
         />
 
         <label htmlFor="type">Property type</label>

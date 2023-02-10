@@ -50,6 +50,10 @@ app.use((err, req, res, next) => {
         stack: err.stack })
 })
 
+// app.use((error, req, res, next) => {
+//     console.log('This is the rejected field ->', error.field);
+//   });
+
 app.listen(8080, () => {
     console.log('serving on port 8080')
 })
