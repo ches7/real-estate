@@ -24,7 +24,7 @@ export default function AddProperty() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let response = await axios.get(`/properties/${params.id}`);
+      let response = await axios.get(`/api/properties/${params.id}`);
       setTitle(response.data.title);
       setLocation(response.data.location);
       setDescription(response.data.description);
@@ -47,7 +47,7 @@ export default function AddProperty() {
     axios({
       data: property,
       method: 'patch',
-      url: `http://localhost:8080/properties/${params.id}`,
+      url: `/api/properties/${params.id}`,
       headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
       //headers: { 'Content-Type': 'application/json' }
     })

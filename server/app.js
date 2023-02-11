@@ -27,14 +27,10 @@ app.use(cors({
  }));
  app.use(cookieParser());
 
-app.use("/", propertiesRoute);
-app.use("/users", usersRoute)
-app.use("/", authRoute);
-app.use("/agents", agentsRoute)
-
-app.get('/', (req, res) => {
-    res.send('hello world')
-})
+app.use("/api/", propertiesRoute);
+app.use("/api/users", usersRoute)
+app.use("/api/", authRoute);
+app.use("/api/agents", agentsRoute)
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))

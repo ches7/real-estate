@@ -9,7 +9,7 @@ const DeleteButton = (props) => {
 const { user, loading, error, dispatch } = useContext(AuthContext);
 
 const deleteData = async () => {
-    await axios.delete(`http://localhost:8080/properties/${props.id}`)
+    await axios.delete(`/api/properties/${props.id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { console.log('deleted') } })
         .catch(err => { console.log(err.message); });
 }
@@ -20,7 +20,7 @@ const handleDelete = async (e) => {
     e.nativeEvent.stopImmediatePropagation();
     deleteData();
     //TODO: rerender page
-    const res = await axios.get(`/users/${user._id}`)
+    const res = await axios.get(`/api/users/${user._id}`)
     dispatch({ type: "REFRESH", payload: res.data });
     dispatch({ type: "REFRESH", payload: res.data });
   }

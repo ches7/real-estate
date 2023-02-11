@@ -24,7 +24,7 @@ function Account() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`/users/${user._id}`)
+      await axios.get(`/api/users/${user._id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setUserData(res.data); } })
         .catch(err => { setUserError(err.message); setUserData(null) });
     }
@@ -36,7 +36,7 @@ function Account() {
     if (!userData.savedProperties) return;
     for (let i = 0; i < userData.savedProperties.length; i++) {
       const fetchPropertyData = () => {
-        axios.get(`/properties/${userData.savedProperties[i]}`)
+        axios.get(`/api/properties/${userData.savedProperties[i]}`)
           .then(res => {
             if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
 
@@ -55,7 +55,7 @@ function Account() {
   useEffect(() => {
     if (!userData.agent) return;
       const fetchMyPropertyData = async () => {
-        await axios.get(`/properties?agent=${user._id}`)
+        await axios.get(`/api/properties?agent=${user._id}`)
           .then(res => {
             if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
             else {

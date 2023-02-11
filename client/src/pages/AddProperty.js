@@ -28,7 +28,7 @@ export default function AddProperty() {
     axios({
       data: property,
       method: 'post',
-      url: 'http://localhost:8080/properties',
+      url: '/api/properties',
       headers: {'Content-Type': 'multipart/form-data'}
     })
       .then(res => {

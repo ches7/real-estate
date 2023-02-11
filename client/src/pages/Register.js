@@ -18,7 +18,7 @@ const Register = () => {
         axios({
             data: user,
             method: 'post',
-            url: '/register',
+            url: '/api/register',
         })
          .then(res => {
             console.log(res);

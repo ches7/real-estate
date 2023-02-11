@@ -16,7 +16,7 @@ export default function AgentPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`/agents/${params.id}`)
+      await axios.get(`/api/agents/${params.id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setAgentData(res.data); } })
         .catch(err => { setAgentError(err.message); setAgentData(null) });
     }
@@ -25,7 +25,7 @@ export default function AgentPage() {
 
   useEffect(() => {
         const fetchPropertyData = async () => {
-          await axios.get(`/properties?agent=${params.id}`)
+          await axios.get(`/api/properties?agent=${params.id}`)
             .then(res => {
               if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
              // else { setProperties(oldArray => [...oldArray, res.data]) }
