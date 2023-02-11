@@ -81,7 +81,7 @@ const getProperties = async (req, res, next) => {
     if (req.query.type != 'undefined' && req.query.type != undefined && req.query.type != ''
         && req.query.type != 'null' && req.query.type != null) {
         let type = new String(req.query.type);
-        if (req.query.type === 'houses') {
+        if (req.query.type === 'house') {
             let typeQuery = { ['type']: { ['$in']: ['terraced', 'bungalow', 'detached', 'semi-detached'] } }
             queryArray.push(typeQuery);
         } else {

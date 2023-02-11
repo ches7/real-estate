@@ -10,6 +10,11 @@ function ListSale() {
     const loc = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [location, setLocation] = useState(searchParams.get('location'));
+    const [beds, setBeds] = useState(searchParams.get('beds'));
+    const [price, setPrice] = useState(searchParams.get('price'));
+    const [type, setType] = useState(searchParams.get('type'));
+    const [radius, setRadius] = useState(searchParams.get('radius'));
+
 
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
@@ -57,7 +62,7 @@ function ListSale() {
 
     return (
         <div>
-            <FiltersSale location={location} />
+            <FiltersSale location={location} beds={beds} price={price} type={type} radius={radius}/>
             <div className="d-flex justify-content-center">
                 {banner}
             </div>

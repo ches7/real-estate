@@ -93,13 +93,13 @@ export default function SearchForSale() {
                     </div>
                     <div className="w-50 d-flex border justify-content-start">
                     <div className="">
-                    <input type="radio" id="houses" name="type" value="houses" onChange={handleType}></input>
-                    <label htmlFor="houses" className="m-2">Houses</label>
+                    <input type="radio" id="house" name="type" value="house" onChange={handleType}></input>
+                    <label htmlFor="house" className="m-2">Houses</label>
                     </div>
                     </div>
                     </div>
-                    <input type="radio" id="flats" name="type" value="flats" onChange={handleType}></input>
-                    <label htmlFor="flats" className="m-2">Flats</label>
+                    <input type="radio" id="flat" name="type" value="flat" onChange={handleType}></input>
+                    <label htmlFor="flat" className="m-2">Flats</label>
                     </div>
                     
                     <div className="border">

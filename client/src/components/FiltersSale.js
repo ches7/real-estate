@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 export default function FiltersSale(props) {
     const navigate = useNavigate();
     const [location, setLocation] = useState(props.location);
-    const [beds, setBeds] = useState('')
-    const [price, setPrice] = useState('')
-    const [type, setType] = useState('')
-    const [radius, setRadius] = useState('');
+    const [beds, setBeds] = useState(props.beds)
+    const [price, setPrice] = useState(props.price)
+    const [type, setType] = useState(props.type)
+    const [radius, setRadius] = useState(props.radius);
 
 
     const handleBeds = (e) => {
@@ -64,8 +64,8 @@ export default function FiltersSale(props) {
                     </div>
 
                     <div className="px-3">
-                    <label htmlFor="bedrooms">Bedrooms</label><br></br>
-                    <select name="bedrooms" id="bedrooms" className="bg-light border-0" onChange={handleBeds}>
+                    <label htmlFor="beds">Bedrooms</label><br></br>
+                    <select name="beds" id="beds" className="bg-light border-0" value={beds} onChange={handleBeds}>
                     <option value="">Any beds</option>
                     <option value="1">1+</option>
                     <option value="2">2+</option>
@@ -81,8 +81,8 @@ export default function FiltersSale(props) {
                     </div>
 
                     <div className="px-3">
-                    <label htmlFor="max-price">Max price</label><br></br>
-                    <select name="max-price" id="max-price" className="bg-light border-0" onChange={handlePrice}>
+                    <label htmlFor="price">Max price</label><br></br>
+                    <select name="price" id="price" className="bg-light border-0" value={price} onChange={handlePrice}>
                     <option value="">No max</option>
                     <option value="10000">£10,000</option>
                     <option value="50000">£50,000</option>
@@ -98,8 +98,9 @@ export default function FiltersSale(props) {
 
                     <div className="px-3">
                     <label htmlFor="type">Property type</label><br></br>
-                    <select name="type" id="type" className="bg-light border-0" onChange={handleType}>
-                    <option value="">Show all</option>
+                    <select name="type" id="type" className="bg-light border-0" value={type} onChange={handleType}>
+                    <option value="all">Show all</option>
+                    <option value="house">Houses</option>
                     <option value="detached">Detached</option>
                     <option value="terraced">Terraced</option>
                     <option value="bungalow">Bungalow</option>
