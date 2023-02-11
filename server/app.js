@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
 import mongoose from "mongoose";
 import ExpressError from "./utils/ExpressError.js";
@@ -6,7 +8,6 @@ import usersRoute from "./routes/users.js";
 import agentsRoute from "./routes/agents.js"
 import authRoute from "./routes/auth.js"
 import cors from "cors";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
 mongoose.connect('mongodb://127.0.0.1:27017/real-estate');
@@ -17,7 +18,6 @@ mongoose.connection.once("open", () => {
 });
 
 const app = express();
-dotenv.config();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

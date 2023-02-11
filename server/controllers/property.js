@@ -1,12 +1,13 @@
 import Property from "../models/Property.js";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
+//dotenv needs to be imported here to prevent crash -> due to env variables being imported outside export statement
 import dotenv from "dotenv";
+dotenv.config();
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from 'crypto';
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
-dotenv.config();
-const mapBoxToken = `${process.env.MAPBOX_TOKEN}`;
+const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const bucketName = process.env.BUCKET_NAME
 const bucketRegion = process.env.BUCKET_REGION
