@@ -42,18 +42,28 @@ export default function AddProperty() {
   const handleSubmit = (e) => {
     e.preventDefault();
     //const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent, agent };
-    const property = { title, location, description, price, beds, baths, receptions, type, saleOrRent };
+    // const property = { title, location, description, price, beds, baths, receptions, type, saleOrRent };
+    const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent };
     axios({
       data: property,
       method: 'patch',
       url: `http://localhost:8080/properties/${params.id}`,
-      //headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
-      headers: { 'Content-Type': 'application/json' }
+      headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
+      //headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {
         navigate(`/properties/${res.data._id}`)
       })
       .catch(err => { console.log(err) })
+  }
+
+  const handlePhotos = (e) => {
+    let photosArray = [];
+    for(let i = 0; i < e.target.files.length; i++){
+      photosArray.push(e.target.files[i])
+    }
+    setPhotos(photosArray)
+    console.log(photosArray)
   }
 
   return (
@@ -119,10 +129,12 @@ export default function AddProperty() {
         <label>Photos URL:</label>
         <input
           type="file"
-          //required
+          required
+          multiple
+          name="photos"
           //value={photos}
           accept="image/*"
-          onChange={(e) => setPhotos(e.target.files[0])}
+          onChange={handlePhotos}
         />
 
         <label htmlFor="type">Property type</label>

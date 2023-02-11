@@ -14,7 +14,7 @@ router.post("/properties", verifyAgent, upload.any(), catchAsync(property.create
 
 //UPDATE
 // router.patch("/properties/:id", validateProperty, catchAsync(property.updateProperty));
-router.patch("/properties/:id", verifyAgent, catchAsync(property.updateProperty));
+router.patch("/properties/:id", verifyAgent, upload.any(), catchAsync(property.updateProperty));
 
 //DELETE
 router.delete("/properties/:id", catchAsync(property.deleteProperty));

@@ -1,8 +1,6 @@
 import Property from "../models/Property.js";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 import dotenv from "dotenv";
-import multer from "multer";
-import sharp from "sharp";
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from 'crypto';
@@ -10,9 +8,6 @@ const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex
 dotenv.config();
 const mapBoxToken = `${process.env.MAPBOX_TOKEN}`;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
 const bucketName = process.env.BUCKET_NAME
 const bucketRegion = process.env.BUCKET_REGION
 const accessKeyId = process.env.ACCESS_KEY
@@ -99,33 +94,25 @@ const getProperties = async (req, res, next) => {
         $and: queryArray
     })//.limit(20);
 
-    for(let i = 0; i < properties.length; i++){
-        if(properties[i].awsPhotoName.length !== 0){
+    for (let i = 0; i < properties.length; i++) {
+        if (properties[i].awsPhotoName.length !== 0) {
 
             const photosArray = []
-            for(let j = 0; j < properties[i].awsPhotoName.length; j++){
+            for (let j = 0; j < properties[i].awsPhotoName.length; j++) {
 
-            const getObjectParams = {
-                Bucket: bucketName,
-                Key: properties[i].awsPhotoName[j],
+                const getObjectParams = {
+                    Bucket: bucketName,
+                    Key: properties[i].awsPhotoName[j],
+                }
+                const command = new GetObjectCommand(getObjectParams);
+                let photo = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+                photosArray.push(photo);
             }
-            const command = new GetObjectCommand(getObjectParams);
-            let photo = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
-            photosArray.push(photo);
-        }
             properties[i].photos = photosArray
-
-            // const getObjectParams = {
-            //     Bucket: bucketName,
-            //     Key: properties[i].awsPhotoName[0],
-            // }
-            // const command = new GetObjectCommand(getObjectParams);
-            // properties[i].photos = await getSignedUrl(s3Client, command, { expiresIn: 3600 })
 
         }
     }
 
-    //console.log(queryArray)
     res.status(200).json(properties);
 };
 
@@ -139,7 +126,7 @@ const getProperty = async (req, res, next) => {
     } else {
 
         const photosArray = []
-        for(let i = 0; i < property.awsPhotoName.length; i++){
+        for (let i = 0; i < property.awsPhotoName.length; i++) {
             const getObjectParams = {
                 Bucket: bucketName,
                 Key: property.awsPhotoName[i],
@@ -154,24 +141,22 @@ const getProperty = async (req, res, next) => {
 };
 
 const createProperty = async (req, res, next) => {
-    
-    const photos = req.file;
-    //const fileBuffer = await sharp(photos.buffer).toBuffer();
-
     //capitalise input char 0 in order to find when searching for location
     let propertyLocation = new String(req.body.location);
     propertyLocation = propertyLocation.charAt(0).toUpperCase() + propertyLocation.slice(1);
 
+    //get map coordinates for mapbox
     const geoQuery = propertyLocation + ", UK";
     const mbxResponse = await geocoder.forwardGeocode({
         query: geoQuery,
         limit: 1
-    }).send()
+    }).send();
     const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
 
-    async function awsUpload(){
+    //upload new photos to aws
+    async function awsUpload() {
         const awsFileNames = [];
-        for(let i = 0; i < req.files.length; i++){
+        for (let i = 0; i < req.files.length; i++) {
             let fileName = generateFileName();
             awsFileNames.push(fileName);
             const uploadParams = {
@@ -186,11 +171,12 @@ const createProperty = async (req, res, next) => {
     }
     const upload = await awsUpload();
 
+    //add property to mongodb
     const property = new Property({
         title: req.body.title,
         price: req.body.price,
         description: req.body.description,
-        location: propertyLocation,  
+        location: propertyLocation,
         beds: req.body.beds,
         baths: req.body.baths,
         receptions: req.body.receptions,
@@ -205,61 +191,108 @@ const createProperty = async (req, res, next) => {
         },
     });
 
+    //respond with new property
     await property.save();
     await res.status(200).json(property)
 };
 
 const updateProperty = async (req, res, next) => {
-    const { id } = req.params;
- 
+    //check property exists
+    const propertyBeforeUpdate = await Property.findById(req.params.id);
+    if (!propertyBeforeUpdate) {
+        res.status(404).send("property not found");
+        console.log("property not found");
+        return;
+    }
+
     //capitalise input char 0 in order to find when searching for location
     let propertyLocation = new String(req.body.location);
     propertyLocation = propertyLocation.charAt(0).toUpperCase() + propertyLocation.slice(1);
 
+    //get map coordinates for mapbox
     const geoQuery = propertyLocation + ", UK";
     const mbxResponse = await geocoder.forwardGeocode({
         query: geoQuery,
         limit: 1
-    }).send()
+    }).send();
     const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
 
+    //upload new photos to aws
+    async function awsUpload() {
+        const awsFileNames = [];
+        for (let i = 0; i < req.files.length; i++) {
+            let fileName = generateFileName();
+            awsFileNames.push(fileName);
+            const uploadParams = {
+                Bucket: bucketName,
+                Body: req.files[i].buffer,
+                Key: fileName,
+                ContentType: req.files[i].mimetype
+            }
+            await s3Client.send(new PutObjectCommand(uploadParams));
+        }
+        return awsFileNames;
+    }
+    const upload = await awsUpload();
 
-    const updatedProperty = await Property.updateOne({_id: id}, { $set: { 
-        title: req.body.title,
-        price: req.body.price,
-        description: req.body.description,
-        location: propertyLocation,  
-        beds: req.body.beds,
-        baths: req.body.baths,
-        receptions: req.body.receptions,
-        type: req.body.type,
-        //photos: [], //TODO
-        //awsPhotoName: [fileName],
-        saleOrRent: req.body.saleOrRent,
-        geometry: {
-            type: "Point",
-            coordinates: mbxCoordinates,
-        },
-    }});
+    //delete old photos from aws
+    if (propertyBeforeUpdate.awsPhotoName.length !== 0) {
+        for (let i = 0; i < propertyBeforeUpdate.awsPhotoName.length; i++) {
+            const params = {
+                Bucket: bucketName,
+                Key: propertyBeforeUpdate.awsPhotoName[i],
+            }
+            await s3Client.send(new DeleteObjectCommand(params))
+        }
+    }
 
-    const property = await Property.findById(req.params.id);
-    await res.status(200).json(property);
+    //update property in mongodb
+    const updatedProperty = await Property.updateOne({ _id: req.params.id }, {
+        $set: {
+            title: req.body.title,
+            price: req.body.price,
+            description: req.body.description,
+            location: propertyLocation,
+            beds: req.body.beds,
+            baths: req.body.baths,
+            receptions: req.body.receptions,
+            type: req.body.type,
+            photos: [],
+            awsPhotoName: upload,
+            saleOrRent: req.body.saleOrRent,
+            geometry: {
+                type: "Point",
+                coordinates: mbxCoordinates,
+            },
+        }
+    });
+
+    //respond with updated property
+    const propertyAfterUpdate = await Property.findById(req.params.id);
+    await res.status(200).json(propertyAfterUpdate);
 };
 
 const deleteProperty = async (req, res, next) => {
+    //check if property exists
     const property = await Property.findById(req.params.id);
     if (!property) {
         res.status(404).send("property not found");
         console.log("property not found")
         return;
     }
-    if(property.awsPhotoName.length !== 0){
-    const params = {
-        Bucket: bucketName,
-        Key: property.awsPhotoName[0],
+
+    //delete photos from aws
+    if (property.awsPhotoName.length !== 0) {
+        for (let i = 0; i < property.awsPhotoName.length; i++) {
+            const params = {
+                Bucket: bucketName,
+                Key: property.awsPhotoName[i],
+            }
+            await s3Client.send(new DeleteObjectCommand(params))
+        }
     }
-    await s3Client.send(new DeleteObjectCommand(params))
-    }
+
+    //delete property from mongodb and respond with deleted property
     await Property.findByIdAndDelete(req.params.id);
     res.status(200).json(property);
 };
