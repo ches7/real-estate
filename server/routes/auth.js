@@ -1,5 +1,6 @@
 import express from "express";
-import auth from "../controllers/auth.js";
+// import auth from "../controllers/auth.js";
+import auth from "../controllers/authMySQL.js";
 import catchAsync from "../utils/catchAsync.js";
 
 const router = express.Router();

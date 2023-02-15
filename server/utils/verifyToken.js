@@ -25,6 +25,8 @@ export const verifyUser = (req, res, next) => {
 };
 
 export const verifyAgent = (req, res, next) => {
+  //query database
+
   const token = req.cookies.access_token;
   const environmentvariable = `${process.env.JWT}`;
   
