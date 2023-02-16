@@ -10,12 +10,12 @@ const RegisterAsAgent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
+    const [isAgent, setIsAgent] = useState(1);
     const [agentPhoto, setAgentPhoto] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        let id = '';
-        const user = { username, email, password, isAgent:true, agent:"true" };
+        const user = { username, email, password, isAgent};
         axios({
             data: user,
             method: 'post',
@@ -39,6 +39,7 @@ const RegisterAsAgent = () => {
                     <input 
                     type="text" 
                     name="name" 
+                    required
                     value={username}
                     onChange={(e) => {setUsername(e.target.value);}}
                     ></input>
@@ -47,6 +48,7 @@ const RegisterAsAgent = () => {
                     <input 
                     type="email" 
                     name="email-address" 
+                    required
                     value={email}
                     onChange={(e) => {setEmail(e.target.value);}}
                     ></input>
@@ -55,6 +57,7 @@ const RegisterAsAgent = () => {
                     <input 
                     type="text" 
                     name="password"
+                    required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     ></input>
