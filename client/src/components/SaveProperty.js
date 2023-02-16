@@ -26,14 +26,15 @@ const SaveProperty = (props) => {
         if (checkStorage === null){return}else{
         try {
             const res = await axios.post("/api/users/saveproperty", {
-            "id":`${user._id}`,
+            "id":`${user.id}`,
             "property":`${props.id}`
             });
-            // console.log(res);
+            console.log(res);
             // console.log(props.id);
 
             //update sessionstorage with user data
-            const res2 = await axios.get(`/api/users/${user._id}`)
+            const res2 = await axios.get(`/api/users/${user.id}`)
+            // console.log(res2);
             dispatch({ type: "REFRESH", payload: res2.data });
 
             setSaved(true);
@@ -50,14 +51,14 @@ const SaveProperty = (props) => {
         e.nativeEvent.stopImmediatePropagation();
         try {
             const res = await axios.post("/api/users/unsaveproperty", {
-            "id":`${user._id}`,
+            "id":`${user.id}`,
             "property":`${props.id}`
             });
             // console.log(res);
             // console.log(props.id);
 
             //update sessionstorage with user data
-            const res2 = await axios.get(`/api/users/${user._id}`)
+            const res2 = await axios.get(`/api/users/${user.id}`)
             dispatch({ type: "REFRESH", payload: res2.data });
 
             setSaved(false);

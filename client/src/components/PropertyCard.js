@@ -26,10 +26,10 @@ const PropertyCard = (props) => {
   }
 
   let deleteButton;
-  if (user && user._id === props.agent) { deleteButton = <DeleteButton id={props.id}/> }
+  if (user && user.id === props.agent) { deleteButton = <DeleteButton id={props.id}/> }
 
   let updateButton;
-  if (user && user._id === props.agent) { updateButton = <UpdateButton id={props.id}/> }
+  if (user && user.id === props.agent) { updateButton = <UpdateButton id={props.id}/> }
 
     return (
         <div className="d-flex justify-content-center">

@@ -24,11 +24,12 @@ function Account() {
 
   useEffect(() => {
     const fetchData = async () => {
-      await axios.get(`/api/users/${user._id}`)
+      await axios.get(`/api/users/${user.id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setUserData(res.data); } })
         .catch(err => { setUserError(err.message); setUserData(null) });
     }
     fetchData();
+    console.log('here');
 
   }, [user]);
 
@@ -49,13 +50,14 @@ function Account() {
           .catch(err => { setPropertyError(err.message); });
       }
       fetchPropertyData();
+      console.log('here2')
     }
   }, [userData])
 
   useEffect(() => {
     if (!userData.agent) return;
       const fetchMyPropertyData = async () => {
-        await axios.get(`/api/properties?agent=${user._id}`)
+        await axios.get(`/api/properties?agent=${user.id}`)
           .then(res => {
             if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
             else {
@@ -65,6 +67,7 @@ function Account() {
           .catch(err => { setMyPropertyError(err.message); });
       }
       fetchMyPropertyData();
+      console.log('here3')
   }, [userData])
 
 
@@ -76,16 +79,16 @@ function Account() {
     navigate('/account/update')
   }
 
-
-  if (userError || !userData || propertyError) {
+  if (userError || !userData) {
+  // if (userError || !userData || propertyError) {
     return (<NotFound />)
   } else
     return (
       <div>
-        {userData.agent === "true" ? <button onClick={handleAddButton}>Add property</button> : null}
+        {userData.isAgent === 1 ? <button onClick={handleAddButton}>Add property</button> : null}
         <button onClick={handleUpdateButton}>Update user details</button>
 
-        <h1>My Properties</h1>
+        {userData.isAgent === 1 ? <h1>My properties</h1> : null}
         <div>
           {
             myProperties.map((p, i) => (

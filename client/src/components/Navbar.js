@@ -38,7 +38,7 @@ export default function ReactNavbar() {
             <NavDropdown
               align={{ lg: 'end' }}
               id="nav-dropdown-dark-example"
-              title={user._id}
+              title={user.id}
               menuVariant="dark"
             >
               <NavDropdown.Item href="/account">Account</NavDropdown.Item>

@@ -20,7 +20,7 @@ const handleDelete = async (e) => {
     e.nativeEvent.stopImmediatePropagation();
     deleteData();
     //TODO: rerender page
-    const res = await axios.get(`/api/users/${user._id}`)
+    const res = await axios.get(`/api/users/${user.id}`)
     dispatch({ type: "REFRESH", payload: res.data });
     dispatch({ type: "REFRESH", payload: res.data });
   }
