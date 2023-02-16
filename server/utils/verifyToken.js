@@ -39,10 +39,9 @@ export const verifyAgent = (req, res, next) => {
     req.user = user;
   });
 
-  if (req.user.isAgent) {
-    next();
-  } else {
+  if (req.user.isAgent != 1) {
     return next(new ExpressError(403, "You are not authorized!"));
   }
 
+  next()
 };

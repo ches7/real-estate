@@ -25,9 +25,6 @@ const PropertyCard = (props) => {
     window.location.href = `/properties/${props.id}`;
   }
 
-  //console.log(user.id);
-  console.log(props.agent);
-
   let deleteButton;
   if (user && (user.id == props.agent)) { deleteButton = <DeleteButton id={props.id}/> }
 
