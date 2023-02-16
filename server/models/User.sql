@@ -1,27 +1,28 @@
-CREATE DATABASE users_app;
-USE users_app;
+CREATE DATABASE real_estate_users;
+USE real_estate_users;
 
-CREATE TABLE users_1 (
+CREATE TABLE users (
     `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `username` VARCHAR(50) NOT NULL,
-    `email` VARCHAR(50) NOT NULL,
+    `agentName` VARCHAR(100),
+    `agentPhoto` VARCHAR(100),
+    `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(255) NOT NULL,
     `isAgent` BOOLEAN NOT NULL,
     `created` TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE saved_properties_1 (
+CREATE TABLE saved_properties (
 `user_id` INT NOT NULL,
-`saved_property` VARCHAR(30) NOT NULL,
+`saved_property` VARCHAR(50) NOT NULL,
 PRIMARY KEY(`user_id`, `saved_property`)
 );
 
 
-INSERT INTO users_1 (username, email, password, isAgent)
+INSERT INTO users (agentName, email, password, isAgent)
 VALUES 
-('john', 'john@gmail.com', 'John.123', '12345', 1);
+('john', 'john@gmail.com', 'John.123', 1);
 
-INSERT INTO saved_properties_1 (user_id, saved_property)
+INSERT INTO saved_properties (user_id, saved_property)
 VALUES
 ('1', "638786eef8f1c0572067c59f"),
 ('1', "638786eef8f1c0572067c5ab");

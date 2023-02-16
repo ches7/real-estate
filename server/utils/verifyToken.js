@@ -25,7 +25,6 @@ export const verifyUser = (req, res, next) => {
 };
 
 export const verifyAgent = (req, res, next) => {
-  //query database
 
   const token = req.cookies.access_token;
   const environmentvariable = `${process.env.JWT}`;
@@ -38,6 +37,7 @@ export const verifyAgent = (req, res, next) => {
     if (err) {return next(new ExpressError(403, "invalid token"))};
     req.user = user;
   });
+
 
   if (req.user.isAgent != 1) {
     return next(new ExpressError(403, "You are not authorized!"));

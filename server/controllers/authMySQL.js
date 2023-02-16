@@ -16,30 +16,39 @@ const pool = mysql.createPool({
 }).promise();
 
 async function getUser(id) {
-  const [rows] = await pool.query(`SELECT users_1.*, JSON_ARRAYAGG(saved_properties_1.saved_property) AS "savedProperties"
-  FROM users_1 
-  LEFT JOIN saved_properties_1 ON saved_properties_1.user_id = users_1.id
+  const [rows] = await pool.query(`SELECT users.*, JSON_ARRAYAGG(saved_properties.saved_property) AS "savedProperties"
+  FROM users 
+  LEFT JOIN saved_properties ON saved_properties.user_id = users.id
   WHERE id = ?
-  GROUP BY users_1.id
+  GROUP BY users.id
   `, [id]);
   return rows[0];
 }
 
 async function getUserByEmail(email) {
-  const [rows] = await pool.query(`SELECT users_1.*, JSON_ARRAYAGG(saved_properties_1.saved_property) AS "savedProperties"
-  FROM users_1 
-  LEFT JOIN saved_properties_1 ON saved_properties_1.user_id = users_1.id
+  const [rows] = await pool.query(`SELECT users.*, JSON_ARRAYAGG(saved_properties.saved_property) AS "savedProperties"
+  FROM users 
+  LEFT JOIN saved_properties ON saved_properties.user_id = users.id
   WHERE email = ?
-  GROUP BY users_1.id
+  GROUP BY users.id
   `, [email]);
   return rows[0];
 }
 
-async function createUser(username, email, password, isAgent) {
+async function createAgent(agentName, email, password, isAgent) {
   const [result] = await pool.query(` 
-  INSERT INTO users_1 (username, email, password, isAgent)
+  INSERT INTO users (agentName, email, password, isAgent)
   VALUES (?, ?, ?, ?)
-  `, [username, email, password, isAgent]);
+  `, [agentName, email, password, isAgent]);
+  const id = result.insertId;
+  return getUser(id);
+}
+
+async function createUser(email, password, isAgent) {
+  const [result] = await pool.query(` 
+  INSERT INTO users (email, password, isAgent)
+  VALUES (?, ?, ?)
+  `, [email, password, isAgent]);
   const id = result.insertId;
   return getUser(id);
 }
@@ -47,10 +56,17 @@ async function createUser(username, email, password, isAgent) {
 const register = async (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.password, salt);
-  console.log(hash)
-  const { username, email, isAgent } = req.body;
-  const user = await createUser(username, email, hash, isAgent);
+  const { email, isAgent } = req.body;
+  const user = await createUser(email, hash, isAgent);
   res.status(201).send("User has been created.");
+};
+
+const registerAsAgent = async (req, res, next) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.password, salt);
+  const { agentName, email, isAgent } = req.body;
+  const agent = await createAgent(agentName, email, hash, isAgent);
+  res.status(201).send("Agent has been created.");
 };
 
 const signin = async (req, res, next) => {
@@ -90,4 +106,4 @@ const signout = async (req, res, next) => {
   }).status(200).send();
 };
 
-export default { register, signin, signout };
+export default { register, registerAsAgent, signin, signout };

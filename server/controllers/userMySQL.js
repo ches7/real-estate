@@ -12,23 +12,23 @@ const pool = mysql.createPool({
 }).promise();
 
 async function getUserById(id) {
-  const [rows] = await pool.query(`SELECT users_1.*, JSON_ARRAYAGG(saved_properties_1.saved_property) AS "savedProperties"
-  FROM users_1 
-  LEFT JOIN saved_properties_1 ON saved_properties_1.user_id = users_1.id
+  const [rows] = await pool.query(`SELECT users.*, JSON_ARRAYAGG(saved_properties.saved_property) AS "savedProperties"
+  FROM users 
+  LEFT JOIN saved_properties ON saved_properties.user_id = users.id
   WHERE id = ?
-  GROUP BY users_1.id
+  GROUP BY users.id
   `, [id]);
   return rows[0];
 }
 
 async function getAllUsers(){
-    const [rows] = await pool.query("SELECT * FROM users_1");
+    const [rows] = await pool.query("SELECT * FROM users");
     return rows;
 }
 
 async function savePropertyInMySQL(id, property){
     const [result] = await pool.query(` 
-    INSERT INTO saved_properties_1 (user_id, saved_property)
+    INSERT INTO saved_properties (user_id, saved_property)
     VALUES (?, ?)
     `, [id, property]);
     const user = result.insertId;
@@ -37,7 +37,7 @@ async function savePropertyInMySQL(id, property){
 
 async function unSavePropertyInMySQL(id, property){
     const [result] = await pool.query(` 
-    DELETE FROM saved_properties_1 WHERE user_id = ? AND saved_property = ?
+    DELETE FROM saved_properties WHERE user_id = ? AND saved_property = ?
     `, [id, property]);
     const user = result.insertId;
     return getUserById(user);

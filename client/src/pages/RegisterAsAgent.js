@@ -9,17 +9,17 @@ const RegisterAsAgent = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
+    const [agentName, setAgentName] = useState('');
     const [isAgent, setIsAgent] = useState(1);
     const [agentPhoto, setAgentPhoto] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const user = { username, email, password, isAgent};
+        const user = { agentName, email, password, isAgent};
         axios({
             data: user,
             method: 'post',
-            url: '/api/register',
+            url: '/api/registerasagent',
         })
          .then(res => {
             console.log(res);
@@ -40,8 +40,8 @@ const RegisterAsAgent = () => {
                     type="text" 
                     name="name" 
                     required
-                    value={username}
-                    onChange={(e) => {setUsername(e.target.value);}}
+                    value={agentName}
+                    onChange={(e) => {setAgentName(e.target.value);}}
                     ></input>
 
                     <label htmlFor="email-address">Email address</label>

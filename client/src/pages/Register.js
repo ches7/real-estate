@@ -9,12 +9,11 @@ const Register = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [username, setUsername] = useState('');
     const [isAgent, setIsAgent] = useState(0);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const user = { username, email, password, isAgent };
+        const user = { email, password, isAgent };
         axios({
             data: user,
             method: 'post',
@@ -39,7 +38,7 @@ const Register = () => {
                     name="email-address" 
                     required
                     value={email}
-                    onChange={(e) => {setEmail(e.target.value); setUsername(e.target.value);}}
+                    onChange={(e) => {setEmail(e.target.value);}}
                     ></input>
 
                     <label htmlFor="password">Password</label>
