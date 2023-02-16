@@ -25,11 +25,14 @@ const PropertyCard = (props) => {
     window.location.href = `/properties/${props.id}`;
   }
 
+  //console.log(user.id);
+  console.log(props.agent);
+
   let deleteButton;
-  if (user && user.id === props.agent) { deleteButton = <DeleteButton id={props.id}/> }
+  if (user && (user.id == props.agent)) { deleteButton = <DeleteButton id={props.id}/> }
 
   let updateButton;
-  if (user && user.id === props.agent) { updateButton = <UpdateButton id={props.id}/> }
+  if (user && (user.id == props.agent)) { updateButton = <UpdateButton id={props.id}/> }
 
     return (
         <div className="d-flex justify-content-center">

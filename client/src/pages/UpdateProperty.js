@@ -20,7 +20,7 @@ export default function AddProperty() {
   const [type, setType] = useState('detached');
   const [photos, setPhotos] = useState('');
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
-  const [agent, setAgent] = useState(`${user._id}`);
+  const [agent, setAgent] = useState(`${user.id}`);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -55,7 +55,7 @@ function Account() {
   }, [userData])
 
   useEffect(() => {
-    if (!userData.agent) return;
+    if (!userData.isAgent) return;
       const fetchMyPropertyData = async () => {
         await axios.get(`/api/properties?agent=${user.id}`)
           .then(res => {
