@@ -1,5 +1,5 @@
 import express from "express";
-import agent from "../controllers/agent.js"
+import agent from "../controllers/agentMySQL.js"
 import catchAsync from "../utils/catchAsync.js";
 import { verifyAgent, verifyUser } from "../utils/verifyToken.js";
 

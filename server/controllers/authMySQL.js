@@ -6,6 +6,22 @@ import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
 dotenv.config();
 import mysql from 'mysql2';
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import crypto from 'crypto';
+const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKeyId = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
+
+const s3Client = new S3Client({
+  credentials: {
+    accessKeyId,
+    secretAccessKey
+  },
+  region: bucketRegion
+})
 
 
 const pool = mysql.createPool({
@@ -35,11 +51,11 @@ async function getUserByEmail(email) {
   return rows[0];
 }
 
-async function createAgent(agentName, email, password, isAgent) {
+async function createAgent(agentName, email, password, isAgent, agentPhoto) {
   const [result] = await pool.query(` 
-  INSERT INTO users (agentName, email, password, isAgent)
-  VALUES (?, ?, ?, ?)
-  `, [agentName, email, password, isAgent]);
+  INSERT INTO users (agentName, email, password, isAgent, agentPhoto)
+  VALUES (?, ?, ?, ?, ?)
+  `, [agentName, email, password, isAgent, agentPhoto]);
   const id = result.insertId;
   return getUser(id);
 }
@@ -65,7 +81,21 @@ const registerAsAgent = async (req, res, next) => {
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.password, salt);
   const { agentName, email, isAgent } = req.body;
-  const agent = await createAgent(agentName, email, hash, isAgent);
+
+  //upload new photo to aws
+  let fileName = generateFileName();
+console.log(req.body)
+  console.log(req.file)
+  const uploadParams = {
+    Bucket: bucketName,
+    Body: req.file.buffer,
+    Key: fileName,
+    ContentType: req.file.mimetype
+  }
+  await s3Client.send(new PutObjectCommand(uploadParams));
+
+
+  const agent = await createAgent(agentName, email, hash, isAgent, fileName);
   res.status(201).send("Agent has been created.");
 };
 
@@ -93,7 +123,7 @@ const signin = async (req, res, next) => {
       sameSite: "none",
     })
     .status(200)
-    .json({ details: { ...otherDetails }})
+    .json({ details: { ...otherDetails } })
     .send();
 };
 

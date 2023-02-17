@@ -37,6 +37,8 @@ function Property() {
     fetchData();
   }, [params.id]);
 
+  let imageLink = 'https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png';
+
   useEffect(() => {
     if (data.geometry === undefined) return;
     if (lng === data.geometry.coordinates[0]) return;
@@ -88,7 +90,7 @@ function Property() {
                   <h3><Link to={`/agents/${data.agent}`}>view agent properties</Link></h3>
                 </div>
                 <div>
-                  <img src='https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png' alt='agent logo' width="130" height="70"></img>
+                  <img src={imageLink} alt='agent logo' width="130" height="70"></img>
                 </div>
               </div>
               <SaveProperty id={params.id}/>
