@@ -66,13 +66,15 @@ const getProperties = async (req, res, next) => {
         queryArray.push(saleOrRentQuery);
     }
 
-    if (!isNaN(req.query.beds)) {
+    if (!isNaN(req.query.beds) && req.query.beds != 'undefined' && req.query.beds != undefined && req.query.beds != ''
+    && req.query.beds != 'null' && req.query.beds != null) {
         let beds = new Number(req.query.beds);
         let bedsQuery = { ['beds']: { ['$gte']: beds } }
         queryArray.push(bedsQuery);
     }
 
-    if (!isNaN(req.query.price)) {
+    if (!isNaN(req.query.price) && req.query.price != 'undefined' && req.query.price != undefined && req.query.price != ''
+    && req.query.price != 'null' && req.query.price != null ) {
         let price = new Number(req.query.price);
         let priceQuery = { ['price']: { ['$lte']: price } }
         queryArray.push(priceQuery);
@@ -89,6 +91,8 @@ const getProperties = async (req, res, next) => {
             queryArray.push(typeQuery);
         };
     }
+
+    console.log(queryArray);
 
     const properties = await Property.find({
         $and: queryArray
