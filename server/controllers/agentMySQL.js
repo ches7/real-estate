@@ -38,8 +38,7 @@ async function getAgentById(id) {
 const getAgent = async (req,res,next)=>{
     const agent = await getAgentById(req.params.id);
     if (!agent){
-        res.status(500);
-        return;
+        next()
     }
     res.status(200).json(agent);
 }
