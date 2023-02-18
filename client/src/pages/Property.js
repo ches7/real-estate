@@ -40,6 +40,7 @@ function Property() {
   let imageLink = 'https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png';
 
   useEffect(() => {
+    if (data === null) return;
     if (data.geometry === undefined) return;
     if (lng === data.geometry.coordinates[0]) return;
     setLng(data.geometry.coordinates[0]);
@@ -47,6 +48,7 @@ function Property() {
   }, [data])
 
   useEffect(() => {
+    if (data === null) return;
     if (lng === undefined) return;
     if (lat === undefined) return;
     if (map.current) return; // initialize map only once

@@ -1,4 +1,6 @@
 import Property from "../models/Property.js";
+import ExpressError from "../utils/ExpressError.js";
+import mongoose from "mongoose";
 import mbxGeocoding from "@mapbox/mapbox-sdk/services/geocoding.js";
 //dotenv needs to be imported here to prevent crash -> due to env variables being imported outside export statement
 import dotenv from "dotenv";
@@ -115,9 +117,17 @@ const getProperties = async (req, res, next) => {
 };
 
 const getProperty = async (req, res, next) => {
+    var check = mongoose.Types.ObjectId.isValid(req.params.id)
+    // var check = mongoose.Types.ObjectId('4edd40c86762e0f3cv3ccv');
+    console.log(check)
+    if(!check){
+        // return next(new ExpressError("Property not found!", 404))
+        next();
+    }
     let property = await Property.findById(req.params.id);
-    //console.log(property);
-    if (property == null) {
+    console.log(property);
+    if (!property) {
+        // return next(new ExpressError("Property not found!", 404))
         next()
     } else if (property.awsPhotoName.length === 0) {
         res.status(200).json(property)

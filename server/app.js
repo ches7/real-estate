@@ -38,6 +38,7 @@ app.all('*', (req, res, next) => {
 
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err;
+    // const statusCode = err.status || 500;
     if (!err.message) err.message = 'Something Went Wrong'
     return res.status(statusCode).json({ 
         success: false,
