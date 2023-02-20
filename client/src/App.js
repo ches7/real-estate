@@ -23,6 +23,7 @@ import RegisterAsAgent from "./pages/RegisterAsAgent";
 import AddProperty from "./pages/AddProperty";
 import AgentPage from "./pages/AgentPage";
 import AgentsList from "./pages/AgentsList";
+import UpdateUserDetails from "./pages/UpdateUserDetails";
 
 axios.defaults.withCredentials = true;
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/register" element={<Register/>}/>
           <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>
           <Route path="/account" element={<Account/>}/>
+          <Route path="/account/update" element={<UpdateUserDetails/>}/>
           <Route path="/agents" element={<AgentsList/>}/>
           <Route path="/agents/:id" element={<AgentPage/>}/>
           <Route path="/for-sale/properties" element={<ListSale/>}/>

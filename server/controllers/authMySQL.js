@@ -99,6 +99,22 @@ console.log(req.body)
   res.status(201).send("Agent has been created.");
 };
 
+async function updateEmail(email, id) {
+  const [rows] = await pool.query(`UPDATE users
+  SET users.email = ?
+  WHERE users.id = ?
+  `, [email, id]);
+  return rows[0];
+}
+
+const update = async (req, res, next) => {
+  const { email, id } = req.body;
+  console.log(email)
+  console.log(id)
+  const user = await updateEmail(email, id);
+  res.status(201).send("User has been updated.");
+};
+
 const signin = async (req, res, next) => {
   const user = await getUserByEmail(req.body.email);
   if (!user) return next(new ExpressError(404, "User not found!"));
@@ -136,4 +152,4 @@ const signout = async (req, res, next) => {
   }).status(200).send();
 };
 
-export default { register, registerAsAgent, signin, signout };
+export default { register, registerAsAgent, update, signin, signout };

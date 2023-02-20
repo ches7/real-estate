@@ -61,7 +61,7 @@ const RegisterAsAgent = () => {
                     ></input>
 
                     <label htmlFor="agentPhoto">Agent Photo</label>
-                    <input onChange={handlePhoto} type="file" name="agentPhoto" accept="image/*"></input>
+                    <input onChange={handlePhoto} type="file" required name="agentPhoto" accept="image/*"></input>
 
                     <label htmlFor="password">Password</label>
                     <input

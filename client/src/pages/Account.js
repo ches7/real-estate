@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import NotFound from '../NotFound';
+import SignIn from './SignIn';
 import { AuthContext } from '../utils/AuthContext';
 import { useContext } from 'react';
 import PropertyCard from '../components/PropertyCard';
@@ -24,13 +25,12 @@ function Account() {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!user) return;
       await axios.get(`/api/users/${user.id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setUserData(res.data); } })
         .catch(err => { setUserError(err.message); setUserData(null) });
     }
     fetchData();
-    console.log('here');
-
   }, [user]);
 
   useEffect(() => {
@@ -50,7 +50,6 @@ function Account() {
           .catch(err => { setPropertyError(err.message); });
       }
       fetchPropertyData();
-      console.log('here2')
     }
   }, [userData])
 
@@ -67,7 +66,6 @@ function Account() {
           .catch(err => { setMyPropertyError(err.message); });
       }
       fetchMyPropertyData();
-      console.log('here3')
   }, [userData])
 
 
@@ -75,18 +73,18 @@ function Account() {
     navigate('/add-property')
   }
 
-  const handleUpdateButton = () => {
+  const handleUpdateUserButton = () => {
     navigate('/account/update')
   }
 
-  if (userError || !userData) {
+  if (!user || userError || !userData) {
   // if (userError || !userData || propertyError) {
-    return (<NotFound />)
+    return (<SignIn />)
   } else
     return (
       <div>
         {userData.isAgent === 1 ? <button onClick={handleAddButton}>Add property</button> : null}
-        <button onClick={handleUpdateButton}>Update user details</button>
+        <button onClick={handleUpdateUserButton}>UpdateUserDetails</button>
 
         {userData.isAgent === 1 ? <h1>My properties</h1> : null}
         <div>

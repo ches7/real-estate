@@ -16,7 +16,7 @@ export const verifyUser = (req, res, next) => {
     req.user = user;
   });
 
-  if (req.user.id === req.params.id || req.user.isAgent) {
+  if (req.user.id == req.params.id || req.user.isAgent) {
     next();
   } else {
     return next(new ExpressError(403, "You are not authorized!"));
