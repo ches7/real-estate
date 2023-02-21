@@ -77,6 +77,10 @@ function Account() {
     navigate('/account/update')
   }
 
+  const handleChangePasswordButton = () => {
+    navigate('/account/change-password')
+  }
+
   if (!user || userError || !userData) {
   // if (userError || !userData || propertyError) {
     return (<SignIn />)
@@ -85,6 +89,7 @@ function Account() {
       <div>
         {userData.isAgent === 1 ? <button onClick={handleAddButton}>Add property</button> : null}
         <button onClick={handleUpdateUserButton}>UpdateUserDetails</button>
+        <button onClick={handleChangePasswordButton}>Change Password</button>
 
         {userData.isAgent === 1 ? <h1>My properties</h1> : null}
         <div>

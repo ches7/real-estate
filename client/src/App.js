@@ -24,6 +24,7 @@ import AddProperty from "./pages/AddProperty";
 import AgentPage from "./pages/AgentPage";
 import AgentsList from "./pages/AgentsList";
 import UpdateUserDetails from "./pages/UpdateUserDetails";
+import ChangePassword from "./pages/ChangePassword";
 
 axios.defaults.withCredentials = true;
 
@@ -42,6 +43,7 @@ function App() {
           <Route path="/register-as-agent" element={<RegisterAsAgent/>}/>
           <Route path="/account" element={<Account/>}/>
           <Route path="/account/update" element={<UpdateUserDetails/>}/>
+          <Route path="/account/change-password" element={<ChangePassword/>}/>
           <Route path="/agents" element={<AgentsList/>}/>
           <Route path="/agents/:id" element={<AgentPage/>}/>
           <Route path="/for-sale/properties" element={<ListSale/>}/>

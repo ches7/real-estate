@@ -158,6 +158,32 @@ const updateAgent = async (req, res, next) => {
   res.status(201).send("Agent has been updated.");
 };
 
+async function changePasswordInMySQL(password, id) {
+  const [rows] = await pool.query(`UPDATE users
+  SET users.password = ?
+  WHERE users.id = ?
+  `, [password, id]);
+  return rows[0];
+}
+
+const changePassword = async (req, res, next) => {
+  const user = await getUser(req.body.id);
+  if (!user) return next(new ExpressError(404, "User not found!"));
+
+  const isPasswordCorrect = await bcrypt.compare(
+    req.body.oldPassword,
+    user.password
+  );
+  if (!isPasswordCorrect)
+    return next(new ExpressError(400, "Wrong password or username!"));
+
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(req.body.newPassword, salt);
+
+  const updatedPassword = await changePasswordInMySQL(hash, req.body.id);
+  res.status(201).send("Password updated");
+};
+
 const signin = async (req, res, next) => {
   const user = await getUserByEmail(req.body.email);
   if (!user) return next(new ExpressError(404, "User not found!"));
@@ -195,4 +221,4 @@ const signout = async (req, res, next) => {
   }).status(200).send();
 };
 
-export default { register, registerAsAgent, updateUser, updateAgent, signin, signout };
+export default { register, registerAsAgent, updateUser, updateAgent, changePassword, signin, signout };
