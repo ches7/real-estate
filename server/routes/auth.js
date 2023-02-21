@@ -10,7 +10,8 @@ const router = express.Router();
 
 router.post("/register", catchAsync(auth.register))
 router.post("/registerasagent", upload.single("agentPhoto"), catchAsync(auth.registerAsAgent))
-router.patch("/update", catchAsync(auth.update))
+router.patch("/updateuser", catchAsync(auth.updateUser))
+router.patch("/updateagent", upload.single("agentPhoto"), catchAsync(auth.updateAgent))
 router.post("/signin", catchAsync(auth.signin))
 router.get("/signout", catchAsync(auth.signout))
 

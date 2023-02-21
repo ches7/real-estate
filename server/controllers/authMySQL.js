@@ -1,10 +1,9 @@
-import User from "../models/User.js";
+//dotenv needs to be imported here to prevent crash -> due to env variables being imported outside export statement
+import dotenv from 'dotenv';
+dotenv.config();
 import bcrypt from "bcryptjs";
 import ExpressError from "../utils/ExpressError.js";
 import jwt from "jsonwebtoken";
-
-import dotenv from 'dotenv';
-dotenv.config();
 import mysql from 'mysql2';
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -84,8 +83,6 @@ const registerAsAgent = async (req, res, next) => {
 
   //upload new photo to aws
   let fileName = generateFileName();
-console.log(req.body)
-  console.log(req.file)
   const uploadParams = {
     Bucket: bucketName,
     Body: req.file.buffer,
@@ -107,12 +104,58 @@ async function updateEmail(email, id) {
   return rows[0];
 }
 
-const update = async (req, res, next) => {
+async function updateAgentInMySQL(email, agentName, agentPhoto, id) {
+  const [rows] = await pool.query(`UPDATE users
+  SET users.email = ?, users.agentName = ?, users.agentPhoto = ?
+  WHERE users.id = ?
+  `, [email, agentName, agentPhoto, id]);
+  return rows[0];
+}
+
+const updateUser = async (req, res, next) => {
   const { email, id } = req.body;
-  console.log(email)
-  console.log(id)
+
+  //check user exists
+  const userBeforeUpdate = await getUser(id);
+  if (!userBeforeUpdate) {
+    res.status(404).send("user not found");
+    return;
+  }
+
   const user = await updateEmail(email, id);
   res.status(201).send("User has been updated.");
+};
+
+const updateAgent = async (req, res, next) => {
+  const { email, id, agentName } = req.body;
+
+  //check agent exists
+  const agentBeforeUpdate = await getUser(id);
+  if (!agentBeforeUpdate) {
+    res.status(404).send("agent not found");
+    return;
+  }
+  //upload new photo to aws
+  let fileName = generateFileName();
+  const uploadParams = {
+    Bucket: bucketName,
+    Body: req.file.buffer,
+    Key: fileName,
+    ContentType: req.file.mimetype
+  }
+  await s3Client.send(new PutObjectCommand(uploadParams));
+
+  //delete old photos from aws
+  if (agentBeforeUpdate.agentPhoto != null) {
+    const params = {
+      Bucket: bucketName,
+      Key: agentBeforeUpdate.agentPhoto,
+    }
+    await s3Client.send(new DeleteObjectCommand(params))
+  }
+
+  const agent = await updateAgentInMySQL(email, agentName, fileName, id);
+  res.status(201).send("Agent has been updated.");
 };
 
 const signin = async (req, res, next) => {
@@ -152,4 +195,4 @@ const signout = async (req, res, next) => {
   }).status(200).send();
 };
 
-export default { register, registerAsAgent, update, signin, signout };
+export default { register, registerAsAgent, updateUser, updateAgent, signin, signout };

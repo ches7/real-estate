@@ -37,12 +37,30 @@ const UpdateUserDetails = () => {
       fetchData();
     }, [user]);
 
-    const handleSubmit = async (e) => {
+    const handleUserSubmit = async (e) => {
         e.preventDefault();
         await axios({
             data: { email, id },
             method: 'patch',
-            url: '/api/update',
+            url: '/api/updateuser',
+        })
+         .then(res => {
+            console.log(res);
+         })
+         const res2 = await axios.get(`/api/users/${user.id}`);
+         console.log(res2)
+            dispatch({ type: "REFRESH", payload: res2.data });
+            navigate(`/account`);
+    
+      }
+
+      const handleAgentSubmit = async (e) => {
+        e.preventDefault();
+        await axios({
+            data: { email, id, agentName, agentPhoto },
+            method: 'patch',
+            url: '/api/updateagent',
+            headers: { 'Content-Type': 'multipart/form-data' }
         })
          .then(res => {
             console.log(res);
@@ -65,7 +83,7 @@ const UpdateUserDetails = () => {
             <h1>Update user details</h1>
             <h2><Link to="/account">Back to your account </Link></h2>
             <div className="search-container">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleUserSubmit}>
 
                     <label htmlFor="email-address">Email address</label>
                     <input 
@@ -87,7 +105,7 @@ const UpdateUserDetails = () => {
             <h1>Update user details</h1>
             <h2><Link to="/account">Back to your account </Link></h2>
             <div className="search-container">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleAgentSubmit}>
                 <label htmlFor="name">Agent Name</label>
                     <input
                         type="text"
