@@ -4,6 +4,22 @@ import dotenv from 'dotenv';
 dotenv.config();
 import mysql from 'mysql2';
 
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const bucketName = process.env.BUCKET_NAME
+const bucketRegion = process.env.BUCKET_REGION
+const accessKeyId = process.env.ACCESS_KEY
+const secretAccessKey = process.env.SECRET_ACCESS_KEY
+
+const s3Client = new S3Client({
+  credentials: {
+    accessKeyId,
+    secretAccessKey
+  },
+  region: bucketRegion
+})
+
 
 const pool = mysql.createPool({
   host: process.env.MYSQL_HOST,
@@ -27,7 +43,19 @@ const getAgent = async (req,res,next)=>{
     if (!agent){
         next();
     }
-    res.status(200).json(agent);
+
+  //get photo from aws
+  if (agent.agentPhoto != null) {
+    const params = {
+      Bucket: bucketName,
+      Key: agent.agentPhoto,
+    }
+    const command = new GetObjectCommand(params);
+    let photo = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+    agent.agentPhoto = photo;
+  }
+  
+  res.status(200).json(agent);
 }
 
 async function getAgentsFromMySQL() {
@@ -45,6 +73,19 @@ const getAgents = async (req,res,next)=>{
     const agents = await getAgentsFromMySQL();
     if (!agents){
         next();
+    }
+
+    //get photo from aws
+    for(let i = 0; i < agents.length; i++){
+  if (agents[i].agentPhoto != null) {
+    const params = {
+      Bucket: bucketName,
+      Key: agents[i].agentPhoto,
+    }
+    const command = new GetObjectCommand(params);
+    let photo = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+    agents[i].agentPhoto = photo;
+  }
     }
     res.status(200).json(agents);
 }
