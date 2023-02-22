@@ -122,17 +122,12 @@ const getProperties = async (req, res, next) => {
 
 const getProperty = async (req, res, next) => {
     var check = mongoose.Types.ObjectId.isValid(req.params.id)
-    // var check = mongoose.Types.ObjectId('4edd40c86762e0f3cv3ccv');
-    console.log(check)
-    if(!check){
-        // return next(new ExpressError("Property not found!", 404))
-        next();
+    if (!check) {
+        return next(new ExpressError("Property not found!", 404));
     }
     let property = await Property.findById(req.params.id);
-    console.log(property);
     if (!property) {
-        // return next(new ExpressError("Property not found!", 404))
-        next()
+        return next(new ExpressError("Property not found!", 404));
     } else if (property.awsPhotoName.length === 0) {
         res.status(200).json(property)
     } else {
@@ -163,6 +158,9 @@ const createProperty = async (req, res, next) => {
         query: geoQuery,
         limit: 1
     }).send();
+    if (!mbxResponse) {
+        return next(new ExpressError("Something went wrong!", 500));
+    }
     const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
 
     //upload new photos to aws
@@ -182,6 +180,9 @@ const createProperty = async (req, res, next) => {
         return awsFileNames;
     }
     const upload = await awsUpload();
+    if (!upload) {
+        return next(new ExpressError("Something went wrong!", 500));
+    }
 
     //add property to mongodb
     const property = new Property({
@@ -212,9 +213,7 @@ const updateProperty = async (req, res, next) => {
     //check property exists
     const propertyBeforeUpdate = await Property.findById(req.params.id);
     if (!propertyBeforeUpdate) {
-        res.status(404).send("property not found");
-        console.log("property not found");
-        return;
+        return next(new ExpressError("Property not found!", 404));
     }
 
     //capitalise input char 0 in order to find when searching for location
@@ -227,6 +226,9 @@ const updateProperty = async (req, res, next) => {
         query: geoQuery,
         limit: 1
     }).send();
+    if (!mbxResponse) {
+        return next(new ExpressError("Something went wrong!", 500));
+    }
     const mbxCoordinates = mbxResponse.body.features[0].geometry.coordinates;
 
     //upload new photos to aws
@@ -246,6 +248,9 @@ const updateProperty = async (req, res, next) => {
         return awsFileNames;
     }
     const upload = await awsUpload();
+    if (!upload) {
+        return next(new ExpressError("Something went wrong!", 500));
+    }
 
     //delete old photos from aws
     if (propertyBeforeUpdate.awsPhotoName.length !== 0) {
@@ -278,9 +283,15 @@ const updateProperty = async (req, res, next) => {
             },
         }
     });
+    if (!updatedProperty) {
+        return next(new ExpressError("Something went wrong!", 500));
+    }
 
     //respond with updated property
     const propertyAfterUpdate = await Property.findById(req.params.id);
+    if (!propertyAfterUpdate) {
+        return next(new ExpressError("Property not found!", 404));
+    }
     await res.status(200).json(propertyAfterUpdate);
 };
 
@@ -288,9 +299,7 @@ const deleteProperty = async (req, res, next) => {
     //check if property exists
     const property = await Property.findById(req.params.id);
     if (!property) {
-        res.status(404).send("property not found");
-        console.log("property not found")
-        return;
+        return next(new ExpressError("Property not found!", 404));
     }
 
     //delete photos from aws

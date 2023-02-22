@@ -73,6 +73,9 @@ const register = async (req, res, next) => {
   const hash = bcrypt.hashSync(req.body.password, salt);
   const { email, isAgent } = req.body;
   const user = await createUser(email, hash, isAgent);
+  if(!user){
+    return next(new ExpressError("Something went wrong!", 500));
+}
   res.status(201).send("User has been created.");
 };
 
@@ -93,6 +96,9 @@ const registerAsAgent = async (req, res, next) => {
 
 
   const agent = await createAgent(agentName, email, hash, isAgent, fileName);
+  if(!agent){
+    return next(new ExpressError("Something went wrong!", 500));
+}
   res.status(201).send("Agent has been created.");
 };
 
@@ -118,11 +124,13 @@ const updateUser = async (req, res, next) => {
   //check user exists
   const userBeforeUpdate = await getUser(id);
   if (!userBeforeUpdate) {
-    res.status(404).send("user not found");
-    return;
+      return next(new ExpressError("User not found!", 404));
   }
 
   const user = await updateEmail(email, id);
+  if (!user) {
+    return next(new ExpressError("Something went wrong!", 500));
+}
   res.status(201).send("User has been updated.");
 };
 
@@ -132,9 +140,8 @@ const updateAgent = async (req, res, next) => {
   //check agent exists
   const agentBeforeUpdate = await getUser(id);
   if (!agentBeforeUpdate) {
-    res.status(404).send("agent not found");
-    return;
-  }
+    return next(new ExpressError("Agent not found!", 404));
+}
   //upload new photo to aws
   let fileName = generateFileName();
   const uploadParams = {
@@ -155,6 +162,9 @@ const updateAgent = async (req, res, next) => {
   }
 
   const agent = await updateAgentInMySQL(email, agentName, fileName, id);
+  if (!agent) {
+    return next(new ExpressError("Something went wrong!", 500));
+}
   res.status(201).send("Agent has been updated.");
 };
 
@@ -168,7 +178,7 @@ async function changePasswordInMySQL(password, id) {
 
 const changePassword = async (req, res, next) => {
   const user = await getUser(req.body.id);
-  if (!user) return next(new ExpressError(404, "User not found!"));
+  if (!user) return next(new ExpressError("User not found!", 404));
 
   const isPasswordCorrect = await bcrypt.compare(
     req.body.oldPassword,
@@ -187,14 +197,14 @@ const changePassword = async (req, res, next) => {
 
 const signin = async (req, res, next) => {
   const user = await getUserByEmail(req.body.email);
-  if (!user) return next(new ExpressError(404, "User not found!"));
+  if (!user) return next(new ExpressError("User not found!", 404));
 
   const isPasswordCorrect = await bcrypt.compare(
     req.body.password,
     user.password
   );
   if (!isPasswordCorrect)
-    return next(new ExpressError(400, "Wrong password or username!"));
+    return next(new ExpressError("Wrong password or username!", 404));
 
   const token = jwt.sign(
     { id: user.id, isAgent: user.isAgent },

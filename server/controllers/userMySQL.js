@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import mysql from 'mysql2';
+import ExpressError from '../utils/ExpressError.js';
 
 
 const pool = mysql.createPool({
@@ -42,38 +43,36 @@ async function unSavePropertyInMySQL(id, property){
     return getUserById(user);
 }
 
-const updateUser = async (req,res,next)=>{
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
-}
-
-const deleteUser = async (req,res,next)=>{
-    await User.findByIdAndDelete(req.params.id);
-    res.status(200).json("User has been deleted.");
-}
-
 const getUser = async (req,res,next)=>{
     const user = await getUserById(req.params.id);
+    if(!user){
+        return next(new ExpressError("User not found!", 404));
+    }
     res.status(200).json(user);
 }
 
 const getUsers = async (req,res,next)=>{
     const users = await getAllUsers();
+    if(!users){
+        return next(new ExpressError("Users not found!", 404));
+    }
     res.status(200).json(users);
 }
 
 const saveProperty = async (req, res, next) => {
     const updatedUser = await savePropertyInMySQL(req.body.id, req.body.property);
+    if(!updatedUser){
+        return next(new ExpressError("Something went wrong!", 500));
+    }
     res.status(200).json(updatedUser);
 }
 
 const unSaveProperty = async (req, res, next) => {
     const updatedUser = await unSavePropertyInMySQL(req.body.id, req.body.property);
+    if(!updatedUser){
+        return next(new ExpressError("Something went wrong!", 500));
+    }
     res.status(200).json(updatedUser);
 } 
 
-export default { updateUser, deleteUser, getUser, getUsers, saveProperty, unSaveProperty }
+export default { getUser, getUsers, saveProperty, unSaveProperty }

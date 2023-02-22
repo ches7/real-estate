@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import ExpressError from "../utils/ExpressError.js";
 
 import dotenv from 'dotenv';
 dotenv.config();
@@ -41,7 +42,8 @@ async function getAgentById(id) {
 const getAgent = async (req,res,next)=>{
     const agent = await getAgentById(req.params.id);
     if (!agent){
-        next();
+        // next();
+        return next(new ExpressError("Agent not found!", 404));
     }
 
   //get photo from aws
@@ -72,7 +74,8 @@ const getAgents = async (req,res,next)=>{
 
     const agents = await getAgentsFromMySQL();
     if (!agents){
-        next();
+        // next();
+        return next(new ExpressError("Agents not found!", 404));
     }
 
     //get photo from aws
