@@ -6,92 +6,120 @@ import { useContext } from "react";
 import { useEffect } from "react";
 import { AuthContext } from "../utils/AuthContext";
 import NotFound from "../NotFound";
+import React from "react";
+import Flash from "../components/Flash.js";
+import styles from "./ChangePassword.module.css";
 
 const ChangePassword = () => {
 
-    const navigate = useNavigate();
-    const [oldPassword, setOldPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [active, setActive] = useState(false);
+  const [type, setType] = useState("default");
+  const [width, setWidth] = useState("default");
+  const [position, setPosition] = useState("default");
+  const [timer, setTimer] = useState(2000);
+  const [message, setMessage] = useState("");
 
-    const { user, dispatch } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
 
-    // useEffect(() => {
-    //   const fetchData = async () => {
-    //     if (!user) return;
-    //     await axios.get(`/api/users/${user.id}`)
-    //       .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { 
-    //         setEmail(res.data.email);
-    //         setId(res.data.id);
-    //         if(res.data.isAgent == 1){
-    //             setIsAgent(1);
-    //             setAgentName(res.data.agentName);
-    //         }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      setMessage('passwords do not match')
+      setType('error')
+      handleShowFlash();
+      return;
+    };
+    const id = user.id;
+    const response = await axios({
+      data: { id, oldPassword, newPassword },
+      method: 'patch',
+      url: '/api/changepassword',
+    })
+      .catch(err => {
+        setMessage(err.response.data.message);
+        setType('error')
+        handleShowFlash();
+      });
 
-    //      } })
-    //       .catch(err => { setUserError(err.message); setEmail(null) });
-    //   }
-    //   fetchData();
-    // }, [user]);
+    if (!response) return;
+    setMessage('password changed')
+    setType('success')
+    handleShowFlash();
+    const res2 = await axios.get(`/api/users/${user.id}`);
+    console.log(res2)
+    dispatch({ type: "REFRESH", payload: res2.data });
+    navigate(`/account`);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (newPassword !== confirmPassword) {
-            console.log('passwords do not match')
-            return; /*flash error message*/};
-        const id = user.id;
-        await axios({
-            data: { id, oldPassword, newPassword },
-            method: 'patch',
-            url: '/api/changepassword',
-        })
-         .then(res => {
-            console.log(res);
-         })
-         const res2 = await axios.get(`/api/users/${user.id}`);
-         console.log(res2)
-            dispatch({ type: "REFRESH", payload: res2.data });
-            navigate(`/account`);
-    
-      }
+  }
 
-      if (!user) return <NotFound/>;
-        return (
-            <div>
-            <h1>Update user details</h1>
-            <h2><Link to="/account">Back to your account </Link></h2>
-            <div className="search-container">
-                <form onSubmit={handleSubmit}>
+  const hideFlash = () => {
+    setActive(false);
+  };
 
-                    <label htmlFor="old-password">Old Password</label>
-                    <input 
-                    type="text" 
-                    name="old-password" 
-                    required
-                    onChange={(e) => {setOldPassword(e.target.value);}}
-                    ></input>
+  const handleShowFlash = () => {
+    hideFlash();
+    if (message) {
+      setActive(true);
+      window.setTimeout(hideFlash, timer);
+    }
+  };
 
-<label htmlFor="new-password">New Password</label>
-                    <input 
-                    type="text" 
-                    name="new-password" 
-                    required
-                    onChange={(e) => {setNewPassword(e.target.value);}}
-                    ></input>
+  if (!user) return <NotFound />;
+  return (
+    <main className={styles.main}>
+      <header className={styles.hero}>
+        <h1 className={styles.heading}>Change password</h1>
+        <p className={styles.paragraph}>
+          <Link to="/account">Back to your account </Link>
+        </p>
+      </header>
+      <form onSubmit={handleSubmit} className={styles.testForm}>
+        <label htmlFor="old-password">Old Password</label>
+        <input
+          type="text"
+          name="old-password"
+          required
+          onChange={(e) => { setOldPassword(e.target.value); }}
+        ></input>
 
-<label htmlFor="confirm-password">Confirm Password</label>
-                    <input 
-                    type="text" 
-                    name="confirm-password" 
-                    required
-                    onChange={(e) => {setConfirmPassword(e.target.value);}}
-                    ></input>
+        <label htmlFor="new-password">New Password</label>
+        <input
+          type="text"
+          name="new-password"
+          required
+          onChange={(e) => { setNewPassword(e.target.value); }}
+        ></input>
 
-                    <button type="submit">Update</button>
-                </form>
-            </div>
+        <label htmlFor="confirm-password">Confirm Password</label>
+        <input
+          type="text"
+          name="confirm-password"
+          required
+          onChange={(e) => { setConfirmPassword(e.target.value); }}
+        ></input>
+        <div>
+          <button type="submit" className={styles.button}>
+            Change password
+          </button>
         </div>
-        )
+      </form>
+      {active && (
+        <Flash
+          type={type}
+          message={message}
+          duration={3000}
+          active={active}
+          setActive={setActive}
+          position={"bcenter"}
+          width={"default"}
+        />
+      )}
+    </main>
+  );
 };
 
 export default ChangePassword;

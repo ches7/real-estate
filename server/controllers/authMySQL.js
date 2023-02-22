@@ -174,8 +174,9 @@ const changePassword = async (req, res, next) => {
     req.body.oldPassword,
     user.password
   );
-  if (!isPasswordCorrect)
-    return next(new ExpressError(400, "Wrong password or username!"));
+  if (!isPasswordCorrect){
+    return next(new ExpressError("Wrong password or username!", 400));
+  }
 
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(req.body.newPassword, salt);

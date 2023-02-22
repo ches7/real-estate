@@ -1,0 +1,118 @@
+:root {
+  --spacing: 1rem;
+  --padding: 0.5rem;
+  --background-color: #fff;
+  --border-color: #eee;
+  --text-color: #000;
+  --border-size: 2px;
+  --border-radius: 4px;
+  --small: 25%;
+  --medium: 50%;
+  --large: 75%;
+}
+
+body {
+  overflow: hidden;
+}
+
+.flash {
+  display: flex;
+  border: var(--border-size) solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  position: absolute;
+  top: 1rem;
+}
+.flash .flashDismiss {
+  margin-left: auto;
+  padding: var(--padding);
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 0;
+  border-left: var(--border-size) solid var(--border-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.flash .flashMessage {
+  padding: var(--padding);
+  font: inherit;
+}
+
+.flash.tleft {
+  left: 1rem;
+}
+
+.flash.default,
+.flash.tright {
+  right: 1rem;
+}
+
+.flash.bleft {
+  top: 35rem;
+  left: 1rem;
+}
+
+.flash.bright {
+  top: 35rem;
+  right: 1rem;
+}
+
+.flash.tcenter {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.flash.bcenter {
+  top: auto;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.flash.success {
+  --background-color: #d4edda;
+  --border-color: #c3e6cb;
+  --text-color: #155724;
+}
+
+.flash.error {
+  --background-color: #f8d7da;
+  --border-color: #f5c6cb;
+  --text-color: #721c24;
+}
+
+.flash.warning {
+  --background-color: #fff3cd;
+  --border-color: #ffeeba;
+  --text-color: #856404;
+}
+
+.flash-enter {
+  opacity: 0;
+}
+.flash-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.flash-exit {
+  opacity: 1;
+}
+.flash-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+
+.smallWidth {
+  width: var(--small);
+}
+.mediumWidth {
+  width: var(--medium);
+}
+.largeWidth {
+  width: var(--large);
+}
+.fullWidth {
+  width: 100%;
+}
