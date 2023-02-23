@@ -185,7 +185,7 @@ const changePassword = async (req, res, next) => {
     user.password
   );
   if (!isPasswordCorrect){
-    return next(new ExpressError("Wrong password or username!", 400));
+    return next(new ExpressError("Incorrect password!", 400));
   }
 
   const salt = bcrypt.genSaltSync(10);
@@ -204,7 +204,7 @@ const signin = async (req, res, next) => {
     user.password
   );
   if (!isPasswordCorrect)
-    return next(new ExpressError("Wrong password or username!", 404));
+    return next(new ExpressError("Wrong email or password!", 400));
 
   const token = jwt.sign(
     { id: user.id, isAgent: user.isAgent },

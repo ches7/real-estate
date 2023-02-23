@@ -11,10 +11,6 @@
   --large: 75%;
 }
 
-body {
-  overflow: hidden;
-}
-
 .flash {
   display: flex;
   border: var(--border-size) solid var(--border-color);
