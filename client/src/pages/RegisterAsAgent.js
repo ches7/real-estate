@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Flash from "../components/Flash";
 
 const RegisterAsAgent = () => {
 
@@ -12,11 +13,16 @@ const RegisterAsAgent = () => {
     const [agentName, setAgentName] = useState('');
     const [isAgent, setIsAgent] = useState(1);
     const [agentPhoto, setAgentPhoto] = useState('');
+    const [active, setActive] = useState(false);
+    const [type, setType] = useState("default");
+    const [width, setWidth] = useState("default");
+    const [position, setPosition] = useState("default");
+    const [timer, setTimer] = useState(2000);
+    const message = useRef("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const user = { agentName, email, password, isAgent, agentPhoto };
-        console.log(user);
         axios({
             data: user,
             method: 'post',
@@ -24,12 +30,29 @@ const RegisterAsAgent = () => {
             headers: { 'Content-Type': 'multipart/form-data' }
         })
             .then(res => {
-                console.log(res);
-                //     id = res.data._id;
-                navigate(`/signin`);
+                message.current = res.data;
+                setType('success');
+                handleShowFlash();
+                setTimeout(() => {navigate(`/signin`);}, 2000);
+            }).catch(err => {
+                message.current = err.response.data.message;
+                setType('error');
+                handleShowFlash();
             })
 
     }
+
+    const hideFlash = () => {
+        setActive(false);
+    };
+
+    const handleShowFlash = () => {
+        hideFlash();
+        if (message) {
+            setActive(true);
+            window.setTimeout(hideFlash, timer);
+        }
+    };
 
     const handlePhoto = event => {
         const file = event.target.files[0]
@@ -73,6 +96,17 @@ const RegisterAsAgent = () => {
                     ></input>
                     <button type="submit">Register</button>
                 </form>
+                {active && (
+                    <Flash
+                        type={type}
+                        message={message.current}
+                        duration={3000}
+                        active={active}
+                        setActive={setActive}
+                        position={"bcenter"}
+                        width={"default"}
+                    />
+                )}
             </div>
             <h4><Link to="/register">Register as user</Link></h4>
         </div>

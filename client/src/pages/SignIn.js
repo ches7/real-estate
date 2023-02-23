@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../utils/AuthContext";
 import Flash from "../components/Flash";
@@ -15,7 +15,7 @@ const SignIn = () => {
     const [width, setWidth] = useState("default");
     const [position, setPosition] = useState("default");
     const [timer, setTimer] = useState(2000);
-    const [message, setMessage] = useState("");
+    const message = useRef("")
 
     const { loading, error, dispatch } = useContext(AuthContext);
 
@@ -33,7 +33,7 @@ const SignIn = () => {
             dispatch({ type: "SIGNIN_SUCCESS", payload: res.data.details });
             navigate("/");
         } catch (err) {
-            setMessage(err.response.data.message);
+            message.current = err.response.data.message;
             setType('error');
             handleShowFlash();
             dispatch({ type: "SIGNIN_FAILURE", payload: err.response.data });
@@ -78,7 +78,7 @@ const SignIn = () => {
                 {active && (
                     <Flash
                         type={type}
-                        message={message}
+                        message={message.current}
                         duration={3000}
                         active={active}
                         setActive={setActive}

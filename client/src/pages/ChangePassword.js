@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -21,14 +21,14 @@ const ChangePassword = () => {
   const [width, setWidth] = useState("default");
   const [position, setPosition] = useState("default");
   const [timer, setTimer] = useState(2000);
-  const [message, setMessage] = useState("");
+  const message = useRef("");
 
   const { user, dispatch } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setMessage('passwords do not match')
+      message.current = 'passwords do not match';
       setType('error')
       handleShowFlash();
       return;
@@ -40,21 +40,19 @@ const ChangePassword = () => {
       url: '/api/changepassword',
     })
       .catch(err => {
-        setMessage(err.response.data.message);
+        message.current = err.response.data.message;
         setType('error')
         handleShowFlash();
       });
 
     if (!response) return;
-    setMessage('password changed')
-    setType('success')
+    message.current = response.data;
+    setType('success');
     handleShowFlash();
     const res2 = await axios.get(`/api/users/${user.id}`);
-    console.log(res2)
     dispatch({ type: "REFRESH", payload: res2.data });
-    navigate(`/account`);
-
-  }
+    setTimeout(() => {navigate(`/account`);}, 2000)
+  };
 
   const hideFlash = () => {
     setActive(false);
@@ -110,7 +108,7 @@ const ChangePassword = () => {
       {active && (
         <Flash
           type={type}
-          message={message}
+          message={message.current}
           duration={3000}
           active={active}
           setActive={setActive}

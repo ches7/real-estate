@@ -50,6 +50,16 @@ async function getUserByEmail(email) {
   return rows[0];
 }
 
+async function getAgentByAgentName(agentName) {
+  const [rows] = await pool.query(`SELECT users.*, JSON_ARRAYAGG(saved_properties.saved_property) AS "savedProperties"
+  FROM users 
+  LEFT JOIN saved_properties ON saved_properties.user_id = users.id
+  WHERE agentName = ?
+  GROUP BY users.id
+  `, [agentName]);
+  return rows[0];
+}
+
 async function createAgent(agentName, email, password, isAgent, agentPhoto) {
   const [result] = await pool.query(` 
   INSERT INTO users (agentName, email, password, isAgent, agentPhoto)
@@ -69,20 +79,39 @@ async function createUser(email, password, isAgent) {
 }
 
 const register = async (req, res, next) => {
+  const { email, isAgent, password } = req.body;
+
+  //check if email is taken
+  const check = await getUserByEmail(email)
+  console.log(check);
+  if(check){
+    return next(new ExpressError("This email is already taken!", 409));
+  }
+
   const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(req.body.password, salt);
-  const { email, isAgent } = req.body;
+  const hash = bcrypt.hashSync(password, salt);
   const user = await createUser(email, hash, isAgent);
   if(!user){
     return next(new ExpressError("Something went wrong!", 500));
 }
-  res.status(201).send("User has been created.");
+  res.status(201).send("Successfully registered");
 };
 
 const registerAsAgent = async (req, res, next) => {
+  const { agentName, email, isAgent, password } = req.body;
+
+//check if email is taken
+const checkEmail = await getUserByEmail(email)
+if(checkEmail){
+  return next(new ExpressError("This email is already taken!", 409));
+}
+//check if agentName is taken
+const checkAgentName = await getAgentByAgentName(agentName)
+if(checkAgentName){
+  return next(new ExpressError("This name is already taken!", 409));
+}
   const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(req.body.password, salt);
-  const { agentName, email, isAgent } = req.body;
+  const hash = bcrypt.hashSync(password, salt);
 
   //upload new photo to aws
   let fileName = generateFileName();
@@ -99,7 +128,7 @@ const registerAsAgent = async (req, res, next) => {
   if(!agent){
     return next(new ExpressError("Something went wrong!", 500));
 }
-  res.status(201).send("Agent has been created.");
+  res.status(201).send("Successfully registered");
 };
 
 async function updateEmail(email, id) {
