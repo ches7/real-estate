@@ -31,16 +31,14 @@ async function savePropertyInMySQL(id, property){
     INSERT INTO saved_properties (user_id, saved_property)
     VALUES (?, ?)
     `, [id, property]);
-    const user = result.insertId;
-    return getUserById(user);
+    return getUserById(id);
 }
 
 async function unSavePropertyInMySQL(id, property){
     const [result] = await pool.query(` 
     DELETE FROM saved_properties WHERE user_id = ? AND saved_property = ?
     `, [id, property]);
-    const user = result.insertId;
-    return getUserById(user);
+    return getUserById(id);
 }
 
 const getUser = async (req,res,next)=>{
@@ -61,6 +59,7 @@ const getUsers = async (req,res,next)=>{
 
 const saveProperty = async (req, res, next) => {
     const updatedUser = await savePropertyInMySQL(req.body.id, req.body.property);
+    console.log(updatedUser)
     if(!updatedUser){
         return next(new ExpressError("Something went wrong!", 500));
     }

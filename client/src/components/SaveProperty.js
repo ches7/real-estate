@@ -12,12 +12,11 @@ const SaveProperty = (props) => {
 
 
     const [saved, setSaved] = useState(() => {
-        if (checkStorage === null){return false} else {
+        if (checkStorage == null){return false} else {
         for (let i = 0; i < checkStorage.savedProperties.length; i++){
-        if (checkStorage.savedProperties[i] === props.id) {
+        if (checkStorage.savedProperties[i] == props.id) {
             return true;
         }};}})
-
 
     const handleSave = async (e) => {
         e.preventDefault();
@@ -29,12 +28,9 @@ const SaveProperty = (props) => {
             "id":`${user.id}`,
             "property":`${props.id}`
             });
-            console.log(res);
-            // console.log(props.id);
-
+            
             //update sessionstorage with user data
             const res2 = await axios.get(`/api/users/${user.id}`)
-            // console.log(res2);
             dispatch({ type: "REFRESH", payload: res2.data });
 
             setSaved(true);
@@ -54,8 +50,6 @@ const SaveProperty = (props) => {
             "id":`${user.id}`,
             "property":`${props.id}`
             });
-            // console.log(res);
-            // console.log(props.id);
 
             //update sessionstorage with user data
             const res2 = await axios.get(`/api/users/${user.id}`)
