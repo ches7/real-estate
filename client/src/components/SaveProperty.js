@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AuthContext } from "../utils/AuthContext";
-import { useContext, useState } from "react";
+import { useContext, useState, useRef } from "react";
+import Flash from "./Flash";
 
 
 const SaveProperty = (props) => {
@@ -17,12 +18,23 @@ const SaveProperty = (props) => {
         if (checkStorage.savedProperties[i] == props.id) {
             return true;
         }};}})
+    const [active, setActive] = useState(false);
+    const [type, setType] = useState("default");
+    const [width, setWidth] = useState("default");
+    const [position, setPosition] = useState("default");
+    const [timer, setTimer] = useState(2000);
+    const message = useRef("");
 
     const handleSave = async (e) => {
         e.preventDefault();
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        if (checkStorage === null){return}else{
+        if (!user){
+            message.current = 'Sign in to save properties';
+            setType('warning');
+            handleShowFlash();
+            return;
+        }
         try {
             const res = await axios.post("/api/users/saveproperty", {
             "id":`${user.id}`,
@@ -38,13 +50,13 @@ const SaveProperty = (props) => {
         } catch (err) {
             console.log(err)
         }
-    }
     };
 
     const handleUnsave = async (e) => {
         e.preventDefault();
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
+        if(!user) return;
         try {
             const res = await axios.post("/api/users/unsaveproperty", {
             "id":`${user.id}`,
@@ -62,10 +74,32 @@ const SaveProperty = (props) => {
         }
     };
 
+    const hideFlash = () => {
+        setActive(false);
+    };
+
+    const handleShowFlash = () => {
+        hideFlash();
+        if (message) {
+            setActive(true);
+            window.setTimeout(hideFlash, timer);
+        }
+    };
+
   return (
     <div>
-        {saved ? <button onClick={handleUnsave} className="btn btn-dark">unsave</button> :  <button onClick={handleSave} className="btn btn-dark">save</button>
-}
+        {saved ? <button onClick={handleUnsave} className="btn btn-dark">unsave</button> :  <button onClick={handleSave} className="btn btn-dark">save</button>}
+        {active && (
+                    <Flash
+                        type={type}
+                        message={message.current}
+                        duration={3000}
+                        active={active}
+                        setActive={setActive}
+                        position={"bcenter"}
+                        width={"default"}
+                    />
+                )}
     </div>
   );
 };
