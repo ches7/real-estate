@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../utils/AuthContext";
-import { useContext } from "react";
+import Flash from "../components/Flash";
 
 export default function AddProperty() {
   const navigate = useNavigate();
@@ -20,6 +20,12 @@ export default function AddProperty() {
   const [photos, setPhotos] = useState([]);
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
   const [agent, setAgent] = useState(`${user.id}`);
+  const [active, setActive] = useState(false);
+  const [typeFlash, setTypeFlash] = useState("default");
+  const [width, setWidth] = useState("default");
+  const [position, setPosition] = useState("default");
+  const [timer, setTimer] = useState(2000);
+  const message = useRef("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,9 +38,17 @@ export default function AddProperty() {
       headers: {'Content-Type': 'multipart/form-data'}
     })
       .then(res => {
-        navigate(`/properties/${res.data._id}`);
+        message.current = 'Property added';
+        setTypeFlash('success');
+        handleShowFlash();
+        setTimeout(() => {navigate(`/properties/${res.data._id}`);}, 2000);
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { 
+        console.log(err)
+        message.current = 'Something went wrong!'
+        setTypeFlash('error');
+        handleShowFlash();
+       })
   }
 
   const handlePhotos = (e) => {
@@ -45,6 +59,18 @@ export default function AddProperty() {
     setPhotos(photosArray)
     console.log(photosArray)
   }
+
+  const hideFlash = () => {
+    setActive(false);
+};
+
+const handleShowFlash = () => {
+    hideFlash();
+    if (message) {
+        setActive(true);
+        window.setTimeout(hideFlash, timer);
+    }
+};
 
   return (
     <div className="create">
@@ -138,6 +164,17 @@ export default function AddProperty() {
 
         <button>Add Property</button>
       </form>
+      {active && (
+                    <Flash
+                        type={typeFlash}
+                        message={message.current}
+                        duration={3000}
+                        active={active}
+                        setActive={setActive}
+                        position={"bcenter"}
+                        width={"default"}
+                    />
+                )}
     </div>
   );
 };

@@ -1,7 +1,8 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../utils/AuthContext";
+import Flash from "../components/Flash";
 
 export default function AddProperty() {
   const navigate = useNavigate();
@@ -21,6 +22,12 @@ export default function AddProperty() {
   const [photos, setPhotos] = useState('');
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
   const [agent, setAgent] = useState(`${user.id}`);
+  const [active, setActive] = useState(false);
+  const [typeFlash, setTypeFlash] = useState("default");
+  const [width, setWidth] = useState("default");
+  const [position, setPosition] = useState("default");
+  const [timer, setTimer] = useState(2000);
+  const message = useRef("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,10 +58,18 @@ export default function AddProperty() {
       headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
       //headers: { 'Content-Type': 'application/json' }
     })
-      .then(res => {
-        navigate(`/properties/${res.data._id}`)
+      .then(res => {        
+      message.current = 'Property updated';
+      setTypeFlash('success');
+      handleShowFlash();
+      setTimeout(() => {navigate(`/properties/${res.data._id}`);}, 2000);
       })
-      .catch(err => { console.log(err) })
+      .catch(err => { 
+        console.log(err)
+        message.current = 'Something went wrong!'
+        setTypeFlash('error');
+        handleShowFlash(); 
+      })
   }
 
   const handlePhotos = (e) => {
@@ -64,7 +79,19 @@ export default function AddProperty() {
     }
     setPhotos(photosArray)
     console.log(photosArray)
-  }
+  };
+
+  const hideFlash = () => {
+    setActive(false);
+};
+
+const handleShowFlash = () => {
+    hideFlash();
+    if (message) {
+        setActive(true);
+        window.setTimeout(hideFlash, timer);
+    }
+};
 
   return (
     <div className="create">
@@ -157,6 +184,17 @@ export default function AddProperty() {
 
         <button>Add Property</button>
       </form>
+      {active && (
+                    <Flash
+                        type={typeFlash}
+                        message={message.current}
+                        duration={3000}
+                        active={active}
+                        setActive={setActive}
+                        position={"bcenter"}
+                        width={"default"}
+                    />
+                )}
     </div>
   );
 };
