@@ -2,7 +2,7 @@ import express from "express";
 import property from "../controllers/property.js";
 //import { validateProperty } from "../utils/validateProperty.js";
 import catchAsync from "../utils/catchAsync.js";
-import { verifyAgent } from "../utils/verifyToken.js";
+import { verifyAgent, verifyUser } from "../utils/verifyToken.js";
 import multer from "multer";
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
@@ -14,7 +14,7 @@ router.post("/properties", verifyAgent, upload.any(), catchAsync(property.create
 
 //UPDATE
 // router.patch("/properties/:id", validateProperty, catchAsync(property.updateProperty));
-router.patch("/properties/:id", verifyAgent, upload.any(), catchAsync(property.updateProperty));
+router.patch("/properties/:id", verifyUser, upload.any(), catchAsync(property.updateProperty));
 
 //DELETE
 router.delete("/properties/:id", catchAsync(property.deleteProperty));

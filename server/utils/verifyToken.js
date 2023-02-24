@@ -16,7 +16,9 @@ export const verifyUser = (req, res, next) => {
     req.user = user;
   });
 
-  if (req.user.id == req.params.id || req.user.isAgent) {
+  if (req.user.id == req.params.id || req.user.id == req.body.id || req.user.id == req.body.agent || req.user.isAgent) {
+    //change to isAdmin when admin route done
+    //req.body.agent is for updating properties
     next();
   } else {
     return next(new ExpressError("You are not authorized!", 403));
