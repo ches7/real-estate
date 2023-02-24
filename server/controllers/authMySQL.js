@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 import ExpressError from "../utils/ExpressError.js";
 import jwt from "jsonwebtoken";
 import mysql from 'mysql2';
+import Property from '../models/Property.js';
 import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from 'crypto';
@@ -84,32 +85,32 @@ const register = async (req, res, next) => {
   //check if email is taken
   const check = await getUserByEmail(email)
   console.log(check);
-  if(check){
+  if (check) {
     return next(new ExpressError("This email is already taken!", 409));
   }
 
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
   const user = await createUser(email, hash, isAgent);
-  if(!user){
+  if (!user) {
     return next(new ExpressError("Something went wrong!", 500));
-}
+  }
   res.status(201).send("Successfully registered");
 };
 
 const registerAsAgent = async (req, res, next) => {
   const { agentName, email, isAgent, password } = req.body;
 
-//check if email is taken
-const checkEmail = await getUserByEmail(email)
-if(checkEmail){
-  return next(new ExpressError("This email is already taken!", 409));
-}
-//check if agentName is taken
-const checkAgentName = await getAgentByAgentName(agentName)
-if(checkAgentName){
-  return next(new ExpressError("This name is already taken!", 409));
-}
+  //check if email is taken
+  const checkEmail = await getUserByEmail(email)
+  if (checkEmail) {
+    return next(new ExpressError("This email is already taken!", 409));
+  }
+  //check if agentName is taken
+  const checkAgentName = await getAgentByAgentName(agentName)
+  if (checkAgentName) {
+    return next(new ExpressError("This name is already taken!", 409));
+  }
   const salt = bcrypt.genSaltSync(10);
   const hash = bcrypt.hashSync(password, salt);
 
@@ -125,9 +126,9 @@ if(checkAgentName){
 
 
   const agent = await createAgent(agentName, email, hash, isAgent, fileName);
-  if(!agent){
+  if (!agent) {
     return next(new ExpressError("Something went wrong!", 500));
-}
+  }
   res.status(201).send("Successfully registered");
 };
 
@@ -153,13 +154,13 @@ const updateUser = async (req, res, next) => {
   //check user exists
   const userBeforeUpdate = await getUser(id);
   if (!userBeforeUpdate) {
-      return next(new ExpressError("User not found!", 404));
+    return next(new ExpressError("User not found!", 404));
   }
 
   const user = await updateEmail(email, id);
   if (!user) {
     return next(new ExpressError("Something went wrong!", 500));
-}
+  }
   res.status(201).send("User has been updated.");
 };
 
@@ -170,7 +171,7 @@ const updateAgent = async (req, res, next) => {
   const agentBeforeUpdate = await getUser(id);
   if (!agentBeforeUpdate) {
     return next(new ExpressError("Agent not found!", 404));
-}
+  }
   //upload new photo to aws
   let fileName = generateFileName();
   const uploadParams = {
@@ -193,7 +194,7 @@ const updateAgent = async (req, res, next) => {
   const agent = await updateAgentInMySQL(email, agentName, fileName, id);
   if (!agent) {
     return next(new ExpressError("Something went wrong!", 500));
-}
+  }
   res.status(201).send("Agent has been updated.");
 };
 
@@ -213,7 +214,7 @@ const changePassword = async (req, res, next) => {
     req.body.oldPassword,
     user.password
   );
-  if (!isPasswordCorrect){
+  if (!isPasswordCorrect) {
     return next(new ExpressError("Incorrect password!", 400));
   }
 
@@ -261,4 +262,55 @@ const signout = async (req, res, next) => {
   }).status(200).send();
 };
 
-export default { register, registerAsAgent, updateUser, updateAgent, changePassword, signin, signout };
+async function deleteUserInMySQL(id) {
+  const [rows] = await pool.query(`DELETE FROM users WHERE id = ?`, [id]);
+  return rows[0];
+};
+
+async function deleteSavedPropertyInMySQL(id) {
+  const [result] = await pool.query(` 
+  DELETE FROM saved_properties WHERE user_id = ?`, [id]);
+};
+
+const deleteUser = async (req, res, next) => {
+  const { id } = req.body;
+  const user = await getUser(id);
+  if (!user) return next(new ExpressError("User not found!", 404));
+  const del = await deleteUserInMySQL(id);
+  const delSavedProperties = await deleteSavedPropertyInMySQL(id);
+
+  //delete agent photo from aws
+  if (user.agentPhoto != null) {
+    const params = {
+      Bucket: bucketName,
+      Key: user.agentPhoto,
+    };
+    await s3Client.send(new DeleteObjectCommand(params));
+  };
+
+  //delete owned properties
+  if (user.isAgent == 1) {
+    const properties = await Property.find({['agent']: { ['$eq']: id }});
+    for (let i = 0; i < properties.length; i++) {
+      //delete photos from aws
+      if (properties[i].awsPhotoName.length !== 0) {
+        for (let j = 0; j < properties[i].awsPhotoName.length; j++) {
+          const params = { Bucket: bucketName, Key: properties[i].awsPhotoName[j], }
+          await s3Client.send(new DeleteObjectCommand(params));
+        }
+      }
+      //delete property from mongodb
+      await Property.findByIdAndDelete(properties[i]._id);
+    };
+
+  };
+  //sign user out
+  res.cookie("access_token", "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0)
+  }).status(200).send();
+};
+
+export default { register, registerAsAgent, updateUser, updateAgent, changePassword, signin, signout, deleteUser };

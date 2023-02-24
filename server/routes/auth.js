@@ -15,5 +15,6 @@ router.patch("/updateagent", upload.single("agentPhoto"), catchAsync(auth.update
 router.patch("/changepassword", catchAsync(auth.changePassword))
 router.post("/signin", catchAsync(auth.signin))
 router.get("/signout", catchAsync(auth.signout))
+router.delete("/deleteuser", catchAsync(auth.deleteUser))
 
 export default router

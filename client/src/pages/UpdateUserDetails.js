@@ -15,9 +15,9 @@ const UpdateUserDetails = () => {
     const [agentName, setAgentName] = useState(null);
     const [agentPhoto, setAgentPhoto] = useState(null);
     const [userError, setUserError] = useState(null);
-    const [id, setId] = useState(null);
-
+    
     const { user, dispatch } = useContext(AuthContext);
+    const [id, setId] = useState(user.id);
 
     useEffect(() => {
       const fetchData = async () => {
@@ -77,6 +77,20 @@ const UpdateUserDetails = () => {
         setAgentPhoto(file)
     }
 
+    const handleDeleteAccount = async (e) => {
+        e.preventDefault();
+        await axios({
+            data: { id },
+            method: 'delete',
+            url: '/api/deleteuser'
+        })
+         .then(res => {
+            console.log(res);
+         })
+            dispatch({ type: "SIGNOUT" });
+            navigate(`/`);
+    }
+
     if(!isAgent){
         return (
             <div>
@@ -97,6 +111,7 @@ const UpdateUserDetails = () => {
                     <button type="submit">Update</button>
                 </form>
             </div>
+            <button className="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
         </div>
         )
     }
@@ -138,6 +153,7 @@ const UpdateUserDetails = () => {
                     <button type="submit">Update</button>
                 </form>
             </div>
+            <button className="btn btn-danger" onClick={handleDeleteAccount}>Delete Account</button>
         </div>
     );
 };
