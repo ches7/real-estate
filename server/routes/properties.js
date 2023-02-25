@@ -1,6 +1,5 @@
 import express from "express";
 import property from "../controllers/property.js";
-//import { validateProperty } from "../utils/validateProperty.js";
 import catchAsync from "../utils/catchAsync.js";
 import { verifyAgent, verifyUser } from "../utils/verifyToken.js";
 import multer from "multer";
@@ -9,11 +8,9 @@ const upload = multer({ storage: storage })
 const router = express.Router();
 
 //CREATE
-//router.post("/properties", validateProperty, catchAsync(property.createProperty));
 router.post("/properties", verifyAgent, upload.any(), catchAsync(property.createProperty));
 
 //UPDATE
-// router.patch("/properties/:id", validateProperty, catchAsync(property.updateProperty));
 router.patch("/properties/:id", verifyUser, upload.any(), catchAsync(property.updateProperty));
 
 //DELETE
