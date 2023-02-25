@@ -11,10 +11,10 @@ const router = express.Router();
 router.post("/properties", verifyAgent, upload.any(), catchAsync(property.createProperty));
 
 //UPDATE
-router.patch("/properties/:id", verifyUser, upload.any(), catchAsync(property.updateProperty));
+router.patch("/properties/:id", upload.any(), verifyUser, catchAsync(property.updateProperty));
 
 //DELETE
-router.delete("/properties/:id", catchAsync(property.deleteProperty));
+router.delete("/properties/:id", verifyUser, catchAsync(property.deleteProperty));
 
 //GET
 router.get("/properties/:id", catchAsync(property.getProperty));

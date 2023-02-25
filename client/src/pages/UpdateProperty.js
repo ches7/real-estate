@@ -21,7 +21,7 @@ export default function AddProperty() {
   const [type, setType] = useState('detached');
   const [photos, setPhotos] = useState('');
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
-  const [agent, setAgent] = useState(`${user.id}`);
+  const [agent, setAgent] = useState('');
   const [active, setActive] = useState(false);
   const [typeFlash, setTypeFlash] = useState("default");
   const [width, setWidth] = useState("default");
@@ -42,20 +42,20 @@ export default function AddProperty() {
       setType(response.data.type);
       setPhotos(response.data.photos);
       setSaleOrRent(response.data.saleOrRent);
+      setAgent(response.data.agent);
     }
     fetchData();
   }, [params.id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    //const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent, agent };
-    // const property = { title, location, description, price, beds, baths, receptions, type, saleOrRent };
-    const property = { title, location, description, price, beds, baths, receptions, type, photos, saleOrRent };
+    const property = { title, location, description, price, beds, baths, receptions, type, saleOrRent, agent, photos };
     axios({
       data: property,
       method: 'patch',
       url: `/api/properties/${params.id}`,
       headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
+      // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       //headers: { 'Content-Type': 'application/json' }
     })
       .then(res => {        

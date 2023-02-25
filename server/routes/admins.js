@@ -20,7 +20,8 @@ router.get("/users/:id", verifyAdmin, catchAsync(user.getUser));
 //GET ALL USERS
 router.get("/users", verifyAdmin, catchAsync(user.getUsers));
 
-//DELETE USER OR AGENT
+//DELETE USER OR AGENT 
+//note this will sign you out as it uses deleteUser
 router.delete("/deleteuser", verifyAdmin, catchAsync(auth.deleteUser));
 
 //DELETE PROPERTY
