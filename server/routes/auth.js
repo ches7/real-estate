@@ -30,6 +30,6 @@ router.post("/signin", catchAsync(auth.signin));
 router.get("/signout", catchAsync(auth.signout));
 
 //DELETE USER OR AGENT
-router.delete("/deleteuser", verifyUser, catchAsync(auth.deleteUser))
+router.delete("/deleteuser", verifyUser, catchAsync(auth.deleteUser));
 
 export default router

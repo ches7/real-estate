@@ -14,9 +14,6 @@ router.delete("/:id", verifyUser, catchAsync(user.deleteUser));
 //GET
 router.get("/:id", verifyUser, catchAsync(user.getUser));
 
-//GET ALL
-router.get("/", verifyAgent, catchAsync(user.getUsers));
-
 //SAVE PROPERTY
 router.post("/saveproperty", verifyUser, catchAsync(user.saveProperty));
 

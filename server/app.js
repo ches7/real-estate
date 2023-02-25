@@ -5,8 +5,9 @@ import mongoose from "mongoose";
 import ExpressError from "./utils/ExpressError.js";
 import propertiesRoute from "./routes/properties.js";
 import usersRoute from "./routes/users.js";
-import agentsRoute from "./routes/agents.js"
-import authRoute from "./routes/auth.js"
+import agentsRoute from "./routes/agents.js";
+import authRoute from "./routes/auth.js";
+import adminsRoute from "./routes/admins.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
@@ -30,7 +31,8 @@ app.use(cors({
 app.use("/api/", propertiesRoute);
 app.use("/api/users", usersRoute)
 app.use("/api/", authRoute);
-app.use("/api/agents", agentsRoute)
+app.use("/api/agents", agentsRoute);
+app.use("/api/admin", adminsRoute);
 
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
