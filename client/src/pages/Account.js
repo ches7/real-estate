@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
 import NotFound from '../NotFound';
 import SignIn from './SignIn';
@@ -6,6 +6,7 @@ import { AuthContext } from '../utils/AuthContext';
 import { useContext } from 'react';
 import PropertyCard from '../components/PropertyCard';
 import { useNavigate } from "react-router-dom";
+import Flash from '../components/Flash';
 
 
 function Account() {
@@ -17,6 +18,12 @@ function Account() {
   const [propertyError, setPropertyError] = useState(null)
   const [myProperties, setMyProperties] = useState([]);
   const [myPropertyError, setMyPropertyError] = useState(null)
+  const [active, setActive] = useState(false);
+const [typeFlash, setTypeFlash] = useState("default");
+const [width, setWidth] = useState("default");
+const [position, setPosition] = useState("default");
+const [timer, setTimer] = useState(2000);
+const message = useRef("");
 
   //prevent duplicate properties being rendered
   const propertySet = new Set();
@@ -51,7 +58,7 @@ function Account() {
       }
       fetchPropertyData();
     }
-  }, [userData])
+  }, [userData]);
 
   useEffect(() => {
     if (!userData.isAgent) return;
@@ -66,8 +73,13 @@ function Account() {
           .catch(err => { setMyPropertyError(err.message); });
       }
       fetchMyPropertyData();
-  }, [userData])
+  }, [userData]);
 
+  const getFlashStateFromChild = (data) => {
+    message.current = 'Property deleted';
+    setTypeFlash('success');
+    handleShowFlash();
+  }
 
   const handleAddButton = () => {
     navigate('/add-property')
@@ -80,6 +92,18 @@ function Account() {
   const handleChangePasswordButton = () => {
     navigate('/account/change-password')
   }
+
+  const hideFlash = () => {
+    setActive(false);
+};
+
+const handleShowFlash = () => {
+    hideFlash();
+    if (message) {
+      setActive(true)
+        window.setTimeout(hideFlash, timer);
+    }
+};
 
   if (!user || userError || !userData) {
   // if (userError || !userData || propertyError) {
@@ -96,7 +120,7 @@ function Account() {
           {
             myProperties.map((p, i) => (
               <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
-                beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} agent={p.agent}/>
+                beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} agent={p.agent} func={getFlashStateFromChild}/>
             ))}
         </div>
 
@@ -109,9 +133,18 @@ function Account() {
                 beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} />
             ))}
         </div>
+        {active && (
+            <Flash
+                type={typeFlash}
+                message={message.current}
+                duration={3000}
+                active={active}
+                setActive={setActive}
+                position={"bcenter"}
+                width={"default"}
+            />
+        )}
       </div>
-
-
     );
 }
 

@@ -10,7 +10,6 @@ import authRoute from "./routes/auth.js";
 import adminsRoute from "./routes/admins.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import bodyParser from "body-parser";
 
 mongoose.connect('mongodb://127.0.0.1:27017/real-estate');
 

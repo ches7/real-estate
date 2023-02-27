@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Carousel from 'react-bootstrap/Carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
 import SaveProperty from "./SaveProperty";
 import { AuthContext } from '../utils/AuthContext';
-import { useContext } from 'react';
 import DeleteButton from "./DeleteButton";
 import UpdateButton from "./UpdateButton";
 
 const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
+    const [deleted, setDeleted] = useState(false);
 
     const { user, dispatch } = useContext(AuthContext);
 
@@ -21,16 +21,22 @@ const PropertyCard = (props) => {
     setIndex(selectedIndex);
   };
  
+  const getDeletedStateFromChild = async (data) => {
+    await props.func(true);
+    setDeleted(data);
+  }
+
   const handleClick = () => {
     window.location.href = `/properties/${props.id}`;
   }
 
   let deleteButton;
-  if (user && (user.id == props.agent)) { deleteButton = <DeleteButton id={props.id}/> }
+  if (user && (user.id == props.agent)) { deleteButton = <DeleteButton id={props.id} agent={props.agent} func={getDeletedStateFromChild}/> }
 
   let updateButton;
   if (user && (user.id == props.agent)) { updateButton = <UpdateButton id={props.id}/> }
 
+  if (deleted) return; 
     return (
         <div className="d-flex justify-content-center">
         <div className="border rounded w-50 m-4"  onClick={handleClick} style={{cursor: "pointer"}}>
