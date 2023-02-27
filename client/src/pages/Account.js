@@ -7,6 +7,7 @@ import { useContext } from 'react';
 import PropertyCard from '../components/PropertyCard';
 import { useNavigate } from "react-router-dom";
 import Flash from '../components/Flash';
+import ServerError from '../ServerError';
 
 
 function Account() {
@@ -35,7 +36,7 @@ const message = useRef("");
       if (!user) return;
       await axios.get(`/api/users/${user.id}`)
         .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setUserData(res.data); } })
-        .catch(err => { setUserError(err.message); setUserData(null) });
+        .catch(err => { setUserError(true); setUserData(null) });
     }
     fetchData();
   }, [user]);
@@ -122,11 +123,9 @@ const handleShowFlash = () => {
     }
 };
 
-  if (!user || userError || !userData) {
-  // if (userError || !userData || propertyError) {
-    return (<SignIn />)
-  } else
-    return (
+  if(userError) { return (<ServerError/>) } 
+  if (!user || !userData) { return (<SignIn />) } 
+  else return (
       <div>
         {userData.isAgent === 1 ? <button onClick={handleAddButton}>Add property</button> : null}
         <button onClick={handleUpdateUserButton}>UpdateUserDetails</button>
