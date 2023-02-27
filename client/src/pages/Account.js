@@ -41,26 +41,28 @@ const message = useRef("");
   }, [user]);
 
   useEffect(() => {
+    if(!userData) return;
     if (!userData.savedProperties) return;
     for (let i = 0; i < userData.savedProperties.length; i++) {
       const fetchPropertyData = () => {
         axios.get(`/api/properties/${userData.savedProperties[i]}`)
           .then(res => {
             if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
-
             else {
               propertySet.add(res.data);
               setProperties([...propertySet])
             }
           })
-
-          .catch(err => { setPropertyError(err.message); });
+          .catch(err => { 
+            if (err.response.status === 404){unsave(userData.savedProperties[i]);}
+            });
       }
       fetchPropertyData();
     }
   }, [userData]);
 
   useEffect(() => {
+    if (!userData) return;
     if (!userData.isAgent) return;
       const fetchMyPropertyData = async () => {
         await axios.get(`/api/properties?agent=${user.id}`)
@@ -74,6 +76,21 @@ const message = useRef("");
       }
       fetchMyPropertyData();
   }, [userData]);
+
+  const unsave = async (propertyId) => {
+    if(!user) return;
+    try {
+        const res = await axios.post("/api/users/unsaveproperty", {
+        "id":`${user.id}`,
+        "property":`${propertyId}`
+        });
+        //update sessionstorage with user data
+        const res2 = await axios.get(`/api/users/${user.id}`)
+        dispatch({ type: "REFRESH", payload: res2.data });
+    } catch (err) {
+        console.log(err)
+    }
+};
 
   const getFlashStateFromChild = (data) => {
     message.current = 'Property deleted';
