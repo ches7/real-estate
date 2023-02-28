@@ -22,6 +22,11 @@ const signin = async (req, res, next) => {
         secure: true,
         sameSite: "none",
       })
+      .cookie("real_estate_app_ches_active", true, {
+        httpOnly: false,
+        secure: true,
+        sameSite: "none",
+      })
       .status(200)
       .send();
   };

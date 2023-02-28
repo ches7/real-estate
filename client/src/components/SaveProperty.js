@@ -8,7 +8,7 @@ const SaveProperty = (props) => {
 
     const { user, loading, error, dispatch } = useContext(AuthContext);
 
-    const checkStorage = JSON.parse(sessionStorage.getItem("user"));
+    const checkStorage = JSON.parse(localStorage.getItem("real_estate_app_ches_user"));
     //check storage null when not signed in ?
 
 

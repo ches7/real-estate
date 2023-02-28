@@ -248,14 +248,24 @@ const signin = async (req, res, next) => {
       secure: true,
       sameSite: "none",
     })
+    .cookie("real_estate_app_ches_active", true, {
+      httpOnly: false,
+      secure: true,
+      sameSite: "none",
+    })
     .status(200)
     .json({ details: { ...otherDetails } })
     .send();
 };
 
 const signout = async (req, res, next) => {
-  res.cookie("access_token", "", {
+  res.cookie("real_estate_app_ches_access_token", "", {
     httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    expires: new Date(0)
+  }).cookie("real_estate_app_ches_active", "", {
+    httpOnly: false,
     secure: true,
     sameSite: "none",
     expires: new Date(0)
