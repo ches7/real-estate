@@ -4,7 +4,7 @@ import ExpressError from "../utils/ExpressError.js";
 /********************************************************/
 
 export const verifyUser = (req, res, next) => {
-  const token = req.cookies.access_token;
+  const token = req.cookies.real_estate_app_ches_access_token;
   const environmentvariable = `${process.env.JWT}`;
   
   if (!token) {
@@ -29,7 +29,7 @@ export const verifyUser = (req, res, next) => {
 
 export const verifyAgent = (req, res, next) => {
 
-  const token = req.cookies.access_token;
+  const token = req.cookies.real_estate_app_ches_access_token;
   const environmentvariable = `${process.env.JWT}`;
   
   if (!token) {
@@ -50,7 +50,7 @@ export const verifyAgent = (req, res, next) => {
 
 export const verifyAdmin = (req, res, next) => {
 
-  const token = req.cookies.access_token;
+  const token = req.cookies.real_estate_app_ches_access_token;
   const environmentvariable = `${process.env.JWT}`;
   
   if (!token) {

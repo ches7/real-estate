@@ -243,7 +243,7 @@ const signin = async (req, res, next) => {
 
   const { password, ...otherDetails } = user;
   res
-    .cookie("access_token", token, {
+    .cookie("real_estate_app_ches_access_token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "none",
