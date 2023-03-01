@@ -9,14 +9,12 @@ export default function Search() {
     const [price, setPrice] = useState('');
     const [type, setType] = useState('');
 
-    console.log(loc.pathname)
-
-    const [saleOrRent, setSaleOrRent] = useState(() => {
-        if(loc.pathname === '/for-sale' || '/for-sale/'){
-            return 'for-sale';
-        }
-            return 'to-rent';
-        });
+    let saleOrRent;
+    if(loc.pathname === '/for-sale' || loc.pathname === '/for-sale/'){
+        saleOrRent = 'for-sale';
+    } else {
+        saleOrRent = 'to-rent';
+    };
 
     const handleBeds = (e) => {
         setBeds(e.target.value);
@@ -80,6 +78,7 @@ export default function Search() {
 
         /***** BANNER *****/
         let bannerSaleOrRent;
+        // console.log(saleOrRent);
         if (saleOrRent === 'for-sale'){bannerSaleOrRent = 'for sale'} else {bannerSaleOrRent = 'to rent'}
         let banner;
         {banner = <div>

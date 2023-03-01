@@ -27,25 +27,13 @@ export default function Filters(props) {
         setRadius(e.target.value);
     };
 
-
-    //change to state
-     const forSaleSearch = async (e) => {
-    // const handleSearch = async (e) => {
+    const handleSearch = async (e) => {
          e.preventDefault();
-             navigate(`/for-sale/properties?location=${location}&price=${price}&type=${type}&beds=${beds}&radius=${radius}`);
+             navigate(`/${saleOrRent}/properties?location=${location}&price=${price}&type=${type}&beds=${beds}&radius=${radius}`);
          }
 
-    const toRentSearch = async (e) => {
-    // const handleSearch = async (e) => {
-         e.preventDefault();
-             navigate(`/to-rent/properties?location=${location}&price=${price}&type=${type}&beds=${beds}&radius=${radius}`);
-         }
-
-    let handleSearch;
     let maxPrice;
     if(saleOrRent === 'for-sale'){
-        handleSearch = forSaleSearch;
-
         maxPrice = 
         <div className="px-3">
         <label htmlFor="price">Max price</label><br></br>
@@ -62,10 +50,7 @@ export default function Filters(props) {
         <option value="10000000">£10,000,000</option>
         </select>
         </div>
-
     } else {
-        handleSearch = toRentSearch;
-
         maxPrice = 
         <div className="px-3">
         <label htmlFor="price">Max price</label><br></br>
@@ -84,9 +69,6 @@ export default function Filters(props) {
         </div>
     }
 
-    
-    
-    
     return (
         <div className="search-container d-flex justify-content-center p-2 m-2">
                 <form onSubmit={handleSearch} className="d-inline-flex justify-content-center border rounded border-dark p-2">

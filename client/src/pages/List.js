@@ -15,12 +15,12 @@ function List() {
     const [type, setType] = useState(searchParams.get('type'));
     const [radius, setRadius] = useState(searchParams.get('radius'));
 
-    const [saleOrRent, setSaleOrRent] = useState(() => {
-        if(loc.pathname === '/for-sale/properties' || '/for-sale/properties/'){
-            return 'for-sale';
-        }
-            return 'to-rent';
-        });
+    let saleOrRent;
+    if(loc.pathname === '/for-sale/properties' || loc.pathname === '/for-sale/properties/'){
+        saleOrRent = 'for-sale';
+    } else {
+        saleOrRent = 'to-rent';
+    };
 
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
