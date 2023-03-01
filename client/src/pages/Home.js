@@ -1,12 +1,10 @@
 import './Home.css';
-import { useContext, useState } from "react";
-import { SearchContext } from "../utils/SearchContext";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
 export default function Home() {
     const navigate = useNavigate();
-    const { dispatch } = useContext(SearchContext);
     const [location, setLocation] = useState('');
     const [saleOrRent, setSaleOrRent] = useState('for-sale');
 
