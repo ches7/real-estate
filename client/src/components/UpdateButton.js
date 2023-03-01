@@ -16,7 +16,9 @@ const handleUpdate = async (e) => {
     
 
     return (
-        <button onClick={handleUpdate}>update</button>
+      <div>
+        <button onClick={handleUpdate} className="btn btn-warning">update</button>
+        </div>
     )
 };
 

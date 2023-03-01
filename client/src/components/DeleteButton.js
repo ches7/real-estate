@@ -56,7 +56,7 @@ const DeleteButton = (props) => {
     };
 
     return (<div>
-        <button onClick={handleDelete} className="btn btn-dark">delete</button>
+        <button onClick={handleDelete} className="btn btn-danger">delete</button>
         {active && (
             <Flash
                 type={typeFlash}

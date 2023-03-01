@@ -3,9 +3,9 @@ import { useLocation, useSearchParams } from 'react-router-dom'
 import axios from "axios";
 import PropertyCard from "../components/PropertyCard";
 import Pagination from "../components/Pagination";
-import FiltersSale from "../components/FiltersSale";
+import Filters from "../components/Filters";
 
-function ListSale() {
+function List() {
     /***** DATA *****/
     const loc = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
@@ -15,15 +15,21 @@ function ListSale() {
     const [type, setType] = useState(searchParams.get('type'));
     const [radius, setRadius] = useState(searchParams.get('radius'));
 
+    const [saleOrRent, setSaleOrRent] = useState(() => {
+        if(loc.pathname === '/for-sale/properties' || '/for-sale/properties/'){
+            return 'for-sale';
+        }
+            return 'to-rent';
+        });
 
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            await axios.get(`/api/properties?location=${searchParams.get('location')}&saleOrRent=for-sale&beds=${searchParams.get('beds')}&price=${searchParams.get('price')}&type=${searchParams.get('type')}&radius=${searchParams.get('radius')}`)
-                .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); } })
-                .catch(err => { setError(err.message); setData(null) });
+            await axios.get(`/api/properties?location=${searchParams.get('location')}&saleOrRent=${saleOrRent}&beds=${searchParams.get('beds')}&price=${searchParams.get('price')}&type=${searchParams.get('type')}&radius=${searchParams.get('radius')}`)
+                .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); console.log(res) } })
+                .catch(err => { setError(err.message); setData(null); console.log(err) });
         }
         fetchData();
     }, [loc.key]);
@@ -57,12 +63,14 @@ function ListSale() {
     };
 
     /***** BANNER *****/
+    let bannerSaleOrRent;
+    if (saleOrRent === 'for-sale'){bannerSaleOrRent = 'for sale'} else {bannerSaleOrRent = 'to rent'}
     let banner;
-    if (searchParams.get('location')) { banner = <h1>Property for sale in {searchParams.get('location')}</h1> }
+    if (searchParams.get('location')) { banner = <h1>Property {bannerSaleOrRent} in {searchParams.get('location')}</h1> }
 
     return (
         <div>
-            <FiltersSale location={location} beds={beds} price={price} type={type} radius={radius}/>
+            <Filters location={location} beds={beds} price={price} type={type} radius={radius} saleOrRent={saleOrRent}/>
             <div className="d-flex justify-content-center">
                 {banner}
             </div>
@@ -80,4 +88,4 @@ function ListSale() {
     );
 };
 
-export default ListSale;
+export default List;

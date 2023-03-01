@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function FiltersSale(props) {
+export default function Filters(props) {
     const navigate = useNavigate();
     const [location, setLocation] = useState(props.location);
     const [beds, setBeds] = useState(props.beds)
     const [price, setPrice] = useState(props.price)
     const [type, setType] = useState(props.type)
     const [radius, setRadius] = useState(props.radius);
+    const [saleOrRent, setSaleOrRent] = useState(props.saleOrRent);
 
 
     const handleBeds = (e) => {
@@ -26,10 +27,65 @@ export default function FiltersSale(props) {
         setRadius(e.target.value);
     };
 
-     const handleSearch = async (e) => {
+
+    //change to state
+     const forSaleSearch = async (e) => {
+    // const handleSearch = async (e) => {
          e.preventDefault();
              navigate(`/for-sale/properties?location=${location}&price=${price}&type=${type}&beds=${beds}&radius=${radius}`);
          }
+
+    const toRentSearch = async (e) => {
+    // const handleSearch = async (e) => {
+         e.preventDefault();
+             navigate(`/to-rent/properties?location=${location}&price=${price}&type=${type}&beds=${beds}&radius=${radius}`);
+         }
+
+    let handleSearch;
+    let maxPrice;
+    if(saleOrRent === 'for-sale'){
+        handleSearch = forSaleSearch;
+
+        maxPrice = 
+        <div className="px-3">
+        <label htmlFor="price">Max price</label><br></br>
+        <select name="price" id="price" className="bg-light border-0" value={price} onChange={handlePrice}>
+        <option value="">No max</option>
+        <option value="10000">£10,000</option>
+        <option value="50000">£50,000</option>
+        <option value="100000">£100,000</option>
+        <option value="250000">£250,000</option>
+        <option value="500000">£500,000</option>
+        <option value="750000">£750,000</option>
+        <option value="1000000">£1,000,000</option>
+        <option value="5000000">£5,000,000</option>
+        <option value="10000000">£10,000,000</option>
+        </select>
+        </div>
+
+    } else {
+        handleSearch = toRentSearch;
+
+        maxPrice = 
+        <div className="px-3">
+        <label htmlFor="price">Max price</label><br></br>
+        <select name="price" id="price" className="bg-light border-0" value={price} onChange={handlePrice}>
+        <option value="">No max</option>
+        <option value="100">£100 pcm</option>
+        <option value="250">£250 pcm</option>
+        <option value="500">£500 pcm</option>
+        <option value="750">£750 pcm</option>
+        <option value="1000">£1000 pcm</option>
+        <option value="1500">£1500 pcm</option>
+        <option value="2000">£2000 pcm</option>
+        <option value="2500">£2500 pcm</option>
+        <option value="3000">£3000 pcm</option>
+        </select>
+        </div>
+    }
+
+    
+    
     
     return (
         <div className="search-container d-flex justify-content-center p-2 m-2">
@@ -80,21 +136,7 @@ export default function FiltersSale(props) {
                     </select>
                     </div>
 
-                    <div className="px-3">
-                    <label htmlFor="price">Max price</label><br></br>
-                    <select name="price" id="price" className="bg-light border-0" value={price} onChange={handlePrice}>
-                    <option value="">No max</option>
-                    <option value="10000">£10,000</option>
-                    <option value="50000">£50,000</option>
-                    <option value="100000">£100,000</option>
-                    <option value="250000">£250,000</option>
-                    <option value="500000">£500,000</option>
-                    <option value="750000">£750,000</option>
-                    <option value="1000000">£1,000,000</option>
-                    <option value="5000000">£5,000,000</option>
-                    <option value="10000000">£10,000,000</option>
-                    </select>
-                    </div>
+                    {maxPrice}
 
                     <div className="px-3">
                     <label htmlFor="type">Property type</label><br></br>

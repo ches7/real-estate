@@ -8,12 +8,10 @@ import UpdateProperty from "./pages/UpdateProperty";
 
 import './App.css';
 import Home from './pages/Home';
-import ListRent from "./pages/ListRent";
-import ListSale from "./pages/ListSale";
+import List from "./pages/List";
 import NotFound from "./NotFound";
 import Navbar from "./components/Navbar";
-import SearchForSale from "./pages/SearchForSale";
-import SearchToRent from "./pages/SearchToRent";
+import Search from "./pages/Search";
 import SignIn from "./pages/SignIn";
 import Register from "./pages/Register";
 import Account from "./pages/Account";
@@ -51,8 +49,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/for-sale" element={<SearchForSale />} />
-          <Route path="/to-rent" element={<SearchToRent />} />
+          <Route path="/for-sale" element={<Search />} />
+          <Route path="/to-rent" element={<Search />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/register" element={<Register />} />
           <Route path="/register-as-agent" element={<RegisterAsAgent />} />
@@ -61,8 +59,8 @@ function App() {
           <Route path="/account/change-password" element={<ChangePassword />} />
           <Route path="/agents" element={<AgentsList />} />
           <Route path="/agents/:id" element={<AgentPage />} />
-          <Route path="/for-sale/properties" element={<ListSale />} />
-          <Route path="/to-rent/properties" element={<ListRent />} />
+          <Route path="/for-sale/properties" element={<List />} />
+          <Route path="/to-rent/properties" element={<List />} />
           <Route path="/properties/:id" element={<Property />} />
           <Route path="/properties/:id/update" element={<UpdateProperty />} />
           <Route path="/add-property" element={<AddProperty />} />
