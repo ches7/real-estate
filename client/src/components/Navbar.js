@@ -32,6 +32,7 @@ export default function ReactNavbar() {
         <Nav>
         <Nav.Link href="/for-sale">For Sale</Nav.Link>
         <Nav.Link href="/to-rent">To Rent</Nav.Link>
+        <Nav.Link href="/agents">Agents</Nav.Link>
         </Nav>
           { user !== null ? (
           <Nav className="ms-auto">

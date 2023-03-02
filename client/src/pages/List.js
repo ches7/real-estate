@@ -28,7 +28,7 @@ function List() {
     useEffect(() => {
         const fetchData = async () => {
             await axios.get(`/api/properties?location=${searchParams.get('location')}&saleOrRent=${saleOrRent}&beds=${searchParams.get('beds')}&price=${searchParams.get('price')}&type=${searchParams.get('type')}&radius=${searchParams.get('radius')}`)
-                .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); console.log(res) } })
+                .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setData(res.data); /*console.log(res)*/ } })
                 .catch(err => { setError(err.message); setData(null); console.log(err) });
         }
         fetchData();
@@ -37,28 +37,36 @@ function List() {
     /***** PAGINATION *****/
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(10);
-
     const [pageNumberLimit, setPageNumberLimit] = useState(5);
     const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
     const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
-
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const currentPosts = data.slice(indexOfFirstPost, indexOfLastPost);
 
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        if (pageNumber + 1 > maxPageNumberLimit) {
+            setMaxPageNumberLimit(maxPageNumberLimit + Math.floor(pageNumberLimit/2));
+            setMinPageNumberLimit(minPageNumberLimit + Math.floor(pageNumberLimit/2));
+        }
+        else if ((pageNumber - 1) % minPageNumberLimit === 0) {
+            setMaxPageNumberLimit(maxPageNumberLimit - Math.floor(pageNumberLimit/2));
+            setMinPageNumberLimit(minPageNumberLimit - Math.floor(pageNumberLimit/2));
+        }
+    };
     const handleNext = () => {
         setCurrentPage(currentPage + 1);
-        if (currentPage + 1 > maxPageNumberLimit) {
-            setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
-            setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+        if (currentPage + 2 > maxPageNumberLimit) {
+            setMaxPageNumberLimit(maxPageNumberLimit + Math.floor(pageNumberLimit/2));
+            setMinPageNumberLimit(minPageNumberLimit + Math.floor(pageNumberLimit/2));
         }
     };
     const handlePrev = () => {
         setCurrentPage(currentPage - 1);
-        if ((currentPage - 1) % minPageNumberLimit === 0) {
-            setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
-            setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+        if ((currentPage - 2) % minPageNumberLimit === 0) {
+            setMaxPageNumberLimit(maxPageNumberLimit - Math.floor(pageNumberLimit/2));
+            setMinPageNumberLimit(minPageNumberLimit - Math.floor(pageNumberLimit/2));
         }
     };
 
@@ -66,7 +74,13 @@ function List() {
     let bannerSaleOrRent;
     if (saleOrRent === 'for-sale'){bannerSaleOrRent = 'for sale'} else {bannerSaleOrRent = 'to rent'}
     let banner;
-    if (searchParams.get('location')) { banner = <h1>Property {bannerSaleOrRent} in {searchParams.get('location')}</h1> }
+    if (searchParams.get('location')) { 
+        if(data.length > 0){
+            banner = <h1>Property {bannerSaleOrRent} in {searchParams.get('location')}</h1> 
+        } else {
+            banner = <h1>No property {bannerSaleOrRent} in {searchParams.get('location')}</h1>
+        }
+    };
 
     return (
         <div>
@@ -84,6 +98,7 @@ function List() {
                 paginate={paginate} pageNumberLimit={pageNumberLimit} currentPage={currentPage}
                 maxPageNumberLimit={maxPageNumberLimit} minPageNumberLimit={minPageNumberLimit}
                 handleNext={handleNext} handlePrev={handlePrev} />
+                    {/* <Pagination data={data} func={getCurrentPostsFromPaginationChild}/> */}
         </div>
     );
 };

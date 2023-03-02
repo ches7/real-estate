@@ -8,15 +8,15 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage, minPageNu
         pageNumbers.push(i);
     }
 
-    let pageIncrement = null;
-  if (pageNumbers.length > maxPageNumberLimit) {
-    pageIncrement = <li className="page-item"><button className="page-link link-dark" onClick={handleNext}>&hellip;</button></li>;
-  }
+//     let pageIncrement = null;
+//   if (pageNumbers.length > maxPageNumberLimit) {
+//     pageIncrement = <li className="page-item"><button className="page-link link-dark" onClick={handleNext}>&hellip;</button></li>;
+//   }
 
-  let pageDecrement = null;
-  if (minPageNumberLimit >= 1) {
-    pageDecrement = <li className="page-item"><button className="page-link link-dark" onClick={handlePrev}>&hellip;</button></li>;
-  }
+//   let pageDecrement = null;
+//   if (minPageNumberLimit >= 1) {
+//     pageDecrement = <li className="page-item"><button className="page-link link-dark" onClick={handlePrev}>&hellip;</button></li>;
+//   }
 
     
     const renderPageNumbers = pageNumbers.map((number) => {
@@ -34,6 +34,10 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage, minPageNu
     });
 
 
+    if(totalPosts === 0){
+        return;
+    }
+
     return (
         <div className="d-flex justify-content-center">
         <nav>
@@ -41,11 +45,11 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage, minPageNu
                 <li className="page-item"><button className="page-link link-dark" onClick={handlePrev}
                 disabled={currentPage == pageNumbers[0]?true:false}
                 >Prev</button></li>
-                {pageDecrement}
+                {/* {pageDecrement} */}
                 {renderPageNumbers}
-                {pageIncrement}
+                {/* {pageIncrement} */}
                 <li className="page-item"><button className="page-link link-dark" onClick={handleNext}
-                disabled={currentPage == pageNumbers[pageNumbers.length]?true:false}
+                disabled={currentPage == pageNumbers[pageNumbers.length - 1]?true:false}
                 >Next</button></li>
             </ul>
         </nav>
