@@ -1,5 +1,5 @@
 import React from "react";
-import "./Pagination.css"
+import "../styles/Pagination.css"
 
 const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage, minPageNumberLimit, maxPageNumberLimit, pageNumberLimit, handleNext, handlePrev }) => {
     const pageNumbers = [];

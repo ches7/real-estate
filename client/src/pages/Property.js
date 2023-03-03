@@ -4,8 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import NotFound from '../NotFound';
 import Carousel from 'react-bootstrap/Carousel';
 import SaveProperty from '../components/SaveProperty';
-//import './Property.css';
-import '../index.css';
+//import '../styles/Property.css';
+import '../styles/index.css';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
 mapboxgl.accessToken = `${process.env.REACT_APP_MAPBOX_TOKEN}`;

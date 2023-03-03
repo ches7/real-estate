@@ -1,5 +1,5 @@
-import { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import '../styles/PropertyCard.css';
+import { useState, useContext } from "react";
 import Carousel from 'react-bootstrap/Carousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
@@ -39,24 +39,23 @@ const PropertyCard = (props) => {
   if (deleted) return; 
     return (
         <div className="d-flex justify-content-center">
-        <div className="border rounded w-50 m-4"  onClick={handleClick} style={{cursor: "pointer"}}>
-        {/* <Link to={`/properties/${props.id}`} className="text-decoration-none text-black"> */}
-        <div className="d-flex">
+        <div className="border rounded m-4 cardwidth" /*w-50*/  onClick={handleClick} style={{cursor: "pointer"}}>
+        <div className="cardflex">
         
-    <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
+    <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false} className="w-100">
        {props.photos.map((p, i) => (
-                    <Carousel.Item key={i}>
+                    <Carousel.Item key={i} className="">
                     <img
-                    className="d-block" width={525} src={p}
+                    className="w-100" /*width={525}*/ src={p}
                     /></Carousel.Item>
                 ))}
     </Carousel>
 
-        <div key={props.i} className="m-3">
-        <div className="d-flex">
-        <h2>£{props.price}</h2>
-        {deleteButton}
+        <div key={props.i} className="m-3 flex-column w-100">
+        <div className="d-flex justify-content-end">
+        <h2 className="me-auto">£{props.price}</h2>
         {updateButton}
+        {deleteButton}
         </div>
 
         <div className="d-flex">
@@ -76,7 +75,6 @@ const PropertyCard = (props) => {
                 <SaveProperty id={props.id}/>
             </div>
             </div>
-            {/* </Link> */}
         </div>
         </div>
     )

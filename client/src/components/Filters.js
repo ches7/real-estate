@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../styles/Filters.css"
 
 export default function Filters(props) {
     const navigate = useNavigate();
@@ -70,8 +71,8 @@ export default function Filters(props) {
     }
 
     return (
-        <div className="search-container d-flex justify-content-center p-2 m-2">
-                <form onSubmit={handleSearch} className="d-inline-flex justify-content-center border rounded border-dark p-2">
+        <div className="d-flex justify-content-center p-2 m-2">
+                <form onSubmit={handleSearch} className="filterflex justify-content-center border rounded border-dark p-2">
                     <div className="px-3">
                     <label htmlFor="location">Search area</label><br></br>
                     <input 

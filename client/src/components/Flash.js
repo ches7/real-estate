@@ -1,7 +1,7 @@
 import React from "react";
 import { CSSTransition } from "react-transition-group";
 import classnames from "classnames";
-import styles from "./flash.module.css";
+import styles from "../styles/Flash.module.css";
 
 function Flash({ message,width, type, duration, position, active, setActive }) {
   const FlashClassNames = {

@@ -8,7 +8,7 @@ import { AuthContext } from "../utils/AuthContext";
 import NotFound from "../NotFound";
 import React from "react";
 import Flash from "../components/Flash.js";
-import styles from "./ChangePassword.module.css";
+import styles from "../styles/ChangePassword.module.css";
 
 const ChangePassword = () => {
 

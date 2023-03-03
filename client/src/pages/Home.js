@@ -1,4 +1,4 @@
-import './Home.css';
+import '../styles/Home.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 

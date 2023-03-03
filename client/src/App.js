@@ -6,7 +6,7 @@ import {
 import Property from "./pages/Property";
 import UpdateProperty from "./pages/UpdateProperty";
 
-import './App.css';
+import './styles/App.css';
 import Home from './pages/Home';
 import List from "./pages/List";
 import NotFound from "./NotFound";
