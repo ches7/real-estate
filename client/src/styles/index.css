@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  height: 100%;
 }
 
 code {
@@ -31,3 +32,11 @@ code {
   margin: 12px;
   border-radius: 4px;
   }
+
+.big-text {
+  font-size: 3vw;
+}
+
+.container {
+  height: 95vh;
+}

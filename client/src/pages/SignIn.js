@@ -3,6 +3,7 @@ import { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../utils/AuthContext";
 import Flash from "../components/Flash";
+import "../styles/index.css"
 
 const SignIn = () => {
 
@@ -53,17 +54,25 @@ const SignIn = () => {
     };
 
     return (
-        <div>
-            <h1>Sign in to save properties and much more</h1>
-            <h2>No account? <Link to="/register">Register</Link></h2>
-            <div className="search-container">
-                <form onSubmit={handleSubmit}>
+        <div className="container d-flex justify-content-center align-items-center">
+        <div className="d-flex flex-column">
+
+            <div className="d-flex justify-content-center">
+            <div className="d-flex flex-column w-50">
+            <h1 className="mb-3">Sign in to save properties and much more</h1>
+            <h2 className="mb-3">No account? <Link to="/register">Register</Link></h2>
+            </div>
+            </div>
+            
+            <div className="d-flex justify-content-center">
+                <form onSubmit={handleSubmit} className="d-flex flex-column w-50">
                     <label htmlFor="email">Email address</label>
                     <input
                         type="email"
                         name="email"
                         id="email"
                         onChange={handleChange}
+                        className="mb-3"
                     ></input>
 
                     <label htmlFor="password">Password</label>
@@ -71,22 +80,27 @@ const SignIn = () => {
                         type="text"
                         name="password"
                         id="password"
+                        className="mb-3"
                         onChange={handleChange}
                     ></input>
-                    <button type="submit">Sign in</button>
+                    <div className="align-self-center w-50">
+                    <button className="btn btn-dark mt-3 w-100" type="submit">Sign in</button>
+                    </div>
                 </form>
-                {active && (
-                    <Flash
-                        type={type}
-                        message={message.current}
-                        duration={3000}
-                        active={active}
-                        setActive={setActive}
-                        position={"bcenter"}
-                        width={"default"}
-                    />
-                )}
+                
             </div>
+        </div>
+        {active && (
+            <Flash
+                type={type}
+                message={message.current}
+                duration={3000}
+                active={active}
+                setActive={setActive}
+                position={"bcenter"}
+                width={"default"}
+            />
+        )}
         </div>
     );
 };
