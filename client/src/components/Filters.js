@@ -36,7 +36,7 @@ export default function Filters(props) {
     let maxPrice;
     if(saleOrRent === 'for-sale'){
         maxPrice = 
-        <div className="px-3">
+        <div className="px-3 filteritemflex">
         <label htmlFor="price">Max price</label><br></br>
         <select name="price" id="price" className="bg-light border-0" value={price} onChange={handlePrice}>
         <option value="">No max</option>
@@ -53,7 +53,7 @@ export default function Filters(props) {
         </div>
     } else {
         maxPrice = 
-        <div className="px-3">
+        <div className="px-3 filteritemflex">
         <label htmlFor="price">Max price</label><br></br>
         <select name="price" id="price" className="bg-light border-0" value={price} onChange={handlePrice}>
         <option value="">No max</option>
@@ -74,8 +74,9 @@ export default function Filters(props) {
         <div className="d-flex justify-content-center p-2 m-2">
                 <form onSubmit={handleSearch} className="filterflex justify-content-center border rounded border-dark p-2">
                     <div className="px-3">
-                    <label htmlFor="location">Search area</label><br></br>
+                    <label htmlFor="location" className="searchbarlabel">Search area</label><br></br>
                     <input 
+                        className="searchbar"
                         type="text" 
                         id="location" 
                         placeholder="e.g. Oxford" 
@@ -85,7 +86,7 @@ export default function Filters(props) {
                         ></input>
                     </div>
 
-                    <div className="px-3">
+                    <div className="px-3 filteritemflex">
                     <label htmlFor="radius">Search radius</label><br></br>
                     <select name="radius" id="radius" className="bg-light border-0" onChange={handleRadius}>
                     <option value="only">This area only</option>
@@ -102,7 +103,7 @@ export default function Filters(props) {
                     </select>
                     </div>
 
-                    <div className="px-3">
+                    <div className="px-3 filteritemflex">
                     <label htmlFor="beds">Bedrooms</label><br></br>
                     <select name="beds" id="beds" className="bg-light border-0" value={beds} onChange={handleBeds}>
                     <option value="">Any beds</option>
@@ -121,7 +122,7 @@ export default function Filters(props) {
 
                     {maxPrice}
 
-                    <div className="px-3">
+                    <div className="px-3 filteritemflex">
                     <label htmlFor="type">Property type</label><br></br>
                     <select name="type" id="type" className="bg-light border-0" value={type} onChange={handleType}>
                     <option value="all">Show all</option>
@@ -136,8 +137,8 @@ export default function Filters(props) {
                     </select>
                     </div>
 
-                    <div className="align-self-center px-3">
-                    <button type="submit" className="bg-dark border-0 rounded text-white py-2 px-5">Search</button>
+                    <div className="align-self-center pt-2">
+                    <button type="submit" className="bg-dark border-0 rounded text-white py-2 px-5 searchbutton">Search</button>
                     </div>
                 </form>
             </div>

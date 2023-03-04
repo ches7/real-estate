@@ -2,11 +2,36 @@
     .filterflex {
         display: flex;
     }
+    .filteritemflex {
+      display: block;
+    }
   }
 
 @media only screen and (max-width: 1100px) {
     .filterflex {
         display: flex;
         flex-direction: column;
+    }
+    .filteritemflex {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+    .filteritemflex select {
+      font-size: 2.5vb;
+    }
+    .filteritemflex label {
+      font-size: 2.5vb;
+    }
+    .searchbarlabel {
+      font-size: 2.5vb;
+    }
+    .searchbar {
+      font-size: 2.5vb;
+    }
+    .searchbutton {
+      font-size: 2.5vb;
     }
   }
