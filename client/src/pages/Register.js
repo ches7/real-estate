@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Flash from "../components/Flash";
+import "../styles/index.css"
 
 const Register = () => {
 
@@ -51,19 +52,29 @@ const Register = () => {
         }
     };
 
-    return (
-        <div>
-            <h1>Register to save properties and much more</h1>
-            <h2>Already registered? <Link to="/signin">Sign in</Link></h2>
-            <div className="search-container">
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="email-address">Email address</label>
+    return(
+
+        <div className="container d-flex justify-content-center align-items-center">
+        <div className="d-flex flex-column">
+
+            <div className="d-flex justify-content-center">
+            <div className="d-flex flex-column w-50">
+            <h1 className="mb-3">Register to save properties and much more</h1>
+            <h2 className="mb-3">Already registered? <Link to="/signin">Sign in</Link></h2>
+            <h4><Link to="/register-as-agent">Register as agent</Link></h4>
+            </div>
+            </div>
+            
+            <div className="d-flex justify-content-center">
+                <form onSubmit={handleSubmit} className="d-flex flex-column w-50">
+                    <label htmlFor="email">Email address</label>
                     <input
                         type="email"
-                        name="email-address"
+                        name="email"
                         required
-                        value={email}
+                        id="email"
                         onChange={(e) => { setEmail(e.target.value); }}
+                        className="mb-3"
                     ></input>
 
                     <label htmlFor="password">Password</label>
@@ -71,24 +82,28 @@ const Register = () => {
                         type="text"
                         name="password"
                         required
-                        value={password}
+                        id="password"
+                        className="mb-3"
                         onChange={(e) => setPassword(e.target.value)}
                     ></input>
-                    <button type="submit">Register</button>
+                    <div className="align-self-center w-50">
+                    <button className="btn btn-dark mt-3 w-100" type="submit">Register</button>
+                    </div>
                 </form>
-                {active && (
-                    <Flash
-                        type={type}
-                        message={message.current}
-                        duration={3000}
-                        active={active}
-                        setActive={setActive}
-                        position={"bcenter"}
-                        width={"default"}
-                    />
-                )}
+                
             </div>
-            <h4><Link to="/register-as-agent">Register as agent</Link></h4>
+        </div>
+        {active && (
+            <Flash
+                type={type}
+                message={message.current}
+                duration={3000}
+                active={active}
+                setActive={setActive}
+                position={"bcenter"}
+                width={"default"}
+            />
+        )}
         </div>
     );
 };

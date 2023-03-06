@@ -71,6 +71,7 @@ const SignIn = () => {
                         type="email"
                         name="email"
                         id="email"
+                        required
                         onChange={handleChange}
                         className="mb-3"
                     ></input>
@@ -80,6 +81,7 @@ const SignIn = () => {
                         type="text"
                         name="password"
                         id="password"
+                        required
                         className="mb-3"
                         onChange={handleChange}
                     ></input>

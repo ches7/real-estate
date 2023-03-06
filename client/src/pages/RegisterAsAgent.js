@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Flash from "../components/Flash";
+import "../styles/index.css"
 
 const RegisterAsAgent = () => {
 
@@ -59,56 +60,71 @@ const RegisterAsAgent = () => {
         setAgentPhoto(file)
     }
 
-    return (
-        <div>
-            <h1>Register to save properties and much more</h1>
-            <h2>Already registered? <Link to="/signin">Sign in</Link></h2>
-            <div className="search-container">
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="name">Agent Name</label>
+    return(
+
+        <div className="container d-flex justify-content-center align-items-center">
+        <div className="d-flex flex-column">
+
+            <div className="d-flex justify-content-center">
+            <div className="d-flex flex-column w-50">
+            <h1 className="mb-3">Register to save properties and much more</h1>
+            <h2 className="mb-3">Already registered? <Link to="/signin">Sign in</Link></h2>
+            <h4><Link to="/register">Register as user</Link></h4>
+            </div>
+            </div>
+            
+            <div className="d-flex justify-content-center">
+                <form onSubmit={handleSubmit} className="d-flex flex-column w-50">
+                <label htmlFor="name">Agent Name</label>
                     <input
                         type="text"
                         name="name"
                         required
                         value={agentName}
+                        className="mb-3"
                         onChange={(e) => { setAgentName(e.target.value); }}
                     ></input>
 
-                    <label htmlFor="email-address">Email address</label>
+                    <label htmlFor="email">Email address</label>
                     <input
                         type="email"
-                        name="email-address"
+                        name="email"
                         required
-                        value={email}
+                        id="email"
                         onChange={(e) => { setEmail(e.target.value); }}
+                        className="mb-3"
                     ></input>
 
                     <label htmlFor="agentPhoto">Agent Photo</label>
-                    <input onChange={handlePhoto} type="file" required name="agentPhoto" accept="image/*"></input>
+                    <input onChange={handlePhoto} type="file" className="mb-3" required name="agentPhoto" accept="image/*"></input>
 
                     <label htmlFor="password">Password</label>
                     <input
                         type="text"
                         name="password"
                         required
-                        value={password}
+                        id="password"
+                        className="mb-3"
                         onChange={(e) => setPassword(e.target.value)}
                     ></input>
-                    <button type="submit">Register</button>
+                    <div className="align-self-center w-50">
+                    <button className="btn btn-dark mt-3 w-100" type="submit">Register</button>
+                    </div>
                 </form>
-                {active && (
-                    <Flash
-                        type={type}
-                        message={message.current}
-                        duration={3000}
-                        active={active}
-                        setActive={setActive}
-                        position={"bcenter"}
-                        width={"default"}
-                    />
-                )}
+                
             </div>
-            <h4><Link to="/register">Register as user</Link></h4>
+        </div>
+        {active && (
+            <Flash
+                type={type}
+                message={message.current}
+                duration={3000}
+                active={active}
+                setActive={setActive}
+                position={"bcenter"}
+                width={"default"}
+            />
+        )}
         </div>
     );
 };

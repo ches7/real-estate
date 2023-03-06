@@ -1,22 +1,12 @@
-import '../styles/Home.css';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import '../styles/Home.css';
+import '../styles/index.css';
 
 export default function Home() {
     const navigate = useNavigate();
     const [location, setLocation] = useState('');
     const [saleOrRent, setSaleOrRent] = useState('for-sale');
-
-    // const handleSearch = async (e) => {
-    //     e.preventDefault();
-    //     dispatch({ type:"NEW_SEARCH", payload: { location, saleOrRent } });
-    //     if (saleOrRent === 'for-sale'){
-    //         navigate("/for-sale/properties", { state: { location, saleOrRent }})
-    //     } else {
-    //         navigate("/to-rent/properties", { state: { location, saleOrRent }})
-    //     }
-    // };
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -33,8 +23,8 @@ export default function Home() {
 
 
     return (
-        <div className="background-image">
-        <div className="position-absolute top-50 start-50 translate-middle text-center text-white">
+        <div className="background-image d-flex justify-content-center align-items-center">
+        <div className="text-center text-white">
             <h1>We know what a home is really worth</h1>
             <h3 className="p-2">Find homes to buy or rent</h3>
             <div className="search-container">
@@ -49,7 +39,7 @@ export default function Home() {
                         autoComplete="off" 
                         value="for-sale"
                         onChange={handleRadioChange}
-                        checked
+                        defaultChecked
                         ></input>
                     <label className="btn btn-outline-dark mx-1" htmlFor="for-sale">For sale</label>
 
