@@ -20,9 +20,9 @@ export default function AgentsList() {
   console.log(data);
   if (error) return <NotFound/>
 return(
-    <div>
+    <div className="d-flex justify-content-center">
 
-<div>
+<div className="w-25">
           {
 
         data.map((a, i) => (
@@ -30,9 +30,7 @@ return(
                 <div id='agent-card' className='border shadow-sm rounded m-3 p-2' key={i}>
               <div className='d-flex justify-content-start' >
                 <div>
-                  {/* <h2>Agent</h2> */}
-                  <h2>Agent {a.agentName}</h2>
-                  {/* <h3>view agent properties</h3> */}
+                  <h2>{a.agentName}</h2>
                   <h3><Link to={`/agents/${a.id}`}>view agent properties</Link></h3>
                 </div>
                 <div>

@@ -131,7 +131,12 @@ const handleShowFlash = () => {
         <button onClick={handleUpdateUserButton}>UpdateUserDetails</button>
         <button onClick={handleChangePasswordButton}>Change Password</button>
 
-        {userData.isAgent === 1 ? <h1>My properties</h1> : null}
+        {userData.isAgent === 1 ? 
+        <div className='d-flex justify-content-center'>
+        <h1>My properties</h1> 
+        </div>
+        : null}
+
         <div>
           {
             myProperties.map((p, i) => (
@@ -140,7 +145,11 @@ const handleShowFlash = () => {
             ))}
         </div>
 
-        <h1>Saved properties</h1>
+        {properties.length !== 0 ? 
+        <div className='d-flex justify-content-center'>
+        <h1>Saved properties</h1> 
+        </div>
+        : null}
 
         <div>
           {
