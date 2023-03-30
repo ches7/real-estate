@@ -4,6 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import NotFound from '../NotFound';
 import Carousel from 'react-bootstrap/Carousel';
 import SaveProperty from '../components/SaveProperty';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
 //import '../styles/Property.css';
 import '../styles/index.css';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
@@ -21,6 +23,8 @@ function Property() {
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [photos, setPhotos] = useState([]);
+  const [agent, setAgent] = useState([]);
+  const [agentError, setAgentError] = useState(null)
 
   const mapContainer = useRef(null);
   const map = useRef(null);
@@ -60,6 +64,16 @@ function Property() {
     });
   }, [lng]);
 
+  useEffect(() => {
+    if (data === null) return;
+    if (data.agent === undefined) return;
+    const fetchData = async () => {
+      await axios.get(`/api/agents/${data.agent}`)
+        .then(res => { if (res.status !== 200) { throw Error('could not fetch the data for that resource') } else { setAgent(res.data); } })
+        .catch(err => { setAgentError(err.message); setAgent(null) });
+    }
+    fetchData();
+  }, [data]);
 
   if (error) {
     return (<NotFound />)
@@ -68,7 +82,6 @@ function Property() {
       <div>
         <div className='d-flex justify-content-center mt-5'>
           <div className='m-3'>
-            {/* <img src="https://images.unsplash.com/photo-1621983209359-456e234c892a" alt="House" width="824" height="550"></img> */}
             <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
             {photos.map((p, i) => (
                     <Carousel.Item key={i}>
@@ -80,28 +93,35 @@ function Property() {
 
             <div id='details'>
               <h1>£{data.price}</h1>
-              <p>title {data.title}</p>
-              <p>location {data.location}</p>
+              <div className="d-flex">
+        <FontAwesomeIcon icon={faBed} className="m-2"/>
+        <p className="mt-1 me-2">{data.beds}</p>
+        <FontAwesomeIcon icon={faBath} className="m-2"/>
+        <p className="mt-1 me-2">{data.baths}</p>
+        <FontAwesomeIcon icon={faCouch} className="m-2"/>
+        <p className="mt-1 me-2">{data.receptions}</p>
+        </div>
+              <p>location: {data.location}</p>
+              <p>{data.title}</p>              
+              <p>{data.description}</p>
             </div>
+            
           </div>
           <div>
             <div id='agent-card' className='border shadow-sm rounded m-3 p-2'>
               <div className='d-flex justify-content-start'>
                 <div>
-                  <h2>Agent {data.agent}</h2>
-                  <h3><Link to={`/agents/${data.agent}`}>view agent properties</Link></h3>
+                  <h2>{agent.agentName || 'default agent'}</h2>
+                  <p><Link to={`/agents/${data.agent}` || null}>view agent properties</Link></p>
                 </div>
-                <div>
-                  <img src={imageLink} alt='agent logo' width="130" height="70"></img>
+                <div className='mx-3'>
+                  <img src={agent.agentPhoto || imageLink} alt='agent logo' width="130" height="70"></img>
                 </div>
               </div>
               <SaveProperty id={params.id}/>
-
             </div>
           </div>
         </div>
-        {/* <button><Link to={`/properties/${params.id}/edit`}>edit</Link></button>
-      <Delete/> */}
         <div>
 <div ref={mapContainer} className="map-container" />
 </div>

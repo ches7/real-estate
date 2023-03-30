@@ -68,20 +68,20 @@ const ChangePassword = () => {
 
   if (!user) return <NotFound />;
   return (
-    <main className={styles.main}>
-      <header className={styles.hero}>
-        <h1 className={styles.heading}>Change password</h1>
-        <p className={styles.paragraph}>
+    <div className="d-flex justify-content-center">
+    <div className="d-flex flex-column">
+        <h1 className="mt-3">Change password</h1>
+        <p>
           <Link to="/account">Back to your account </Link>
         </p>
-      </header>
-      <form onSubmit={handleSubmit} className={styles.testForm}>
+      <form onSubmit={handleSubmit} className="d-flex flex-column">
         <label htmlFor="old-password">Old Password</label>
         <input
           type="text"
           name="old-password"
           required
           onChange={(e) => { setOldPassword(e.target.value); }}
+          className="mb-3"
         ></input>
 
         <label htmlFor="new-password">New Password</label>
@@ -90,6 +90,7 @@ const ChangePassword = () => {
           name="new-password"
           required
           onChange={(e) => { setNewPassword(e.target.value); }}
+          className="mb-3"
         ></input>
 
         <label htmlFor="confirm-password">Confirm Password</label>
@@ -98,13 +99,13 @@ const ChangePassword = () => {
           name="confirm-password"
           required
           onChange={(e) => { setConfirmPassword(e.target.value); }}
+          className="mb-3"
         ></input>
-        <div>
-          <button type="submit" className={styles.button}>
+          <button type="submit" className="btn btn-dark">
             Change password
           </button>
-        </div>
       </form>
+      </div>
       {active && (
         <Flash
           type={type}
@@ -116,7 +117,7 @@ const ChangePassword = () => {
           width={"default"}
         />
       )}
-    </main>
+      </div>
   );
 };
 

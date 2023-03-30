@@ -23,7 +23,7 @@ export default function Home() {
 
 
     return (
-        <div className="background-image d-flex justify-content-center align-items-center">
+        <div className="home-image d-flex justify-content-center align-items-center">
         <div className="text-center text-white">
             <h1>We know what a home is really worth</h1>
             <h3 className="p-2">Find homes to buy or rent</h3>

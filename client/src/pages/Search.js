@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import '../styles/Search.css';
+import '../styles/index.css';
 
 export default function Search() {
     const navigate = useNavigate();
@@ -40,7 +42,7 @@ export default function Search() {
         <div>
         <label htmlFor="max-price">Max price</label>
         <br></br>
-        <select name="max-price" id="max-price" onChange={handlePrice}>
+        <select name="max-price" id="max-price" onChange={handlePrice} className="bg-light border-0">
         <option value="">No max</option>
         <option value="100000">£10,000</option>
         <option value="50000">£50,000</option>
@@ -60,7 +62,7 @@ export default function Search() {
         <div>
         <label htmlFor="max-price">Max price</label>
         <br></br>
-        <select name="max-price" id="max-price" onChange={handlePrice}>
+        <select name="max-price" id="max-price" onChange={handlePrice} className="bg-light border-0">
         <option value="">No max</option>
         <option value="100">£100 pcm</option>
         <option value="250">£250 pcm</option>
@@ -89,8 +91,8 @@ export default function Search() {
     
     return (
         <div id="page-container" className="d-flex justify-content-center">
-        <div id="photo-container" className="position-absolute top-50 start-50 translate-middle d-flex justify-content-start h-75 w-75 border">
-            <div id="search-container" className="border d-flex flex-column m-5 p-3">
+        <div id="photo-container" className="search-image position-absolute top-50 start-50 translate-middle d-flex justify-content-start h-75 w-75 border rounded">
+            <div id="search-container" className="bg-white border d-flex flex-column m-5 p-3 rounded">
                 <form onSubmit={handleSearch}>
                     {banner}
                     <div className="">
@@ -111,7 +113,7 @@ export default function Search() {
                     <div className="position-relative top-0 start-0 w-50">
                     <label htmlFor="bedrooms">Bedrooms</label>
                     <br></br>
-                    <select name="bedrooms" id="bedrooms" onChange={handleBeds}>
+                    <select name="bedrooms" id="bedrooms" onChange={handleBeds} className="bg-light border-0">
                     <option value="">Any beds</option>
                     <option value="1">1+</option>
                     <option value="2">2+</option>
@@ -135,7 +137,7 @@ export default function Search() {
                     <label className="">Property type</label>
                     <div className="d-flex">
                     <div className="w-50 border">
-                    <input type="radio" id="all" name="type" value="" onChange={handleType}></input>
+                    <input type="radio" id="all" name="type" value="" onChange={handleType} defaultChecked></input>
                     <label htmlFor="all" className="m-2">Show all</label>
                     </div>
                     <div className="w-50 d-flex border justify-content-start">
@@ -150,7 +152,7 @@ export default function Search() {
                     </div>
                     
                     <div className="border">
-                    <button type="submit" className="w-100">Search</button>
+                    <button type="submit" className="w-100 btn btn-dark">Search</button>
                     </div>
                 </form>
             </div>

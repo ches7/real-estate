@@ -73,15 +73,17 @@ const handleShowFlash = () => {
 };
 
   return (
-    <div className="create">
-      <h2>Add a New Property</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="d-flex justify-content-center">
+      <div className="d-flex flex-column">
+      <h2 className="mt-3">Add a New Property</h2>
+      <form onSubmit={handleSubmit} className='d-flex flex-column'>
         <label>Property title:</label>
         <input
           type="text"
           required
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          className="mb-3"
         />
 
         <label>Property location:</label>
@@ -90,6 +92,7 @@ const handleShowFlash = () => {
           required
           value={location}
           onChange={(e) => setLocation(e.target.value)}
+          className="mb-3"
         />
 
         <label>Price:</label>
@@ -98,6 +101,7 @@ const handleShowFlash = () => {
           required
           value={price}
           onChange={(e) => setPrice(e.target.value)}
+          className="mb-3"
         />
 
         <label>Property description:</label>
@@ -106,6 +110,7 @@ const handleShowFlash = () => {
           required
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          className="mb-3"
         />
 
         <label>Number of beds:</label>
@@ -114,6 +119,7 @@ const handleShowFlash = () => {
           required
           value={beds}
           onChange={(e) => setBeds(e.target.value)}
+          className="mb-3"
         />
 
         <label>Number of bathrooms:</label>
@@ -122,6 +128,7 @@ const handleShowFlash = () => {
           required
           value={baths}
           onChange={(e) => setBaths(e.target.value)}
+          className="mb-3"
         />
 
         <label>Number of receptions:</label>
@@ -130,22 +137,22 @@ const handleShowFlash = () => {
           required
           value={receptions}
           onChange={(e) => setReceptions(e.target.value)}
+          className="mb-3"
         />
 
-        <label>Photos URL:</label>
+        <label>Photos</label>
         <input
           type="file"
           required
           multiple
           name="photos"
-          //value={photos}
           accept="image/*"
-          // onChange={(e) => setPhotos(e.target.files[0])}
           onChange={handlePhotos}
+          className="mb-3"
         />
 
         <label htmlFor="type">Property type</label>
-        <select name="type" id="type" className="bg-light border-0" onChange={(e) => setType(e.target.value)}>
+        <select name="type" id="type" className="bg-light border-0 mb-3" onChange={(e) => setType(e.target.value)}>
           <option value="detached">Detached</option>
           <option value="terraced">Terraced</option>
           <option value="bungalow">Bungalow</option>
@@ -156,14 +163,15 @@ const handleShowFlash = () => {
         </select>
 
         <label htmlFor="saleOrRent">For sale or to rent</label>
-        <select name="saleOrRent" id="saleOrRent" className="bg-light border-0" onChange={(e) => setSaleOrRent(e.target.value)}>
+        <select name="saleOrRent" id="saleOrRent" className="bg-light border-0 mb-3" onChange={(e) => setSaleOrRent(e.target.value)}>
           <option value="for-sale">For sale</option>
           <option value="to-rent">To rent</option>
         </select>
 
 
-        <button>Add Property</button>
+        <button className="btn btn-dark">Add Property</button>
       </form>
+      </div>
       {active && (
                     <Flash
                         type={typeFlash}

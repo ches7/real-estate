@@ -127,9 +127,11 @@ const handleShowFlash = () => {
   if (!user || !userData) { return (<SignIn />) } 
   else return (
       <div>
-        {userData.isAgent === 1 ? <button onClick={handleAddButton}>Add property</button> : null}
-        <button onClick={handleUpdateUserButton}>UpdateUserDetails</button>
-        <button onClick={handleChangePasswordButton}>Change Password</button>
+        <div className='d-flex justify-content-center'>
+        {userData.isAgent === 1 ? <button onClick={handleAddButton} className='btn btn-dark m-2'>Add property</button> : null}
+        <button onClick={handleUpdateUserButton} className='btn btn-dark m-2'>Update user details</button>
+        <button onClick={handleChangePasswordButton} className='btn btn-dark m-2'>Change password</button>
+        </div>
 
         {userData.isAgent === 1 ? 
         <div className='d-flex justify-content-center'>

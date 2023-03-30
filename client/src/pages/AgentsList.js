@@ -21,8 +21,9 @@ export default function AgentsList() {
   if (error) return <NotFound/>
 return(
     <div className="d-flex justify-content-center">
+      <div className="w-25">
+      <h1 className="text-center">Agents</h1>
 
-<div className="w-25">
           {
 
         data.map((a, i) => (
@@ -31,9 +32,9 @@ return(
               <div className='d-flex justify-content-start' >
                 <div>
                   <h2>{a.agentName}</h2>
-                  <h3><Link to={`/agents/${a.id}`}>view agent properties</Link></h3>
+                  <p><Link to={`/agents/${a.id}`}>view agent properties</Link></p>
                 </div>
-                <div>
+                <div className="ms-auto mx-2">
                   <img src={a.agentPhoto || 'https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png'} alt='agent logo' width="130" height="70"></img>
                 </div>
               </div>
