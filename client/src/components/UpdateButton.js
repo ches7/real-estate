@@ -16,7 +16,7 @@ const handleUpdate = async (e) => {
     
 
     return (
-      <div className="mx-1">
+      <div className="mb-1 me-1">
         <button onClick={handleUpdate} className="btn btn-warning">update</button>
         </div>
     )

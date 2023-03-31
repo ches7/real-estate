@@ -106,12 +106,12 @@ const UpdateUserDetails = () => {
                     required
                     value={email}
                     onChange={(e) => {setEmail(e.target.value);}}
-                    className="mb-3"
+                    className="mb-3 w-100"
                     ></input>
 
-                    <button type="submit" className="btn btn-dark mb-5">Update</button>
+                    <button type="submit" className="btn btn-dark mb-5 w-100">Update</button>
                 </form>
-            <button className="btn btn-danger mt-5" onClick={handleDeleteAccount}>Delete account</button>
+            <button className="btn btn-danger mt-5 w-100" onClick={handleDeleteAccount}>Delete account</button>
         </div>
         </div>
         )
@@ -119,9 +119,9 @@ const UpdateUserDetails = () => {
     return (
         <div className="d-flex justify-content-center">
             <div className="d-flex flex-column">
-            <h1 className="mt-3">Update user details</h1>
-            <p><Link to="/account">Back to your account </Link></p>
-                <form onSubmit={handleAgentSubmit} className="d-flex flex-column">
+            <h1 className="mt-3 w-100 mx-1">Update user details</h1>
+            <p className="w-100 mx-1"><Link to="/account">Back to your account </Link></p>
+                <form onSubmit={handleAgentSubmit} className="d-flex flex-column w-100 mx-1">
                 <label htmlFor="name">Agent Name</label>
                     <input
                         type="text"
@@ -129,7 +129,7 @@ const UpdateUserDetails = () => {
                         required
                         value={agentName}
                         onChange={(e) => { setAgentName(e.target.value); }}
-                        className="mb-3"
+                        className="mb-3 w-100"
                     ></input>
 
                     <label htmlFor="email-address">Email address</label>
@@ -139,15 +139,15 @@ const UpdateUserDetails = () => {
                     required
                     value={email}
                     onChange={(e) => {setEmail(e.target.value);}}
-                    className="mb-3"
+                    className="mb-3 w-100"
                     ></input>
 
                     <label htmlFor="agentPhoto">Agent Photo</label>
-                    <input onChange={handlePhoto} type="file" required name="agentPhoto" accept="image/*" className="mb-3"></input>
+                    <input onChange={handlePhoto} type="file" required name="agentPhoto" accept="image/*" className="mb-3 w-100"></input>
 
-                    <button type="submit" className="btn btn-dark mb-5">Update</button>
+                    <button type="submit" className="btn btn-dark mb-5 w-100">Update</button>
                 </form>
-            <button className="btn btn-danger mt-5" onClick={handleDeleteAccount}>Delete account</button>
+            <button className="btn btn-danger mt-5 w-100 mx-1" onClick={handleDeleteAccount}>Delete account</button>
             </div>
         </div>
     );

@@ -8,6 +8,7 @@ import PropertyCard from '../components/PropertyCard';
 import { useNavigate } from "react-router-dom";
 import Flash from '../components/Flash';
 import ServerError from '../ServerError';
+import '../styles/Account.css';
 
 
 function Account() {
@@ -127,7 +128,7 @@ const handleShowFlash = () => {
   if (!user || !userData) { return (<SignIn />) } 
   else return (
       <div>
-        <div className='d-flex justify-content-center'>
+        <div className='account-buttons'>
         {userData.isAgent === 1 ? <button onClick={handleAddButton} className='btn btn-dark m-2'>Add property</button> : null}
         <button onClick={handleUpdateUserButton} className='btn btn-dark m-2'>Update user details</button>
         <button onClick={handleChangePasswordButton} className='btn btn-dark m-2'>Change password</button>

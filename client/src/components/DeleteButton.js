@@ -55,7 +55,7 @@ const DeleteButton = (props) => {
         }
     };
 
-    return (<div>
+    return (<div className='mb-1'>
         <button onClick={handleDelete} className="btn btn-danger">delete</button>
         {active && (
             <Flash

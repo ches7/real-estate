@@ -8,6 +8,11 @@
     h2 {
         font-size: 1.7vw;
     }
+    .update-delete-price-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+    }
   }  
 
 @media only screen and (max-width: 1650px) {
@@ -22,6 +27,11 @@
     }
     h2 {
         font-size: 2.2vw;
+    }
+    .update-delete-price-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
     }
   }  
 
@@ -67,6 +77,10 @@
     }
     h2 {
         font-size: 4vw;
+    }
+    .update-delete-price-container {
+        display: flex;
+        flex-direction: column-reverse;
     }
   }
 

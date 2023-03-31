@@ -52,7 +52,7 @@ const PropertyCard = (props) => {
     </Carousel>
 
         <div key={props.i} className="m-3 flex-column w-100">
-        <div className="d-flex justify-content-end">
+        <div className="update-delete-price-container">
         <h2 className="me-auto">£{props.price}</h2>
         {updateButton}
         {deleteButton}
