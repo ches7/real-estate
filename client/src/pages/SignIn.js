@@ -3,7 +3,6 @@ import { useState, useContext, useRef } from "react";
 import axios from "axios";
 import { AuthContext } from "../utils/AuthContext";
 import Flash from "../components/Flash";
-import "../styles/index.css"
 
 const SignIn = () => {
 
@@ -54,18 +53,15 @@ const SignIn = () => {
     };
 
     return (
-        <div className="container d-flex justify-content-center align-items-center">
+        <div className="d-flex justify-content-center">
         <div className="d-flex flex-column">
 
-            <div className="d-flex justify-content-center">
-            <div className="d-flex flex-column w-50">
-            <h1 className="mb-3">Sign in to save properties and much more</h1>
-            <h2 className="mb-3">No account? <Link to="/register">Register</Link></h2>
-            </div>
-            </div>
-            
-            <div className="d-flex justify-content-center">
-                <form onSubmit={handleSubmit} className="d-flex flex-column w-50">
+            <h1 className="mb-0 mx-1 mt-3 w-100">Sign in to</h1>
+            <h1 className="mb-0 mx-1 mt-0 w-100">save properties</h1>
+            <h1 className="mb-3 mx-1 mt-0 w-100">and much more</h1>
+            <h2 className="mb-3 mx-1 w-100">No account? <Link to="/register">Register</Link></h2>
+
+                <form onSubmit={handleSubmit} className="d-flex flex-column mx-1">
                     <label htmlFor="email">Email address</label>
                     <input
                         type="email"
@@ -73,24 +69,21 @@ const SignIn = () => {
                         id="email"
                         required
                         onChange={handleChange}
-                        className="mb-3"
+                        className="mb-3 w-100"
                     ></input>
 
                     <label htmlFor="password">Password</label>
                     <input
-                        type="text"
+                        type="password"
                         name="password"
                         id="password"
                         required
-                        className="mb-3"
+                        className="mb-3 w-100"
                         onChange={handleChange}
                     ></input>
-                    <div className="align-self-center w-50">
                     <button className="btn btn-dark mt-3 w-100" type="submit">Sign in</button>
-                    </div>
                 </form>
                 
-            </div>
         </div>
         {active && (
             <Flash

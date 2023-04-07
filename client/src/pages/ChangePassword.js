@@ -8,7 +8,7 @@ import { AuthContext } from "../utils/AuthContext";
 import NotFound from "../NotFound";
 import React from "react";
 import Flash from "../components/Flash.js";
-import styles from "../styles/ChangePassword.module.css";
+// import styles from "../styles/ChangePassword.module.css";
 
 const ChangePassword = () => {
 
@@ -77,7 +77,7 @@ const ChangePassword = () => {
       <form onSubmit={handleSubmit} className="d-flex flex-column mx-1">
         <label htmlFor="old-password">Old Password</label>
         <input
-          type="text"
+          type="password"
           name="old-password"
           required
           onChange={(e) => { setOldPassword(e.target.value); }}
@@ -86,7 +86,7 @@ const ChangePassword = () => {
 
         <label htmlFor="new-password">New Password</label>
         <input
-          type="text"
+          type="password"
           name="new-password"
           required
           onChange={(e) => { setNewPassword(e.target.value); }}
@@ -95,7 +95,7 @@ const ChangePassword = () => {
 
         <label htmlFor="confirm-password">Confirm Password</label>
         <input
-          type="text"
+          type="password"
           name="confirm-password"
           required
           onChange={(e) => { setConfirmPassword(e.target.value); }}
