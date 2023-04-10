@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import '../styles/Home.css';
 import '../styles/index.css';
+import '../styles/Home.css';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -25,10 +25,10 @@ export default function Home() {
     return (
         <div className="home-image d-flex justify-content-center align-items-center">
         <div className="text-center text-white">
-            <h1>We know what a home is really worth</h1>
-            <h3 className="p-2">Find homes to buy or rent</h3>
+            <h1 className="mx-3 home-title">We know what a home is really worth</h1>
+            <h3 className="p-2 mx-3 home-subtitle">Find homes to buy or rent</h3>
             <div className="search-container">
-                <form onSubmit={handleSearch} className="bg-light p-3 rounded shadow-lg">
+                <form onSubmit={handleSearch} className="bg-light p-3 rounded shadow-lg mx-2">
 
                     <div className="d-flex justify-content-center">
                     <input 
@@ -55,15 +55,15 @@ export default function Home() {
                     <label className="btn btn-outline-dark mx-1" htmlFor="to-rent">To Rent</label>
                     </div>
 
-                    <div className="d-flex">
+                    <div className="home-search-flex">
                     <input 
                         type="text" 
                         placeholder="Enter a location" 
                         name="search" 
-                        className="flex-fill p-1 m-2"
+                        className="home-search-bar p-1 m-2"
                         onChange={(e) => setLocation(e.target.value)}
                         ></input>
-                    <button type="submit" className="bg-dark text-white rounded m-2 py-1 px-3 border-0">Search</button>
+                    <button type="submit" className="bg-dark text-white rounded m-2 py-1 px-3 border-0 home-search-button">Search</button>
                     </div>
                 </form>
             </div>

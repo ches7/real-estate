@@ -38,7 +38,7 @@ export default function Search() {
     let maxPrice;
     if(saleOrRent === 'for-sale'){
         maxPrice = 
-        <div className="border d-flex justify-content-start w-50">
+        <div className="d-flex justify-content-start w-50">
         <div>
         <label htmlFor="max-price">Max price</label>
         <br></br>
@@ -58,7 +58,7 @@ export default function Search() {
         </div>
     } else {
         maxPrice = 
-        <div className="border d-flex justify-content-start w-50">
+        <div className="d-flex justify-content-start w-50">
         <div>
         <label htmlFor="max-price">Max price</label>
         <br></br>
@@ -80,7 +80,6 @@ export default function Search() {
 
         /***** BANNER *****/
         let bannerSaleOrRent;
-        // console.log(saleOrRent);
         if (saleOrRent === 'for-sale'){bannerSaleOrRent = 'for sale'} else {bannerSaleOrRent = 'to rent'}
         let banner;
         {banner = <div>
@@ -91,8 +90,8 @@ export default function Search() {
     
     return (
         <div id="page-container" className="d-flex justify-content-center">
-        <div id="photo-container" className="search-image position-absolute top-50 start-50 translate-middle d-flex justify-content-start h-75 w-75 border rounded">
-            <div id="search-container" className="bg-white border d-flex flex-column m-5 p-3 rounded">
+        <div id="photo-container" className="search-image mt-5 mx-3 rounded">
+            <div id="search-container" className="bg-white d-flex flex-column m-5 p-3 rounded search-container">
                 <form onSubmit={handleSearch}>
                     {banner}
                     <div className="">
@@ -104,12 +103,13 @@ export default function Search() {
                         name="location"
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
+                        className="w-100"
                         ></input>
                     </div>
 
                     
 
-                    <div className="border py-3 d-flex">
+                    <div className="py-3 d-flex w-100">
                     <div className="position-relative top-0 start-0 w-50">
                     <label htmlFor="bedrooms">Bedrooms</label>
                     <br></br>
@@ -133,14 +133,14 @@ export default function Search() {
 
 
 
-                    <div className="">
+                    <div className="w-100">
                     <label className="">Property type</label>
                     <div className="d-flex">
-                    <div className="w-50 border">
+                    <div className="w-50">
                     <input type="radio" id="all" name="type" value="" onChange={handleType} defaultChecked></input>
                     <label htmlFor="all" className="m-2">Show all</label>
                     </div>
-                    <div className="w-50 d-flex border justify-content-start">
+                    <div className="w-50 d-flex justify-content-start">
                     <div className="">
                     <input type="radio" id="house" name="type" value="house" onChange={handleType}></input>
                     <label htmlFor="house" className="m-2">Houses</label>
@@ -151,7 +151,7 @@ export default function Search() {
                     <label htmlFor="flat" className="m-2">Flats</label>
                     </div>
                     
-                    <div className="border">
+                    <div className="">
                     <button type="submit" className="w-100 btn btn-dark">Search</button>
                     </div>
                 </form>

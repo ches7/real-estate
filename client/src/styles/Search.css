@@ -1,9 +1,28 @@
-.search-image{
+.search-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-image: url("https://images.unsplash.com/photo-1618221195710-dd6b41faaea6");
     background-repeat: no-repeat;
     background-size: cover;
-    /* background-position: center; */
-    /* background-attachment: fixed; */
-    /* width: 1920px; */
-    height: 95vh; 
+    height: 600px; 
+    width: 1250px;
+    justify-content: start;
 }
+
+.search-container {
+    width: 370px;
+    height: 500px;
+}
+
+@media only screen and (max-width: 1250px) {
+    .search-image {
+        width: 100%;
+    }
+  }
+
+@media only screen and (max-width: 500px) {
+    .search-image {
+        justify-content: center;
+    }
+  }
