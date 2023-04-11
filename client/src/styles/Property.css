@@ -1,16 +1,93 @@
 .map-container {
-    height: 400px;
-  }
+  position: absolute;
+  height: 400px;
+  width: 960px;
+  margin: auto;
+  margin-bottom: 30px;
+}
 
 .sidebar {
-    background-color: rgba(35, 55, 75, 0.9);
-    color: #fff;
-    padding: 6px 12px;
-    font-family: monospace;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    margin: 12px;
-    border-radius: 4px;
+  background-color: rgba(35, 55, 75, 0.9);
+  color: #fff;
+  padding: 6px 12px;
+  font-family: monospace;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 12px;
+  border-radius: 4px;
+  }
+
+  
+
+  .property-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+  }
+
+  .property-agent-photo {
+    width: 130px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .property-agent-card-flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+  }
+
+  @media only screen and (min-width: 550px) {
+    .property-carousel {
+      width: 525px;
     }
+  }
+
+  @media only screen and (max-width: 960px) {
+    .map-container {
+      position: absolute;
+      height: 400px;
+      width: 97vw;
+      margin-left: 10px;
+      margin-bottom: 30px;
+    }    
+  }
+
+  @media only screen and (max-width: 850px) {
+    .property-flex {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      margin-top: 50px;
+    }
+
+    .agent-card-size {
+      width: 410px;
+    }
+  }
+
+  @media only screen and (max-width: 440px) {
+    .agent-card-size {
+      width: 90vw;
+    }
+    .map-container {
+      width: 90vw;
+    }
+  }
+
+  @media only screen and (max-width: 385px) {
+    .property-agent-photo {
+      margin-left: 0px;
+      margin-right: 0px;
+      margin-bottom: 10px;
+    }
+  
+    .property-agent-card-flex {
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
+    }
+  }

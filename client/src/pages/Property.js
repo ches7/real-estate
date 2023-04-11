@@ -6,7 +6,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import SaveProperty from '../components/SaveProperty';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
-//import '../styles/Property.css';
+import '../styles/Property.css';
 import '../styles/index.css';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
@@ -41,7 +41,7 @@ function Property() {
     fetchData();
   }, [params.id]);
 
-  let imageLink = 'https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png';
+  let imageLink = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa';
 
   useEffect(() => {
     if (data === null) return;
@@ -80,9 +80,9 @@ function Property() {
   } else
     return (
       <div>
-        <div className='d-flex justify-content-center mt-5'>
+        <div className='property-flex'>
           <div className='m-3'>
-            <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false}>
+            <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false} className='property-carousel'>
             {photos.map((p, i) => (
                     <Carousel.Item key={i}>
                     <img
@@ -108,14 +108,14 @@ function Property() {
             
           </div>
           <div>
-            <div id='agent-card' className='border shadow-sm rounded m-3 p-2'>
-              <div className='d-flex justify-content-start'>
+            <div id='agent-card' className='border shadow-sm rounded m-3 p-2 agent-card-size'>
+              <div className='property-agent-card-flex'>
                 <div>
                   <h2>{agent.agentName || 'default agent'}</h2>
                   <p><Link to={`/agents/${data.agent}` || null}>view agent properties</Link></p>
                 </div>
-                <div className='mx-3'>
-                  <img src={agent.agentPhoto || imageLink} alt='agent logo' width="130" height="70"></img>
+                <div>
+                  <img src={agent.agentPhoto || imageLink} alt='agent logo' className='property-agent-photo'></img>
                 </div>
               </div>
               <SaveProperty id={params.id}/>

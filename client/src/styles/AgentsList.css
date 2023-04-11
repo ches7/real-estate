@@ -1,20 +1,35 @@
-@media only screen and (min-width: 400px) {
-    .agentsflex {
-        display: flex;
-    }
-    .agents-photo-size {
-        width: 130px;
-        height: 70px;
-    }
-  }
+.agents-name-link {
+    margin-right: auto;
+}
+
+.agentsflex {
+    display: flex;
+}
+
+.agents-photo-size {
+    width: 130px;
+}
+
+.agents-photo-container {
+    margin-left: 50px;
+}
 
 @media only screen and (max-width: 400px) {
     .agentsflex {
         display: flex;
         flex-direction: column-reverse;
     }
+
     .agents-photo-size {
         width: 200px;
-        height: 120px;
+        margin: auto;
     }
-  }
+
+    .agents-name-link {
+        margin: auto;
+    }
+
+    .agents-photo-container {
+        margin: auto;
+    }
+}

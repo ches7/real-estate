@@ -27,7 +27,7 @@ export default function Home() {
         <div className="text-center text-white">
             <h1 className="mx-3 home-title">We know what a home is really worth</h1>
             <h3 className="p-2 mx-3 home-subtitle">Find homes to buy or rent</h3>
-            <div className="search-container">
+            <div>
                 <form onSubmit={handleSearch} className="bg-light p-3 rounded shadow-lg mx-2">
 
                     <div className="d-flex justify-content-center">

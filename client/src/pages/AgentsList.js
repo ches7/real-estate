@@ -21,22 +21,22 @@ export default function AgentsList() {
   if (error) return <NotFound />
   return (
     <div className="d-flex justify-content-center">
-      <div className="">
-        <h1 className="text-center">Agents</h1>
+      <div className="mt-3">
+        <h1 className="text-center mb-3">Agents</h1>
 
         {
 
           data.map((a, i) => (
 
-            <div id='agent-card' className='border shadow-sm rounded m-3 p-2 w-100' key={i}>
+            <div id='agent-card' className='border shadow-sm rounded p-2 w-100 mb-2' key={i}>
               <div className='agentsflex' >
-                <div className="me-auto">
+                <div className="agents-name-link">
                   <h2>{a.agentName}</h2>
                   <p><Link to={`/agents/${a.id}`}>view agent properties</Link></p>
                 </div>
                 {/* <div className="ms-auto mx-2"> */}
-                <div className="mx-2 d-flex justify-content-center">
-                  <img src={a.agentPhoto || 'https://st.zoocdn.com/zoopla_static_agent_logo_(262107).png'} alt='agent logo'
+                <div className="agents-photo-container">
+                  <img src={a.agentPhoto || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa'} alt='agent logo'
                   className="agents-photo-size"
                   ></img>
                 </div>
