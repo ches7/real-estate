@@ -1,8 +1,22 @@
+//dotenv needs to be imported here to prevent crash -> due to env variables being imported outside export statement
+//remember to run seeds from parent directory
+import dotenv from 'dotenv';
+dotenv.config();
 import mongoose from "mongoose";
-import cities from "./cities.js";
 import gblatlng from "./gblatlng.js";
+import mysql from 'mysql2';
+
 
 import Property from "../models/Property.js";
+
+const pool = mysql.createPool({
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE
+  }).promise();
+
+console.log(process.env.MYSQL_USER)
 
 mongoose.connect('mongodb://localhost:27017/real-estate');
 
@@ -101,7 +115,24 @@ function citiesgeo(){
     return [c, d, e];
 }
 
+async function seedMySQL(agentName, email, password, isAgent) {
+    await pool.query(`DELETE FROM saved_properties WHERE user_id;`);
+    await pool.query(`DELETE FROM users WHERE id;`);
+    const [result] = await pool.query(` 
+    INSERT INTO users (agentName, email, password, isAgent)
+    VALUES (?, ?, ?, ?)
+    `, [agentName, email, password, isAgent]);
+    console.log(result.insertId);
+    return result.insertId;
+  }
+
 const seed = async () => {
+
+    const defaultId = await seedMySQL('default', 'default@gmail.com', 'password', 1);
+
+    // const idAsString = new String(defaultId);
+    // console.log(idAsString);
+
     await Property.deleteMany({});
     for (let i = 0; i < 1000; i++) {
         const [x, y] = typesAndPhotos();
@@ -123,8 +154,10 @@ const seed = async () => {
             receptions: Math.floor((Math.random() * 3) + 1),
             type: x,
             photos: y,
+            agent: defaultId,
         })
         await home.save();
+        console.log(i);
     }
 }
 
