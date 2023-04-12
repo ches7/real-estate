@@ -69,6 +69,10 @@ const SaveProperty = (props) => {
 
             setSaved(false);
 
+            if (window.location.pathname == '/account'){
+                window.location.reload();
+            }
+
         } catch (err) {
             console.log(err)
         }

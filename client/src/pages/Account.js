@@ -46,6 +46,7 @@ const message = useRef("");
     if(!userData) return;
     if (!userData.savedProperties) return;
     for (let i = 0; i < userData.savedProperties.length; i++) {
+      if(userData.savedProperties[i] == null) return;
       const fetchPropertyData = () => {
         axios.get(`/api/properties/${userData.savedProperties[i]}`)
           .then(res => {
@@ -79,6 +80,7 @@ const message = useRef("");
       fetchMyPropertyData();
   }, [userData]);
 
+  //checks for deleted properties and unsaves them
   const unsave = async (propertyId) => {
     if(!user) return;
     try {
