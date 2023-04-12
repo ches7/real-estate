@@ -98,7 +98,6 @@ function List() {
                 paginate={paginate} pageNumberLimit={pageNumberLimit} currentPage={currentPage}
                 maxPageNumberLimit={maxPageNumberLimit} minPageNumberLimit={minPageNumberLimit}
                 handleNext={handleNext} handlePrev={handlePrev} />
-                    {/* <Pagination data={data} func={getCurrentPostsFromPaginationChild}/> */}
         </div>
     );
 };

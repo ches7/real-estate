@@ -3,6 +3,8 @@ import axios from "axios";
 import NotFound from '../NotFound';
 import PropertyCard from '../components/PropertyCard';
 import { useParams } from 'react-router-dom';
+import Pagination from "../components/Pagination";
+
 
 
 export default function AgentPage() {
@@ -32,7 +34,43 @@ export default function AgentPage() {
         .catch(err => { setAgentError(err.message); setProperties(null) });
     }
     fetchPropertyData();
-  }, [agentData])
+  }, [agentData]);
+
+  /***** PAGINATION *****/
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
+  const [pageNumberLimit, setPageNumberLimit] = useState(5);
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = properties.slice(indexOfFirstPost, indexOfLastPost);
+
+  const paginate = (pageNumber) => {
+      setCurrentPage(pageNumber);
+      if (pageNumber + 1 > maxPageNumberLimit) {
+          setMaxPageNumberLimit(maxPageNumberLimit + Math.floor(pageNumberLimit/2));
+          setMinPageNumberLimit(minPageNumberLimit + Math.floor(pageNumberLimit/2));
+      }
+      else if ((pageNumber - 1) % minPageNumberLimit === 0) {
+          setMaxPageNumberLimit(maxPageNumberLimit - Math.floor(pageNumberLimit/2));
+          setMinPageNumberLimit(minPageNumberLimit - Math.floor(pageNumberLimit/2));
+      }
+  };
+  const handleNext = () => {
+      setCurrentPage(currentPage + 1);
+      if (currentPage + 2 > maxPageNumberLimit) {
+          setMaxPageNumberLimit(maxPageNumberLimit + Math.floor(pageNumberLimit/2));
+          setMinPageNumberLimit(minPageNumberLimit + Math.floor(pageNumberLimit/2));
+      }
+  };
+  const handlePrev = () => {
+      setCurrentPage(currentPage - 1);
+      if ((currentPage - 2) % minPageNumberLimit === 0) {
+          setMaxPageNumberLimit(maxPageNumberLimit - Math.floor(pageNumberLimit/2));
+          setMinPageNumberLimit(minPageNumberLimit - Math.floor(pageNumberLimit/2));
+      }
+  };
 
   if (agentError) {
     return (<NotFound />);
@@ -51,11 +89,15 @@ export default function AgentPage() {
           <h1>{agentData.agentName} properties</h1>
         </div>
         <div>
-          {properties.map((p, i) => (
+          {currentPosts.map((p, i) => (
             <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
               beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} />
           ))}
         </div>
+        <Pagination postsPerPage={postsPerPage} totalPosts={properties.length}
+                paginate={paginate} pageNumberLimit={pageNumberLimit} currentPage={currentPage}
+                maxPageNumberLimit={maxPageNumberLimit} minPageNumberLimit={minPageNumberLimit}
+                handleNext={handleNext} handlePrev={handlePrev} />
       </div>
     );
 };
