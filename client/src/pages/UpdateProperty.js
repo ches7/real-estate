@@ -54,9 +54,7 @@ export default function AddProperty() {
       data: property,
       method: 'patch',
       url: `/api/properties/${params.id}`,
-      headers: {'Content-Type': 'multipart/form-data'} // change when adding update photo functionality
-      // headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      //headers: { 'Content-Type': 'application/json' }
+      headers: {'Content-Type': 'multipart/form-data'} 
     })
       .then(res => {        
       message.current = 'Property updated';
@@ -93,108 +91,117 @@ const handleShowFlash = () => {
     }
 };
 
-  return (
-    <div className="create">
-      <h2>Add a New Property</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Property title:</label>
-        <input
-          type="text"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+return (
+  <div className="d-flex justify-content-center">
+    <div className="d-flex flex-column">
+    <h2 className="mt-3 mx-1">Update Property</h2>
+    <form onSubmit={handleSubmit} className='d-flex flex-column mx-1'>
+      <label>Property title:</label>
+      <input
+        type="text"
+        required
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Property location:</label>
-        <input
-          type="text"
-          required
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
+      <label>Property location:</label>
+      <input
+        type="text"
+        required
+        value={location}
+        onChange={(e) => setLocation(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Price:</label>
-        <input
-          type="number"
-          required
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
+      <label>Price:</label>
+      <input
+        type="number"
+        required
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Property description:</label>
-        <input
-          type="text"
-          required
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+      <label>Property description:</label>
+      <input
+        type="text"
+        required
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Number of beds:</label>
-        <input
-          type="number"
-          required
-          value={beds}
-          onChange={(e) => setBeds(e.target.value)}
-        />
+      <label>Number of beds:</label>
+      <input
+        type="number"
+        required
+        value={beds}
+        onChange={(e) => setBeds(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Number of bathrooms:</label>
-        <input
-          type="number"
-          required
-          value={baths}
-          onChange={(e) => setBaths(e.target.value)}
-        />
+      <label>Number of bathrooms:</label>
+      <input
+        type="number"
+        required
+        value={baths}
+        onChange={(e) => setBaths(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Number of receptions:</label>
-        <input
-          type="number"
-          required
-          value={receptions}
-          onChange={(e) => setReceptions(e.target.value)}
-        />
+      <label>Number of receptions:</label>
+      <input
+        type="number"
+        required
+        value={receptions}
+        onChange={(e) => setReceptions(e.target.value)}
+        className="mb-3 w-100"
+      />
 
-        <label>Photos URL:</label>
-        <input
-          type="file"
-          required
-          multiple
-          name="photos"
-          //value={photos}
-          accept="image/*"
-          onChange={handlePhotos}
-        />
+      <label>Photos</label>
+      <input
+        type="file"
+        required
+        multiple
+        name="photos"
+        accept="image/*"
+        onChange={handlePhotos}
+        className="mb-3 w-100"
+      />
 
-        <label htmlFor="type">Property type</label>
-        <select name="type" id="type" className="bg-light border-0" onChange={(e) => setType(e.target.value)}>
-          <option value="detached">Detached</option>
-          <option value="terraced">Terraced</option>
-          <option value="bungalow">Bungalow</option>
-          <option value="park-home">Park home</option>
-          <option value="semi-detached">Semi-detached</option>
-          <option value="flat">Flat</option>
-          <option value="farm-land">Farm/land</option>
-        </select>
+      <label htmlFor="type">Property type</label>
+      <select name="type" id="type" className="bg-light border-0 mb-3 w-100" onChange={(e) => setType(e.target.value)}>
+        <option value="detached">Detached</option>
+        <option value="terraced">Terraced</option>
+        <option value="bungalow">Bungalow</option>
+        <option value="park-home">Park home</option>
+        <option value="semi-detached">Semi-detached</option>
+        <option value="flat">Flat</option>
+        <option value="farm-land">Farm/land</option>
+      </select>
 
-        <label htmlFor="saleOrRent">For sale or to rent</label>
-        <select name="saleOrRent" id="saleOrRent" className="bg-light border-0" onChange={(e) => setSaleOrRent(e.target.value)}>
-          <option value="for-sale">For sale</option>
-          <option value="to-rent">To rent</option>
-        </select>
+      <label htmlFor="saleOrRent">For sale or to rent</label>
+      <select name="saleOrRent" id="saleOrRent" className="bg-light border-0 mb-3 w-100" onChange={(e) => setSaleOrRent(e.target.value)}>
+        <option value="for-sale">For sale</option>
+        <option value="to-rent">To rent</option>
+      </select>
 
 
-        <button>Add Property</button>
-      </form>
-      {active && (
-                    <Flash
-                        type={typeFlash}
-                        message={message.current}
-                        duration={3000}
-                        active={active}
-                        setActive={setActive}
-                        position={"bcenter"}
-                        width={"default"}
-                    />
-                )}
+      <button className="btn btn-dark w-100">Update Property</button>
+    </form>
     </div>
-  );
+    {active && (
+                  <Flash
+                      type={typeFlash}
+                      message={message.current}
+                      duration={3000}
+                      active={active}
+                      setActive={setActive}
+                      position={"bcenter"}
+                      width={"default"}
+                  />
+              )}
+  </div>
+);
 };
