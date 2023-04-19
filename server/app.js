@@ -11,7 +11,10 @@ import adminsRoute from "./routes/admins.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 
-mongoose.connect('mongodb://127.0.0.1:27017/real-estate');
+const mongoAddress = process.env.MONGO_ADDRESS
+
+// mongoose.connect('mongodb://127.0.0.1:27017/real-estate');
+mongoose.connect(mongoAddress);
 
 mongoose.connection.on("error", console.error.bind(console, "connection error:"));
 mongoose.connection.once("open", () => {
