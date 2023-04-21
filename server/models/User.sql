@@ -22,6 +22,10 @@ INSERT INTO users (agentName, email, password, isAgent)
 VALUES 
 ('john', 'john@gmail.com', 'John.123', 1);
 
+INSERT INTO users (agentName, email, password, isAgent)
+VALUES 
+('default', 'default@gmail.com', 'password', 1);
+
 INSERT INTO saved_properties (user_id, saved_property)
 VALUES
 ('1', "638786eef8f1c0572067c59f"),
