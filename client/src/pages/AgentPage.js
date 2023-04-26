@@ -28,7 +28,6 @@ export default function AgentPage() {
       await axios.get(`/api/properties?agent=${params.id}`)
         .then(res => {
           if (res.status !== 200) { throw Error('could not fetch the data for that resource') }
-          // else { setProperties(oldArray => [...oldArray, res.data]) }
           else { setProperties(res.data) }
         })
         .catch(err => { setAgentError(err.message); setProperties(null) });

@@ -19,12 +19,10 @@ export default function AddProperty() {
   const [type, setType] = useState('detached');
   const [photos, setPhotos] = useState([]);
   const [saleOrRent, setSaleOrRent] = useState('for-sale');
-  const [agent, setAgent] = useState(`${user.id}`);
+  const [agent] = useState(`${user.id}`);
   const [active, setActive] = useState(false);
   const [typeFlash, setTypeFlash] = useState("default");
-  const [width, setWidth] = useState("default");
-  const [position, setPosition] = useState("default");
-  const [timer, setTimer] = useState(2000);
+  const [timer] = useState(2000);
   const message = useRef("");
 
   const handleSubmit = (e) => {

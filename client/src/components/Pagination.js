@@ -7,17 +7,6 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage, minPageNu
     for(let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++){
         pageNumbers.push(i);
     }
-
-//     let pageIncrement = null;
-//   if (pageNumbers.length > maxPageNumberLimit) {
-//     pageIncrement = <li className="page-item"><button className="page-link link-dark" onClick={handleNext}>&hellip;</button></li>;
-//   }
-
-//   let pageDecrement = null;
-//   if (minPageNumberLimit >= 1) {
-//     pageDecrement = <li className="page-item"><button className="page-link link-dark" onClick={handlePrev}>&hellip;</button></li>;
-//   }
-
     
     const renderPageNumbers = pageNumbers.map((number) => {
         if (number < maxPageNumberLimit+1 && number > minPageNumberLimit){
@@ -45,9 +34,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage, minPageNu
                 <li className="page-item"><button className="page-link link-dark" onClick={handlePrev}
                 disabled={currentPage == pageNumbers[0]?true:false}
                 >Prev</button></li>
-                {/* {pageDecrement} */}
                 {renderPageNumbers}
-                {/* {pageIncrement} */}
                 <li className="page-item"><button className="page-link link-dark" onClick={handleNext}
                 disabled={currentPage == pageNumbers[pageNumbers.length - 1]?true:false}
                 >Next</button></li>

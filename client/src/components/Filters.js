@@ -9,7 +9,7 @@ export default function Filters(props) {
     const [price, setPrice] = useState(props.price)
     const [type, setType] = useState(props.type)
     const [radius, setRadius] = useState(props.radius);
-    const [saleOrRent, setSaleOrRent] = useState(props.saleOrRent);
+    const [saleOrRent] = useState(props.saleOrRent);
 
 
     const handleBeds = (e) => {

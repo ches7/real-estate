@@ -9,12 +9,10 @@ const Register = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isAgent, setIsAgent] = useState(0);
+    const [isAgent] = useState(0);
     const [active, setActive] = useState(false);
     const [type, setType] = useState("default");
-    const [width, setWidth] = useState("default");
-    const [position, setPosition] = useState("default");
-    const [timer, setTimer] = useState(2000);
+    const [timer] = useState(2000);
     const message = useRef("");
 
 

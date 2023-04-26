@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBath, faBed, faCouch } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
 import { AuthContext } from "../utils/AuthContext";
 import { useContext, useState, useRef } from "react";
@@ -7,12 +5,10 @@ import Flash from './Flash';
 
 const DeleteButton = (props) => {
 
-    const { user, loading, error, dispatch } = useContext(AuthContext);
-    const [agent, setAgent] = useState(props.agent);
+    const { user, dispatch } = useContext(AuthContext);
+    const [agent] = useState(props.agent);
     const [active, setActive] = useState(false);
     const [typeFlash, setTypeFlash] = useState("default");
-    const [width, setWidth] = useState("default");
-    const [position, setPosition] = useState("default");
     const [timer, setTimer] = useState(2000);
     const message = useRef("");
 

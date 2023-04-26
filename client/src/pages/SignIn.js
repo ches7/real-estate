@@ -12,12 +12,10 @@ const SignIn = () => {
     });
     const [active, setActive] = useState(false);
     const [type, setType] = useState("default");
-    const [width, setWidth] = useState("default");
-    const [position, setPosition] = useState("default");
-    const [timer, setTimer] = useState(2000);
+    const [timer] = useState(2000);
     const message = useRef("")
 
-    const { loading, error, dispatch } = useContext(AuthContext);
+    const { dispatch } = useContext(AuthContext);
 
     const navigate = useNavigate();
 

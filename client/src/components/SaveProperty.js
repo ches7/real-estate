@@ -3,14 +3,11 @@ import { AuthContext } from "../utils/AuthContext";
 import { useContext, useState, useRef } from "react";
 import Flash from "./Flash";
 
-
 const SaveProperty = (props) => {
 
-    const { user, loading, error, dispatch } = useContext(AuthContext);
+    const { user, dispatch } = useContext(AuthContext);
 
     const checkStorage = JSON.parse(localStorage.getItem("real_estate_app_ches_user"));
-    //check storage null when not signed in ?
-
 
     const [saved, setSaved] = useState(() => {
         if (checkStorage == null){return false} else {
@@ -20,9 +17,7 @@ const SaveProperty = (props) => {
         }};}})
     const [active, setActive] = useState(false);
     const [type, setType] = useState("default");
-    const [width, setWidth] = useState("default");
-    const [position, setPosition] = useState("default");
-    const [timer, setTimer] = useState(2000);
+    const [timer] = useState(2000);
     const message = useRef("");
 
     const handleSave = async (e) => {

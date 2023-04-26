@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from "axios";
-import NotFound from '../NotFound';
 import SignIn from './SignIn';
 import { AuthContext } from '../utils/AuthContext';
 import { useContext } from 'react';
@@ -22,9 +21,7 @@ function Account() {
   const [myPropertyError, setMyPropertyError] = useState(null)
   const [active, setActive] = useState(false);
 const [typeFlash, setTypeFlash] = useState("default");
-const [width, setWidth] = useState("default");
-const [position, setPosition] = useState("default");
-const [timer, setTimer] = useState(2000);
+const [timer] = useState(2000);
 const message = useRef("");
 
   //prevent duplicate properties being rendered

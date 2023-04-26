@@ -9,7 +9,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 export default function ReactNavbar() {
 
-    const { user, loading, error, dispatch } = useContext(AuthContext);
+    const { user, dispatch } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

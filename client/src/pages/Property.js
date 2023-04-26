@@ -30,7 +30,7 @@ function Property() {
   const map = useRef(null);
   const [lng, setLng] = useState(undefined);
   const [lat, setLat] = useState(undefined);
-  const [zoom, setZoom] = useState(12);
+  const [zoom] = useState(12);
 
   useEffect(() => {
     const fetchData = async () => {

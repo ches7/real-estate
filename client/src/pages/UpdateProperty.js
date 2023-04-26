@@ -1,15 +1,11 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../utils/AuthContext";
 import Flash from "../components/Flash";
 
 export default function AddProperty() {
   const navigate = useNavigate();
   const params = useParams();
-
-
-  const { user } = useContext(AuthContext);
 
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
@@ -24,9 +20,7 @@ export default function AddProperty() {
   const [agent, setAgent] = useState('');
   const [active, setActive] = useState(false);
   const [typeFlash, setTypeFlash] = useState("default");
-  const [width, setWidth] = useState("default");
-  const [position, setPosition] = useState("default");
-  const [timer, setTimer] = useState(2000);
+  const [timer] = useState(2000);
   const message = useRef("");
 
   useEffect(() => {

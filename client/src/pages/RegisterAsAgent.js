@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useRef } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import Flash from "../components/Flash";
 import "../styles/index.css"
 
@@ -12,13 +11,11 @@ const RegisterAsAgent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [agentName, setAgentName] = useState('');
-    const [isAgent, setIsAgent] = useState(1);
+    const [isAgent] = useState(1);
     const [agentPhoto, setAgentPhoto] = useState('');
     const [active, setActive] = useState(false);
     const [type, setType] = useState("default");
-    const [width, setWidth] = useState("default");
-    const [position, setPosition] = useState("default");
-    const [timer, setTimer] = useState(2000);
+    const [timer] = useState(2000);
     const message = useRef("");
 
     const handleSubmit = (e) => {

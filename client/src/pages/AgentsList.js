@@ -34,7 +34,6 @@ export default function AgentsList() {
                   <h2>{a.agentName}</h2>
                   <p><Link to={`/agents/${a.id}`}>view agent properties</Link></p>
                 </div>
-                {/* <div className="ms-auto mx-2"> */}
                 <div className="agents-photo-container">
                   <img src={a.agentPhoto || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa'} alt='agent logo'
                   className="agents-photo-size"

@@ -1,14 +1,10 @@
-import { Link } from "react-router-dom";
-import { useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useRef, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { useEffect } from "react";
 import { AuthContext } from "../utils/AuthContext";
 import NotFound from "../NotFound";
 import React from "react";
 import Flash from "../components/Flash.js";
-// import styles from "../styles/ChangePassword.module.css";
 
 const ChangePassword = () => {
 
@@ -18,9 +14,7 @@ const ChangePassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [active, setActive] = useState(false);
   const [type, setType] = useState("default");
-  const [width, setWidth] = useState("default");
-  const [position, setPosition] = useState("default");
-  const [timer, setTimer] = useState(2000);
+  const [timer] = useState(2000);
   const message = useRef("");
 
   const { user, dispatch } = useContext(AuthContext);

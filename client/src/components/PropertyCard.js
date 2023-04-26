@@ -12,7 +12,7 @@ const PropertyCard = (props) => {
     const [index, setIndex] = useState(0);
     const [deleted, setDeleted] = useState(false);
 
-    const { user, dispatch } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
   const handleSelect = (selectedIndex, e) => {
     e.preventDefault()
@@ -39,14 +39,14 @@ const PropertyCard = (props) => {
   if (deleted) return; 
     return (
         <div className="d-flex justify-content-center">
-        <div className="border rounded m-4 cardwidth" /*w-50*/  onClick={handleClick} style={{cursor: "pointer"}}>
+        <div className="border rounded m-4 cardwidth" onClick={handleClick} style={{cursor: "pointer"}}>
         <div className="cardflex">
         
     <Carousel activeIndex={index} onSelect={handleSelect} interval={null} slide={false} className="w-100">
        {props.photos.map((p, i) => (
                     <Carousel.Item key={i} className="">
                     <img
-                    className="w-100" /*width={525}*/ src={p}
+                    className="w-100" src={p}
                     /></Carousel.Item>
                 ))}
     </Carousel>

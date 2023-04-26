@@ -8,12 +8,12 @@ import Filters from "../components/Filters";
 function List() {
     /***** DATA *****/
     const loc = useLocation();
-    const [searchParams, setSearchParams] = useSearchParams();
-    const [location, setLocation] = useState(searchParams.get('location'));
-    const [beds, setBeds] = useState(searchParams.get('beds'));
-    const [price, setPrice] = useState(searchParams.get('price'));
-    const [type, setType] = useState(searchParams.get('type'));
-    const [radius, setRadius] = useState(searchParams.get('radius'));
+    const [searchParams] = useSearchParams();
+    const [location] = useState(searchParams.get('location'));
+    const [beds] = useState(searchParams.get('beds'));
+    const [price] = useState(searchParams.get('price'));
+    const [type] = useState(searchParams.get('type'));
+    const [radius] = useState(searchParams.get('radius'));
 
     let saleOrRent;
     if(loc.pathname === '/for-sale/properties' || loc.pathname === '/for-sale/properties/'){

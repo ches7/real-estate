@@ -33,7 +33,7 @@ axios.defaults.withCredentials = true;
 
 function App() {
 
-  const { user, dispatch } = useContext(AuthContext);
+  const { dispatch } = useContext(AuthContext);
 
   let value_or_null = (document.cookie.match(/^(?:.*;)?\s*real_estate_app_ches_active\s*=\s*([^;]+)(?:.*)?$/) || [, null])[1]
   useEffect(() => {
