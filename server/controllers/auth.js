@@ -6,8 +6,7 @@ import ExpressError from "../utils/ExpressError.js";
 import jwt from "jsonwebtoken";
 import mysql from 'mysql2';
 import Property from '../models/Property.js';
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import crypto from 'crypto';
 const generateFileName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
 const bucketName = process.env.BUCKET_NAME

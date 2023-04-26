@@ -1,24 +1,7 @@
-//dotenv needs to be imported here to prevent crash -> due to env variables being imported outside export statement
-//remember to run seeds from parent directory
-// import dotenv from 'dotenv';
-// dotenv.config();
 import mongoose from "mongoose";
 import gblatlng from "./gblatlng.js";
-// import mysql from 'mysql2';
 import Property from "../models/Property.js";
 
-// const MONGO_URI =  `${process.env.MONGO_URI}` || 'mongodb://127.0.0.1:27017/real-estate';
-
-// const pool = mysql.createPool({
-//     host: process.env.MYSQL_HOST,
-//     user: process.env.MYSQL_USER,
-//     password: process.env.MYSQL_PASSWORD,
-//     database: process.env.MYSQL_DATABASE
-//   }).promise();
-
-// console.log(process.env.MYSQL_USER)
-
-// mongoose.connect('mongodb://localhost:27017/real-estate');
 mongoose.connect('mongodb://mongo:27017/real-estate');
 
 mongoose.connection.on("error", console.error.bind(console, "connection error:"));
@@ -75,7 +58,6 @@ const landPhotos = [
 
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
-//TODO: function for property type and photos
 function typesAndPhotos(){
     let x = sample(types);
     let y = [];
@@ -116,31 +98,13 @@ function citiesgeo(){
     return [c, d, e];
 }
 
-// async function seedMySQL(agentName, email, password, isAgent) {
-//     await pool.query(`DELETE FROM saved_properties WHERE user_id;`);
-//     await pool.query(`DELETE FROM users WHERE id;`);
-//     const [result] = await pool.query(` 
-//     INSERT INTO users (agentName, email, password, isAgent)
-//     VALUES (?, ?, ?, ?)
-//     `, [agentName, email, password, isAgent]);
-//     console.log(result.insertId);
-//     return result.insertId;
-//   }
-
 const seed = async () => {
 
-    // const defaultId = await seedMySQL('default', 'default@gmail.com', 'password', 1);
-
-    // const idAsString = new String(defaultId);
-    // console.log(idAsString);
-
-    // await Property.deleteMany({});
     for (let i = 0; i < 1000; i++) {
         const [x, y] = typesAndPhotos();
         const [a, b] = saleRentPrice();
         const [c, d, e] = citiesgeo();
         const home = new Property({
-            //location: `${sample(cities)}`,
             location: c,
             geometry: {
                 type: "Point",

@@ -1,7 +1,6 @@
 //dotenv needs to be imported here to prevent crash -> due to env variables being imported outside export statement
 import dotenv from 'dotenv';
 dotenv.config();
-import bcrypt from "bcryptjs";
 import ExpressError from "../utils/ExpressError.js";
 import jwt from "jsonwebtoken";
 const adminPassword = process.env.ADMIN_PASSWORD

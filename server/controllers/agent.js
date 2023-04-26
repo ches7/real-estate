@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import mysql from 'mysql2';
 import ExpressError from "../utils/ExpressError.js";
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const bucketName = process.env.BUCKET_NAME

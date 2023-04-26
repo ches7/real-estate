@@ -1,7 +1,7 @@
 import express from "express";
 import user from "../controllers/user.js";
 import catchAsync from "../utils/catchAsync.js";
-import { verifyAgent, verifyUser } from "../utils/verifyToken.js";
+import { verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
 

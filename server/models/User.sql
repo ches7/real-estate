@@ -17,11 +17,6 @@ CREATE TABLE saved_properties (
 PRIMARY KEY(`user_id`, `saved_property`)
 );
 
-
-INSERT INTO users (agentName, email, password, isAgent)
-VALUES 
-('john', 'john@gmail.com', 'John.123', 1);
-
 INSERT INTO users (agentName, email, password, isAgent)
 VALUES 
 ('default', 'default@gmail.com', 'password', 1);
