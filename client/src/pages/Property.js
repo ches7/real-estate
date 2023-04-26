@@ -43,6 +43,9 @@ function Property() {
 
   let imageLink = 'https://images.unsplash.com/photo-1560518883-ce09059eeffa';
 
+  let pcm = "";
+  if (data.saleOrRent === "to-rent") { pcm = " pcm" }
+
   useEffect(() => {
     if (data === null) return;
     if (data.geometry === undefined) return;
@@ -92,7 +95,7 @@ function Property() {
             </Carousel>
 
             <div id='details'>
-              <h1>£{data.price}</h1>
+              <h1>£{data.price}{pcm}</h1>
               <div className="d-flex">
         <FontAwesomeIcon icon={faBed} className="m-2"/>
         <p className="mt-1 me-2">{data.beds}</p>

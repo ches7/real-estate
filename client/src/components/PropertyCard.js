@@ -36,6 +36,9 @@ const PropertyCard = (props) => {
   let updateButton;
   if (user && (user.id == props.agent)) { updateButton = <UpdateButton id={props.id}/> }
 
+  let pcm = "";
+  if (props.saleOrRent === "to-rent") { pcm = " pcm" }
+
   if (deleted) return; 
     return (
         <div className="d-flex justify-content-center">
@@ -53,7 +56,7 @@ const PropertyCard = (props) => {
 
         <div key={props.i} className="m-3 flex-column w-100">
         <div className="update-delete-price-container">
-        <h2 className="me-auto">£{props.price}</h2>
+        <h2 className="me-auto">£{props.price}{pcm}</h2>
         {updateButton}
         {deleteButton}
         </div>

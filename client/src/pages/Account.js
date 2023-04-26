@@ -143,7 +143,8 @@ const handleShowFlash = () => {
           {
             myProperties.map((p, i) => (
               <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
-                beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} agent={p.agent} func={getFlashStateFromChild}/>
+                beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} agent={p.agent} saleOrRent={p.saleOrRent}
+                func={getFlashStateFromChild}/>
             ))}
         </div>
 
@@ -156,7 +157,7 @@ const handleShowFlash = () => {
         <div>
           {
             properties.map((p, i) => (
-              <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id}
+              <PropertyCard key={i} price={p.price} title={p.title} location={p.location} description={p.description} id={p._id} saleOrRent={p.saleOrRent}
                 beds={p.beds} baths={p.baths} receptions={p.receptions} type={p.type} photos={p.photos} />
             ))}
         </div>
