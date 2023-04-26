@@ -1,0 +1,70 @@
+services:
+  reverse-proxy:
+    container_name: nginx
+    restart: always
+    image: 
+      'nginx:latest'
+    ports:
+      - 80:80
+    depends_on:
+      - api
+      - client
+    networks:
+      - shared-network
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
+  client:
+    container_name: client
+    restart: always
+    build: ./client
+    env_file:
+      - client-variables.env
+    ports:
+      - 3000:80
+    networks:
+      - shared-network
+
+  api:
+    container_name: api
+    restart: always
+    build: ./server
+    ports:
+    - 8080:8080
+    env_file:
+      - api-variables.env
+    depends_on:
+      - mongo
+      - mysql
+    networks:
+      - shared-network
+
+
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - mysql-variables.env
+    networks:
+      - shared-network
+
+  mongo:
+    container_name: mongo
+    image: 'mongo:5'
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - shared-network
+
+volumes:
+  mongo_data:
+  mysql_data:
+
+networks:
+  shared-network:

@@ -127,4 +127,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-docker-compose.yml
+api-variables.env
+client-variables.env
+mysql-variables.env
